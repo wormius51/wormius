@@ -1,0 +1,10 @@
+
+#game-view {
+    position: absolute;
+    top : 50%;
+    left: 0%;
+    width: 100%;
+    height: 10%;
+    border-style: groove;
+    border-color: darkslategrey;
+}
