@@ -17,7 +17,7 @@ function Player(socketId, name, x, width, color) {
     if (!color) color = "rgb(" + (Math.random() * 255) + "," + (Math.random() * 255) + "," + (Math.random() * 255) + ")";
     let player = {
         socketId : socketId,
-        gameObject : GameObject(x, width, color, name),
+        gameObject : GameObject(x, width, color, name, "player"),
         leftPressed : false,
         rightPressed : false,
         speed : 0.1

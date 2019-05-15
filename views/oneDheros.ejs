@@ -9,7 +9,13 @@
     <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
+    <div id = "ui">
+        <input type="text" id="name" placeholder="Your name..">
+        <button id = "nameButton" onclick="changeName()">Change Name</button>
+    </div>
+    <canvas id = "speach" class = "display" width="1000" height="50"></canvas>
     <canvas id = "game-view" width="1000" height="1000"></canvas>
+    <canvas id = "names" class = "display" width="1000" height="50"></canvas>
     <script src="/scripts/oneDheros/gameObject.js"></script>
     <script src="/scripts/oneDheros/main.js"></script>
 </body>

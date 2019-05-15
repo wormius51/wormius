@@ -10,14 +10,15 @@ var currentId = 0;
  * @param {String} color 
  * @param {String} name
  */
-function GameObject(x, width, color, name) {
+function GameObject(x, width, color, name, type) {
     if (!name) name = "game object";
     let obj = {
         id : currentId,
         x : x,
         width : width,
         color : color,
-        name : name
+        name : name,
+        type : type
     };
     gameObjects.push(obj);
     currentId++;

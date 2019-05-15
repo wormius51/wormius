@@ -1,10 +1,25 @@
 
+.display {
+    position: absolute;
+    left: 2.5%;
+    width: 95%;
+    height: 10%;
+}
+
 #game-view {
     position: absolute;
     top : 50%;
-    left: 0%;
-    width: 100%;
+    left: 2.5%;
+    width: 95%;
     height: 10%;
     border-style: groove;
     border-color: darkslategrey;
+}
+
+#speach {
+    top: 40%;
+}
+
+#names {
+    top: 60%;
 }

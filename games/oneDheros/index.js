@@ -28,9 +28,21 @@ function start() {
     });
 
     socketer.addListener(namespace, "keys", (data,socket) => {
+        if (!data) return;
         let player = Player.getPlayerById(socket.id);
-        player.leftPressed = data.leftPressed;
-        player.rightPressed = data.rightPressed;
+        if (player) {
+            player.leftPressed = data.leftPressed;
+            player.rightPressed = data.rightPressed;
+        }
+    });
+
+    socketer.addListener(namespace, "change-name", (data,socket) => {
+        if (!data) return;
+        let player = Player.getPlayerById(socket.id);
+        if (player) {
+            player.gameObject.name = data;
+            socketer.getNamespace(namespace).emit('object-updated', player.gameObject);
+        }
     });
 
     loop = setInterval(gameLoop,5);
@@ -46,9 +58,17 @@ function gameLoop() {
         } else {
             element.gameObject.speed = 0;
         }
-        if (element.gameObject.speed) {
-            element.gameObject.x += element.gameObject.speed;
-            socketer.getNamespace(namespace).emit('object-updated', element.gameObject);
+    });
+
+    physicsUpdate();
+}
+
+function physicsUpdate() {
+    let gameObjects = GameObject.getGameObjects();
+    gameObjects.forEach(element => {
+        if (element.speed) {
+            element.x += element.speed;
+            socketer.getNamespace(namespace).emit('object-updated', element);
         }
     });
 }

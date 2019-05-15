@@ -1,6 +1,14 @@
 const socket = io("/oneDheros");
 const gameView = document.getElementById("game-view");
 const context = gameView.getContext("2d");
+const namesCanvas = document.getElementById("names");
+const speachCanvas = document.getElementById("speach");
+const namesContext = namesCanvas.getContext("2d");
+const speachContext = speachCanvas.getContext("2d");
+var nameHieght = namesCanvas.height / 2;
+
+namesContext.font = "bold 20px Arial";
+
 
 var camera = {
     x : 50,
@@ -35,24 +43,32 @@ function draw(gameObject) {
     context.fillStyle = grd;
     let x = gameObject.id != undefined ? gameObject.x - camera.x + 50 : gameObject.x;
     context.fillRect((x * 10) - (gameObject.width * 5),0,gameObject.width * 10,1000);
+    if (gameObject.type == "player") {
+        drawName(gameObject);
+    }
 }
 
 function drawAll() {
     context.clearRect(0, 0, gameView.width, gameView.height);
+    namesContext.clearRect(0, 0, namesCanvas.width, namesCanvas.height);
+    //speachContext.clearRect(0, 0, speachCanvas.width, speachCanvas.height);
     background();
     gameObjects.forEach(gameObject => {
         draw(gameObject);
     });
 }
 
-
+function drawName(gameObject) {
+    namesContext.fillStyle = gameObject.color;
+    let x = gameObject.id != undefined ? gameObject.x - camera.x + 50 : gameObject.x;
+    namesContext.fillText(gameObject.name, (x * 10) - (gameObject.width * 5), nameHieght);
+}
 
 socket.on('object-added', data => {
     gameObjects.push(data);
 });
 
 socket.on('object-updated', data => {
-    console.log(data);
     updateObject(data);
 });
 
@@ -63,6 +79,11 @@ socket.on('object-removed', data => {
 socket.on('set-id', data => {
     myId = data;
 });
+
+function changeName() {
+    let nameField = document.getElementById("name");
+    socket.emit('change-name', nameField.value);
+}
 
 function gameLoop() {
     if (myId != -1) {
