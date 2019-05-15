@@ -45,6 +45,17 @@ function start() {
         }
     });
 
+    socketer.addListener(namespace, "say", (data, socket, nsp) => {
+        if (!data) return;
+        if (!data.length || data.length > 100) return;
+        let player = Player.getPlayerById(socket.id);
+        if (!player) return;
+        nsp.emit('said', {
+            id : player.gameObject.id, 
+            message : data
+        });
+    });
+
     loop = setInterval(gameLoop,5);
 }
 

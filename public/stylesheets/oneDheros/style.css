@@ -1,4 +1,29 @@
 
+div {
+    padding: 5px;
+    color: rgb(17, 3, 41);
+    background-color: darkslateblue;
+    border-radius: 5px;
+    border-style: groove;
+    border-color: darkslategrey;
+}
+
+input {
+    padding: 2px;
+    background-color: burlywood;
+    border-style: groove;
+    border-color: darkslategrey;
+    border-radius: 5px;
+}
+
+button {
+    padding: 2px;
+    background-color: rgb(179, 141, 91);
+    border-style: groove;
+    border-color: darkslategrey;
+    border-radius: 5px;
+}
+
 .display {
     position: absolute;
     left: 2.5%;

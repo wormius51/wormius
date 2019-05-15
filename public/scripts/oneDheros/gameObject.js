@@ -23,6 +23,9 @@ function getObjectById(id) {
 }
 
 function updateObject(gameObject) {
+    if (gameObject.id == myId) {
+        myPositionText.innerText = "My Position : " + Math.floor(gameObject.x);
+    }
     gameObjects.forEach(element => {
         if (gameObject.id == element.id) {
             element.name = gameObject.name;

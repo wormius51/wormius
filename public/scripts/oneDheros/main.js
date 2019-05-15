@@ -5,10 +5,14 @@ const namesCanvas = document.getElementById("names");
 const speachCanvas = document.getElementById("speach");
 const namesContext = namesCanvas.getContext("2d");
 const speachContext = speachCanvas.getContext("2d");
-var nameHieght = namesCanvas.height / 2;
-
+var nameHeight = namesCanvas.height / 2;
+var messageHeight = 14;
+var maxLineLenght = 30;
+var lineBreakHeight = 15;
 namesContext.font = "bold 20px Arial";
+speachContext.font = "bold 15px Arial";
 
+const myPositionText = document.getElementById("my-position");
 
 var camera = {
     x : 50,
@@ -46,12 +50,15 @@ function draw(gameObject) {
     if (gameObject.type == "player") {
         drawName(gameObject);
     }
+    if (gameObject.message) {
+        drawMessage(gameObject);
+    }
 }
 
 function drawAll() {
     context.clearRect(0, 0, gameView.width, gameView.height);
     namesContext.clearRect(0, 0, namesCanvas.width, namesCanvas.height);
-    //speachContext.clearRect(0, 0, speachCanvas.width, speachCanvas.height);
+    speachContext.clearRect(0, 0, speachCanvas.width, speachCanvas.height);
     background();
     gameObjects.forEach(gameObject => {
         draw(gameObject);
@@ -61,7 +68,24 @@ function drawAll() {
 function drawName(gameObject) {
     namesContext.fillStyle = gameObject.color;
     let x = gameObject.id != undefined ? gameObject.x - camera.x + 50 : gameObject.x;
-    namesContext.fillText(gameObject.name, (x * 10) - (gameObject.width * 5), nameHieght);
+    namesContext.fillText(gameObject.name, (x * 10) - (gameObject.width * 5), nameHeight);
+}
+
+function drawMessage(gameObject) {
+    speachContext.fillStyle = gameObject.color;
+    let x = gameObject.id != undefined ? gameObject.x - camera.x + 50 : gameObject.x;
+    x = (x * 10) - (gameObject.width * 5);
+    drawMessageText(gameObject.message, x, messageHeight);
+}
+
+function drawMessageText(text, x, y) {
+    if (!text.length) return;
+    if (text.length <= maxLineLenght) {
+        speachContext.fillText(text, x, y);
+    } else {
+        drawMessageText(text.substring(0,maxLineLenght), x, y);
+        drawMessageText(text.substring(maxLineLenght), x, y + lineBreakHeight);
+    }
 }
 
 socket.on('object-added', data => {
@@ -78,11 +102,26 @@ socket.on('object-removed', data => {
 
 socket.on('set-id', data => {
     myId = data;
+    let gameObject = getObjectById(myId);
+    myPositionText.innerText = "My Position : " + Math.floor(gameObject.x);
+});
+
+socket.on('said', data => {
+    let gameObject = getObjectById(data.id);
+    if (gameObject) {
+        gameObject.message = data.message;
+    }
 });
 
 function changeName() {
     let nameField = document.getElementById("name");
     socket.emit('change-name', nameField.value);
+}
+
+function sendMessage() {
+    let messageField = document.getElementById("message");
+    socket.emit('say', messageField.value);
+    messageField.value = "";
 }
 
 function gameLoop() {
