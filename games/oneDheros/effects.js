@@ -18,6 +18,7 @@ function DamageEffect(x, width) {
         effect.opacity -= 0.02;
         if (effect.opacity <= 0) effect.destroy = true;
     };
+    effect.sound = "kick" + Math.floor(Math.random() * 4 + 1) + ".mp3";
     return effect;
 }
 

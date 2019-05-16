@@ -19,6 +19,15 @@ var camera = {
     speed : 0.1
 };
 
+let sounds = {};
+sounds["kick1.mp3"]  = Sound("kick1.mp3");
+sounds["kick2.mp3"]  = Sound("kick2.mp3");
+sounds["kick3.mp3"]  = Sound("kick3.mp3");
+sounds["kick4.mp3"]  = Sound("kick4.mp3");
+
+var muted = false;
+const muteToggleButton = document.getElementById("mute");
+
 var myId = -1;
 
 var gameObjects = [];
@@ -90,6 +99,9 @@ function drawMessageText(text, x, y) {
 
 socket.on('object-added', data => {
     gameObjects.push(data);
+    if (!muted && data.sound) {
+        sounds[data.sound].play()
+    }
 });
 
 socket.on('object-updated', data => {
@@ -112,6 +124,11 @@ socket.on('said', data => {
         gameObject.message = data.message;
     }
 });
+
+function toggleMute() {
+    muted = !muted;
+    muteToggleButton.innerText = muted ? "🔇" : "🔊";
+}
 
 function changeName() {
     let nameField = document.getElementById("name");
