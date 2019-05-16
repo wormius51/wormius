@@ -18,6 +18,7 @@ function start() {
         let player = Player(socket.id, data ? data.name : undefined, Math.random() * (rightSpawn - leftSpawn) + leftSpawn);
         nsp.emit('object-added', player.gameObject);
         socket.emit('set-id', player.gameObject.id);
+        player.new = false;
     });
 
     socketer.addListener(namespace, "disconnect", (data, socket, nsp) => {
@@ -36,12 +37,14 @@ function start() {
         }
     });
 
-    socketer.addListener(namespace, "change-name", (data,socket) => {
+    socketer.addListener(namespace, "change-name", (data,socket,nsp) => {
         if (!data) return;
         let player = Player.getPlayerById(socket.id);
         if (player) {
-            player.gameObject.name = data;
-            socketer.getNamespace(namespace).emit('object-updated', player.gameObject);
+            if (data.length && data.length <= 30) {
+                player.gameObject.name = data;
+                nsp.emit('object-updated', player.gameObject);
+            }
         }
     });
 
@@ -54,6 +57,14 @@ function start() {
             id : player.gameObject.id, 
             message : data
         });
+    });
+
+    socketer.addListener(namespace,"use-ability", (data, socket) => {
+        if (!data) return;
+        let player = Player.getPlayerById(socket.id);
+        if (player && player[data]) {
+            player[data]();
+        }
     });
 
     loop = setInterval(gameLoop,5);
@@ -75,10 +86,23 @@ function gameLoop() {
 }
 
 function physicsUpdate() {
-    let gameObjects = GameObject.getGameObjects();
+    let gameObjects = GameObject.filterObjects();
     gameObjects.forEach(element => {
+        element.update = false;
+        element.onUpdate();
+        if (element.sound) {
+            element.update = true;
+        }
         if (element.speed) {
             element.x += element.speed;
+            element.update = true;
+        }
+        if (element.destroy) {
+            socketer.getNamespace(namespace).emit('object-removed', GameObject.removeObjectById(element.id));
+        } else if (element.new && element.type != "player") {
+            element.new = false;
+            socketer.getNamespace(namespace).emit('object-added', element);
+        } else if (element.update) {
             socketer.getNamespace(namespace).emit('object-updated', element);
         }
     });

@@ -15,7 +15,12 @@
         <button id = "nameButton" onclick="changeName()">Change Name</button>
         <br>
         <input type="text" id = "message" placeholder="Your message..">
+        <div id = "abilities">
+            <button onclick="useAbility('punchLeft')">Punch Left</button>
+            <button onclick="useAbility('punchRight')">Punch Right</button>
+        </div>
     </div>
+    
     <canvas id = "speach" class = "display" width="1000" height="50"></canvas>
     <canvas id = "game-view" width="1000" height="1000"></canvas>
     <canvas id = "names" class = "display" width="1000" height="50"></canvas>

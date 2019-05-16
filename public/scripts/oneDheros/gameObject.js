@@ -26,14 +26,18 @@ function updateObject(gameObject) {
     if (gameObject.id == myId) {
         myPositionText.innerText = "My Position : " + Math.floor(gameObject.x);
     }
-    gameObjects.forEach(element => {
-        if (gameObject.id == element.id) {
-            element.name = gameObject.name;
-            element.x = gameObject.x;
-            element.width = gameObject.width;
-            element.color = gameObject.color;
-        }
+    let obj = gameObjects.find(element => {
+        return gameObject.id == element.id;
     });
+
+    if (obj) {
+        obj.name = gameObject.name;
+        obj.x = gameObject.x;
+        obj.width = gameObject.width;
+        obj.color = gameObject.color;
+    } else {
+        gameObjects.push(gameObject);
+    }
 }
 
 function removeObjectById(id) {

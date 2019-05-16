@@ -1,5 +1,6 @@
 const GameObject = require('./gameObject');
 const faker = require('faker');
+const effects = require('./effects');
 
 var players = [];
 
@@ -20,7 +21,13 @@ function Player(socketId, name, x, width, color) {
         gameObject : GameObject(x, width, color, name, "player"),
         leftPressed : false,
         rightPressed : false,
-        speed : 0.1
+        speed : 0.1,
+        punchLeft : () => {
+            effects.DamageEffect(player.gameObject.x - player.gameObject.width);
+        },
+        punchRight : () => {
+            effects.DamageEffect(player.gameObject.x + player.gameObject.width);
+        }
     };
     players.push(player);
     return player;

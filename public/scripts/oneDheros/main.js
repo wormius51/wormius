@@ -124,6 +124,10 @@ function sendMessage() {
     messageField.value = "";
 }
 
+function useAbility(abilityName) {
+    socket.emit('use-ability', abilityName);
+}
+
 function gameLoop() {
     if (myId != -1) {
         let me = getObjectById(myId);
