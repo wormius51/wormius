@@ -24,6 +24,7 @@ function GameObject(x, width, color, name, type) {
         color : color,
         name : name,
         type : type,
+        hp : 100,
         onUpdate : () => {},
         onCollision : other => {}
     };

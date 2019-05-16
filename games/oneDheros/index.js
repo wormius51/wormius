@@ -1,6 +1,7 @@
 const socketer = require('../../scripts/socketer');
 const GameObject = require('./gameObject');
 const Player = require('./Player');
+const enemies = require('./enemies');
 
 const namespace = "/oneDheros";
 
@@ -67,6 +68,8 @@ function start() {
         }
     });
 
+    enemies.Looker(150);
+
     loop = setInterval(gameLoop, 5);
 }
 
@@ -117,7 +120,7 @@ function physicsUpdate() {
         } else if (element.new && element.type != "player") {
             element.new = false;
             socketer.getNamespace(namespace).emit('object-added', element);
-        } else if (element.update) {
+        } else if (element.update || element.allwaysUpdate) {
             socketer.getNamespace(namespace).emit('object-updated', element);
         }
     });
