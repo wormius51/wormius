@@ -28,7 +28,7 @@ function start() {
         }
     });
 
-    socketer.addListener(namespace, "keys", (data,socket) => {
+    socketer.addListener(namespace, "keys", (data, socket) => {
         if (!data) return;
         let player = Player.getPlayerById(socket.id);
         if (player) {
@@ -37,7 +37,7 @@ function start() {
         }
     });
 
-    socketer.addListener(namespace, "change-name", (data,socket,nsp) => {
+    socketer.addListener(namespace, "change-name", (data, socket, nsp) => {
         if (!data) return;
         let player = Player.getPlayerById(socket.id);
         if (player) {
@@ -54,12 +54,12 @@ function start() {
         let player = Player.getPlayerById(socket.id);
         if (!player) return;
         nsp.emit('said', {
-            id : player.gameObject.id, 
-            message : data
+            id: player.gameObject.id,
+            message: data
         });
     });
 
-    socketer.addListener(namespace,"use-ability", (data, socket) => {
+    socketer.addListener(namespace, "use-ability", (data, socket) => {
         if (!data) return;
         let player = Player.getPlayerById(socket.id);
         if (player && player[data]) {
@@ -67,18 +67,21 @@ function start() {
         }
     });
 
-    loop = setInterval(gameLoop,5);
+    loop = setInterval(gameLoop, 5);
 }
 
 function gameLoop() {
     let players = Player.getPlayers();
     players.forEach(element => {
         if (element.leftPressed) {
-            element.gameObject.speed = -element.speed;
+            if (element.gameObject.speed > - element.maxSpeed) {
+                element.gameObject.acceleration -= element.acceleration;
+
+            }
         } else if (element.rightPressed) {
-            element.gameObject.speed = element.speed;
-        } else {
-            element.gameObject.speed = 0;
+            if (element.gameObject.speed < element.maxSpeed) {
+                element.gameObject.acceleration += element.acceleration;
+            }
         }
     });
 
@@ -87,13 +90,25 @@ function gameLoop() {
 
 function physicsUpdate() {
     let gameObjects = GameObject.filterObjects();
+    checkCollisions(gameObjects);
     gameObjects.forEach(element => {
         element.update = false;
         element.onUpdate();
         if (element.sound) {
             element.update = true;
         }
+        if (element.acceleration) {
+            element.speed += element.acceleration;
+            element.acceleration = 0;
+        }
         if (element.speed) {
+            if (element.speed > 0) {
+                element.speed -= element.drag;
+                if (element.speed < 0) element.speed = 0;
+            } else {
+                element.speed += element.drag;
+                if (element.speed > 0) element.speed = 0;
+            }
             element.x += element.speed;
             element.update = true;
         }
@@ -105,6 +120,18 @@ function physicsUpdate() {
         } else if (element.update) {
             socketer.getNamespace(namespace).emit('object-updated', element);
         }
+    });
+}
+
+function checkCollisions(gameObjects) {
+    gameObjects.forEach(gameObject => {
+        gameObjects.forEach(other => {
+            if (other.id != gameObject.id) {
+                if (Math.abs(other.x - gameObject.x) <= gameObject.width / 2) {
+                    gameObject.onCollision(other);
+                }
+            }
+        });
     });
 }
 

@@ -17,12 +17,15 @@ function GameObject(x, width, color, name, type) {
         update : false,
         id : currentId,
         x : x,
+        speed : 0,
+        acceleration : 0,
+        drag : 0.01,
         width : width,
         color : color,
         name : name,
         type : type,
         onUpdate : () => {},
-        onColition : other => {}
+        onCollision : other => {}
     };
     gameObjects.push(obj);
     currentId++;

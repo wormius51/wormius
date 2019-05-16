@@ -18,6 +18,12 @@ function DamageEffect(x, width) {
         effect.opacity -= 0.02;
         if (effect.opacity <= 0) effect.destroy = true;
     };
+    effect.onCollision = other => {
+        if (other.type != "player") return;
+        if (other.id != effect.owner) {
+            other.acceleration += (effect.x > other.x ? -1 : 1) * 0.05;
+        }
+    };
     effect.sound = "kick" + Math.floor(Math.random() * 4 + 1) + ".mp3";
     return effect;
 }

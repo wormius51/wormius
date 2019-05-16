@@ -21,12 +21,15 @@ function Player(socketId, name, x, width, color) {
         gameObject : GameObject(x, width, color, name, "player"),
         leftPressed : false,
         rightPressed : false,
-        speed : 0.1,
+        maxSpeed : 0.3,
+        acceleration : 0.3,
         punchLeft : () => {
             effects.DamageEffect(player.gameObject.x - player.gameObject.width);
+            effects.owner = player.gameObject.id;
         },
         punchRight : () => {
             effects.DamageEffect(player.gameObject.x + player.gameObject.width);
+            effects.owner = player.gameObject.id;
         }
     };
     players.push(player);
