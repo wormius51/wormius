@@ -47,7 +47,7 @@ function LaserBeem(x, width) {
     beem.r = 255;
     beem.color = "red";
     beem.enemy = true;
-    beem.sound = "laser_kaboom"  + Math.floor(Math.random() * 4 + 1) + ".mp3";
+    beem.sound = "laser_kaboom.mp3";
     return;
 }
 

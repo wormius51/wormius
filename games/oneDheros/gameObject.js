@@ -12,6 +12,7 @@ var currentId = 0;
  */
 function GameObject(x, width, color, name, type) {
     if (!name) name = "game object";
+    if (!color) color = "rgba(0,0,0,0)";
     let obj = {
         new : true,
         update : false,

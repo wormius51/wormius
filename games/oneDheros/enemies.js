@@ -55,7 +55,7 @@ function look(looker) {
 
 function preperCharge(looker) {
     let chargeSound = GameObject(looker.x);
-    chargeSound.sound = "laser_charge"  + Math.floor(Math.random() * 4 + 1) +  ".mp3";
+    chargeSound.sound = "laser_charge.mp3";
     chargeSound.onUpdate = () => {
         chargeSound.hp -= 50;
     }

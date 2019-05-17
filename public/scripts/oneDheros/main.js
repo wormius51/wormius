@@ -21,20 +21,6 @@ var camera = {
     speed : 0.1
 };
 
-let sounds = {};
-sounds["kick1.mp3"]  = Sound("kick1.mp3");
-sounds["kick2.mp3"]  = Sound("kick2.mp3");
-sounds["kick3.mp3"]  = Sound("kick3.mp3");
-sounds["kick4.mp3"]  = Sound("kick4.mp3");
-sounds["laser_charge1.mp3"] = Sound("laser_charge.mp3");
-sounds["laser_kaboom1.mp3"] = Sound("laser_kaboom.mp3");
-sounds["laser_charge2.mp3"] = Sound("laser_charge.mp3");
-sounds["laser_kaboom2.mp3"] = Sound("laser_kaboom.mp3");
-sounds["laser_charge3.mp3"] = Sound("laser_charge.mp3");
-sounds["laser_kaboom3.mp3"] = Sound("laser_kaboom.mp3");
-sounds["laser_charge4.mp3"] = Sound("laser_charge.mp3");
-sounds["laser_kaboom4.mp3"] = Sound("laser_kaboom.mp3");
-
 var muted = false;
 const muteToggleButton = document.getElementById("mute");
 
@@ -110,11 +96,12 @@ function drawMessageText(text, x, y) {
 
 socket.on('object-added', data => {
     gameObjects.push(data);
-    if (!muted && data.sound) {
-        if (me) {
-            sounds[data.sound].volume = 1 / (1 + Math.abs(me.x - data.x) * 0.5);
+    if (me) {
+        if (!muted && data.sound) {
+            let audio = new Audio("sounds/" + data.sound);
+            audio.play();
+            audio.volume = 1 / (1 + Math.abs(me.x - data.x) * 0.5);
         }
-        sounds[data.sound].play()
     }
 });
 
