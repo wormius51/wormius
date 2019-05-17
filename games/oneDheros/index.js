@@ -8,6 +8,8 @@ const namespace = "/oneDheros";
 var leftSpawn = 10;
 var rightSpawn = 90;
 var loop;
+var enemySpawnInterval;
+var enemiesList = [];
 
 function start() {
     socketer.addListener(namespace, "test", (data, socket) => {
@@ -16,6 +18,7 @@ function start() {
     });
 
     socketer.addListener(namespace, "add-player", (data, socket, nsp) => {
+        Player.removePlayerById(socket.id);
         let player = Player(socket.id, data ? data.name : undefined, Math.random() * (rightSpawn - leftSpawn) + leftSpawn);
         nsp.emit('object-added', player.gameObject);
         socket.emit('set-id', player.gameObject.id);
@@ -68,9 +71,18 @@ function start() {
         }
     });
 
-    enemies.Looker(150);
+    enemySpawnInterval = setInterval(enemySpawn, 10000);
 
     loop = setInterval(gameLoop, 5);
+}
+
+function enemySpawn() {
+    enemiesList = enemiesList.filter(e => {
+        return e && !e.destroy;
+    });
+    if (enemiesList.length < 20) {
+        enemiesList.push(enemies.Looker(Math.random() * 2000 - 1000));
+    }
 }
 
 function gameLoop() {
@@ -95,6 +107,7 @@ function physicsUpdate() {
     let gameObjects = GameObject.filterObjects();
     checkCollisions(gameObjects);
     gameObjects.forEach(element => {
+        if (element.hp <= 0) element.destroy = true;
         element.update = false;
         element.onUpdate();
         if (element.sound) {

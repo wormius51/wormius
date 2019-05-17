@@ -12,21 +12,44 @@ function DamageEffect(x, width) {
     if (!width) width = 10;
     let effect = Effect(x, width);
     effect.opacity = 1;
+    effect.r = 255;
+    effect.g = 255;
+    effect.b = 255;
+    effect.enemy = false;
+    effect.damage = 1;
     effect.onUpdate = () => {
         effect.update = true;
-        effect.color = "rgba(255,255,255," + effect.opacity + ")";
+        effect.color = "rgba(" + effect.r + "," + effect.g + "," + effect.b + "," + effect.opacity + ")";
         effect.opacity -= 0.02;
         if (effect.opacity <= 0) effect.destroy = true;
     };
     effect.onCollision = other => {
-        if (other.type != "player") return;
         if (other.id != effect.owner) {
-            other.acceleration += (effect.x > other.x ? -1 : 1) * 0.05;
+            if (other.type == "player") {
+                other.acceleration += (effect.x > other.x ? -1 : 1) * 0.05;
+                if (effect.enemy) {
+                    other.hp -= effect.damage;
+                }
+            } else if (other.type == "enemy" && !effect.enemy) {
+                other.hp -= effect.damage;
+            }
         }
     };
     effect.sound = "kick" + Math.floor(Math.random() * 4 + 1) + ".mp3";
     return effect;
 }
 
+function LaserBeem(x, width) {
+    if (!width) width = 40;
+    let beem = DamageEffect(x, width);
+    beem.g = 0;
+    beem.b = 0;
+    beem.r = 255;
+    beem.color = "red";
+    beem.enemy = true;
+    return;
+}
+
 module.exports.Effect = Effect;
 module.exports.DamageEffect = DamageEffect;
+module.exports.LaserBeem = LaserBeem;

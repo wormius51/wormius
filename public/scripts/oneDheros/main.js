@@ -12,6 +12,8 @@ var lineBreakHeight = 15;
 namesContext.font = "bold 20px Arial";
 speachContext.font = "bold 15px Arial";
 
+const nameField = document.getElementById("name");
+const rejoinButton = document.getElementById("rejoin");
 const myPositionText = document.getElementById("my-position");
 
 var camera = {
@@ -29,6 +31,7 @@ var muted = false;
 const muteToggleButton = document.getElementById("mute");
 
 var myId = -1;
+var me;
 
 var gameObjects = [];
 
@@ -100,6 +103,9 @@ function drawMessageText(text, x, y) {
 socket.on('object-added', data => {
     gameObjects.push(data);
     if (!muted && data.sound) {
+        if (me) {
+            sounds[data.sound].volume = 1 / (1 + Math.abs(me.x - data.x) * 0.5);
+        }
         sounds[data.sound].play()
     }
 });
@@ -116,6 +122,7 @@ socket.on('set-id', data => {
     myId = data;
     let gameObject = getObjectById(myId);
     myPositionText.innerText = "My Position : " + Math.floor(gameObject.x);
+    me = gameObject;
 });
 
 socket.on('said', data => {
@@ -131,7 +138,6 @@ function toggleMute() {
 }
 
 function changeName() {
-    let nameField = document.getElementById("name");
     socket.emit('change-name', nameField.value);
 }
 
@@ -145,10 +151,17 @@ function useAbility(abilityName) {
     socket.emit('use-ability', abilityName);
 }
 
+function rejoin() {
+    socket.emit('add-player', {name : nameField.value});
+    rejoinButton.style.visibility = "hidden";
+}
+
 function gameLoop() {
-    if (myId != -1) {
-        let me = getObjectById(myId);
+    if (getObjectById(myId)) {
+        rejoinButton.style.visibility = "hidden";
         camera.x += (me.x - camera.x ) * camera.speed;
+    } else {
+        rejoinButton.style.visibility = "visible";
     }
     drawAll();
 }
@@ -181,10 +194,18 @@ function keydown() {
 		
 		case 65:
 		a = true;
-		break;
+        break;
+        
+        case 37:
+        a = true;
+        break;
 		
 		case 68:
 		d = true;
+        break;
+
+        case 39:
+        d = true;
         break;
         
         case 13:
@@ -208,11 +229,19 @@ function keyup() {
 		
 		case 65:
 		a = false;
-		break;
+        break;
+        
+        case 37:
+        a = false;
+        break;
 		
 		case 68:
 		d = false;
-		break;
+        break;
+        
+        case 39:
+        d = false;
+        break;
     }
     emitKeys();
 }

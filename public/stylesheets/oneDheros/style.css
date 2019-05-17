@@ -48,3 +48,7 @@ button {
 #names {
     top: 60%;
 }
+
+#rejoin {
+    visibility: hidden;
+}

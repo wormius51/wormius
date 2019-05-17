@@ -47,7 +47,8 @@ function removePlayerById(id) {
     players = players.filter(obj => {
         if (obj.socketId == id) {
             objectId = obj.gameObject.id;
-            GameObject.removeObjectById(objectId);
+            let g = GameObject.getObjectById(objectId);
+            if (g) g.destroy = true;
             return false;
         }
         return true;
@@ -58,4 +59,9 @@ function removePlayerById(id) {
 module.exports = Player;
 module.exports.getPlayerById = getPlayerById;
 module.exports.removePlayerById = removePlayerById;
-module.exports.getPlayers = () => {return players;};
+module.exports.getPlayers = () => {
+    players = players.filter(p => {
+        return p.gameObject && !p.gameObject.destroy;
+    });
+    return players;
+};
