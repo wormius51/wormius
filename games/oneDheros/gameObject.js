@@ -26,7 +26,8 @@ function GameObject(x, width, color, name, type) {
         type : type,
         hp : 100,
         onUpdate : () => {},
-        onCollision : other => {}
+        onCollision : other => {},
+        onDeath : () => {}
     };
     gameObjects.push(obj);
     currentId++;

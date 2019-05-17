@@ -22,27 +22,46 @@ function Looker(x) {
                 fire(looker);
                 break;
         }
-
-        
+    };
+    looker.attackers = [];
+    looker.onCollision = other => {
+        if (other.type == "effect") {
+            looker.attackers.push(other.owner);
+        }
+    }
+    looker.onDeath = () => {
+        GameObject.getGameObjects().forEach(g => {
+            if (looker.attackers.includes(g.id)) {
+                if (!g.level) g.level = 0;
+                g.level++; 
+            }
+        });
     };
     return looker;
 }
 
 function look(looker) {
     if (looker.eyePos <= -12) {
-        if (looker.charge >= 100)
-            looker.state = "charge";
-        looker.charge = 5;
+        preperCharge(looker);
         looker.left = false;
     } else if (looker.eyePos >= 12) {
-        if (looker.charge >= 100)
-            looker.state = "charge";
-        looker.charge = 5;
+        preperCharge(looker);
         looker.left = true;
     }
     looker.eyePos += (looker.left ? -1 : 1) * 0.2;
     looker.eye.x = looker.x + looker.eyePos;
     looker.eye.update = true;
+}
+
+function preperCharge(looker) {
+    let chargeSound = GameObject(looker.x);
+    chargeSound.sound = "laser_charge"  + Math.floor(Math.random() * 4 + 1) +  ".mp3";
+    chargeSound.onUpdate = () => {
+        chargeSound.hp -= 50;
+    }
+    if (looker.charge >= 100)
+            looker.state = "charge";
+        looker.charge = 20;
 }
 
 function charge(looker) {

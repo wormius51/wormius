@@ -26,6 +26,14 @@ sounds["kick1.mp3"]  = Sound("kick1.mp3");
 sounds["kick2.mp3"]  = Sound("kick2.mp3");
 sounds["kick3.mp3"]  = Sound("kick3.mp3");
 sounds["kick4.mp3"]  = Sound("kick4.mp3");
+sounds["laser_charge1.mp3"] = Sound("laser_charge.mp3");
+sounds["laser_kaboom1.mp3"] = Sound("laser_kaboom.mp3");
+sounds["laser_charge2.mp3"] = Sound("laser_charge.mp3");
+sounds["laser_kaboom2.mp3"] = Sound("laser_kaboom.mp3");
+sounds["laser_charge3.mp3"] = Sound("laser_charge.mp3");
+sounds["laser_kaboom3.mp3"] = Sound("laser_kaboom.mp3");
+sounds["laser_charge4.mp3"] = Sound("laser_charge.mp3");
+sounds["laser_kaboom4.mp3"] = Sound("laser_kaboom.mp3");
 
 var muted = false;
 const muteToggleButton = document.getElementById("mute");

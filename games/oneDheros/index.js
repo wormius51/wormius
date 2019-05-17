@@ -129,6 +129,7 @@ function physicsUpdate() {
             element.update = true;
         }
         if (element.destroy) {
+            element.onDeath();
             socketer.getNamespace(namespace).emit('object-removed', GameObject.removeObjectById(element.id));
         } else if (element.new && element.type != "player") {
             element.new = false;
