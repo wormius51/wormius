@@ -80,8 +80,8 @@ function enemySpawn() {
     enemiesList = enemiesList.filter(e => {
         return e && !e.destroy;
     });
-    if (enemiesList.length < 20) {
-        enemiesList.push(enemies.Looker(Math.random() * 2000 - 1000));
+    if (enemiesList.length < 4) {
+        enemiesList.push(enemies.Looker(Math.random() * 500 - 250));
     }
 }
 
