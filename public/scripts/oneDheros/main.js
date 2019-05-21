@@ -15,6 +15,7 @@ speachContext.font = "bold 15px Arial";
 const nameField = document.getElementById("name");
 const rejoinButton = document.getElementById("rejoin");
 const myPositionText = document.getElementById("my-position");
+const upgradePointsText = document.getElementById("upgrade-points");
 
 var camera = {
     x : 50,
@@ -75,6 +76,7 @@ function drawName(gameObject) {
     namesContext.fillStyle = gameObject.color;
     let x = gameObject.id != undefined ? gameObject.x - camera.x + 50 : gameObject.x;
     namesContext.fillText(gameObject.name, (x * 10) - (gameObject.width * 5), nameHeight);
+    namesContext.fillText("Level " + Math.floor(gameObject.level), (x * 10) - (gameObject.width * 5), nameHeight + 20);
 }
 
 function drawMessage(gameObject) {
@@ -149,6 +151,14 @@ function useAbility(abilityName) {
 function rejoin() {
     socket.emit('add-player', {name : nameField.value});
     rejoinButton.style.visibility = "hidden";
+    let hiddenButtons = document.getElementsByClassName("start-hidden");
+    for (let i = 0; i < hiddenButtons.length; i++) {
+        hiddenButtons[i].style.visibility = "hidden";
+    }
+    let visibleButtons = document.getElementsByClassName("start-visible");
+    for (let i = 0; i < visibleButtons.length; i++) {
+        visibleButtons[i].style.visibility = "visible";
+    };
 }
 
 function gameLoop() {
@@ -161,7 +171,7 @@ function gameLoop() {
     drawAll();
 }
 
-var loop = setInterval(gameLoop, 5);
+var loop = setInterval(gameLoop, 16);
 
 var w = false;
 var s = false;

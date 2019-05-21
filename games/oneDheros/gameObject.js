@@ -1,7 +1,6 @@
+const uuidv4 = require('uuid/v4');
 
 var gameObjects = [];
-
-var currentId = 0;
 
 /**
  * Returns a game object.
@@ -16,7 +15,7 @@ function GameObject(x, width, color, name, type) {
     let obj = {
         new : true,
         update : false,
-        id : currentId,
+        id : uuidv4(),
         x : x,
         speed : 0,
         acceleration : 0,
@@ -31,7 +30,6 @@ function GameObject(x, width, color, name, type) {
         onDeath : () => {}
     };
     gameObjects.push(obj);
-    currentId++;
     return obj;
 }
 

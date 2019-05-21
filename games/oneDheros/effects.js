@@ -32,6 +32,12 @@ function DamageEffect(x, width) {
                 }
             } else if (other.type == "enemy" && !effect.enemy) {
                 other.hp -= effect.damage;
+                let playerObj = GameObject.getObjectById(effect.owner);
+                if (playerObj) {
+                    playerObj.level += 0.01;
+                    playerObj.update = true;
+                    playerObj.upgradePoints += 0.01;
+                }
             }
         }
     };
@@ -48,9 +54,19 @@ function LaserBeem(x, width) {
     beem.color = "red";
     beem.enemy = true;
     beem.sound = "laser_kaboom.mp3";
-    return;
+    return beem;
+}
+
+function Boost(x, width) {
+    let boost = DamageEffect(x, width);
+    boost.g = 0;
+    boost.r = 0;
+    boost.color = "blue";
+    boost.onCollision = () => {};
+    return boost;
 }
 
 module.exports.Effect = Effect;
 module.exports.DamageEffect = DamageEffect;
 module.exports.LaserBeem = LaserBeem;
+module.exports.Boost = Boost;

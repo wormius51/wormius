@@ -2,6 +2,7 @@ const socketer = require('../../scripts/socketer');
 const GameObject = require('./gameObject');
 const Player = require('./Player');
 const enemies = require('./enemies');
+const upgrade = require('./upgrade');
 
 const namespace = "/oneDheros";
 
@@ -67,7 +68,21 @@ function start() {
         if (!data) return;
         let player = Player.getPlayerById(socket.id);
         if (player && player[data]) {
-            player[data]();
+            try {
+                player[data]();
+            } catch (e) {
+                console.log(e);
+            }
+        }
+    });
+
+    socketer.addListener(namespace, "upgrade", (data, socket) => {
+        if (!data) return;
+        if (upgrade[data]) {
+            let success = upgrade[data](socket.id);
+            if (success) {
+                socket.emit('unlock', data);
+            }
         }
     });
 

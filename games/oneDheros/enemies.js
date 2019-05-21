@@ -23,20 +23,6 @@ function Looker(x) {
                 break;
         }
     };
-    looker.attackers = [];
-    looker.onCollision = other => {
-        if (other.type == "effect") {
-            looker.attackers.push(other.owner);
-        }
-    }
-    looker.onDeath = () => {
-        GameObject.getGameObjects().forEach(g => {
-            if (looker.attackers.includes(g.id)) {
-                if (!g.level) g.level = 0;
-                g.level++; 
-            }
-        });
-    };
     return looker;
 }
 
@@ -77,7 +63,8 @@ function charge(looker) {
 }
 
 function fire(looker) {
-    effects.LaserBeem(looker.x + (looker.left ? 1 : -1) * looker.width);
+    let effect = effects.LaserBeem(looker.x + (looker.left ? 1 : -1) * looker.width);
+    if (effect) effect.owner = looker.id;
     looker.eye.color = "red";
     looker.state = "look";
 }

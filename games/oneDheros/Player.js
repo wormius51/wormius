@@ -24,14 +24,16 @@ function Player(socketId, name, x, width, color) {
         maxSpeed : 0.2,
         acceleration : 0.1,
         punchLeft : () => {
-            effects.DamageEffect(player.gameObject.x - player.gameObject.width);
-            effects.owner = player.gameObject.id;
+            let effect = effects.DamageEffect(player.gameObject.x - player.gameObject.width);
+            effect.owner = player.gameObject.id;
         },
         punchRight : () => {
-            effects.DamageEffect(player.gameObject.x + player.gameObject.width);
-            effects.owner = player.gameObject.id;
+            let effect = effects.DamageEffect(player.gameObject.x + player.gameObject.width);
+            effect.owner = player.gameObject.id;
         }
     };
+    player.gameObject.level = 1;
+    player.gameObject.upgradePoints = 0;
     players.push(player);
     return player;
 }

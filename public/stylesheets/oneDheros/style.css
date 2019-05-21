@@ -31,6 +31,10 @@ button {
     height: 10%;
 }
 
+.start-hidden {
+    visibility: hidden;
+}
+
 #game-view {
     position: absolute;
     top : 50%;
