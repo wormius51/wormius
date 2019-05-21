@@ -171,7 +171,7 @@ function gameLoop() {
     drawAll();
 }
 
-var loop = setInterval(gameLoop, 16);
+var loop = setInterval(gameLoop, 5);
 
 var w = false;
 var s = false;
