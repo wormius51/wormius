@@ -68,7 +68,7 @@ function drawAll() {
     speachContext.clearRect(0, 0, speachCanvas.width, speachCanvas.height);
     background();
     gameObjects.forEach(gameObject => {
-        if (gameObject && Math.abs(gameObject.x - me.x) < 100) {
+        if (gameObject && (!me || Math.abs(gameObject.x - me.x) < 100)) {
             draw(gameObject);
         }
     });
