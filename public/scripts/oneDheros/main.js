@@ -68,7 +68,9 @@ function drawAll() {
     speachContext.clearRect(0, 0, speachCanvas.width, speachCanvas.height);
     background();
     gameObjects.forEach(gameObject => {
-        draw(gameObject);
+        if (gameObject && Math.abs(gameObject.x - me.x) < 100) {
+            draw(gameObject);
+        }
     });
 }
 
@@ -99,7 +101,7 @@ function drawMessageText(text, x, y) {
 socket.on('object-added', data => {
     gameObjects.push(data);
     if (me) {
-        if (!muted && data.sound) {
+        if (!muted && data.sound && (!me || Math.abs(data.x - me.x) < 1000)) {
             let audio = new Audio("sounds/" + data.sound);
             audio.play();
             audio.volume = 1 / (1 + Math.abs(me.x - data.x) * 0.5);
@@ -154,10 +156,12 @@ function rejoin() {
     let hiddenButtons = document.getElementsByClassName("start-hidden");
     for (let i = 0; i < hiddenButtons.length; i++) {
         hiddenButtons[i].style.visibility = "hidden";
+        hiddenButtons[i].style.width = "0px";
     }
     let visibleButtons = document.getElementsByClassName("start-visible");
     for (let i = 0; i < visibleButtons.length; i++) {
         visibleButtons[i].style.visibility = "visible";
+        visibleButtons[i].style.width = "inherit";
     };
 }
 

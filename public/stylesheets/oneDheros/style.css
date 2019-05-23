@@ -33,6 +33,7 @@ button {
 
 .start-hidden {
     visibility: hidden;
+    width: 0px;
 }
 
 #game-view {

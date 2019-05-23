@@ -9,8 +9,12 @@ const namespace = "/oneDheros";
 var leftSpawn = 10;
 var rightSpawn = 90;
 var loop;
-var enemySpawnInterval;
-var enemiesList = [];
+var frameLength = 1000 / 60;
+
+var t0 = Date.now();
+var t1 = Date.now();
+
+var spawEreas = [];
 
 function start() {
     socketer.addListener(namespace, "test", (data, socket) => {
@@ -86,21 +90,14 @@ function start() {
         }
     });
 
-    enemySpawnInterval = setInterval(enemySpawn, 10000);
+    spawEreas.push(enemies.SpawnErea(200,1000,"Dasher"));
+    spawEreas.push(enemies.SpawnErea(-200,-1000));
 
-    loop = setInterval(gameLoop, 5);
-}
-
-function enemySpawn() {
-    enemiesList = enemiesList.filter(e => {
-        return e && !e.destroy;
-    });
-    if (enemiesList.length < 4) {
-        enemiesList.push(enemies.Looker(Math.random() * 500 - 250));
-    }
+    loop = setTimeout(gameLoop, frameLength);
 }
 
 function gameLoop() {
+    t0 = Date.now();
     let players = Player.getPlayers();
     players.forEach(element => {
         if (element.leftPressed) {
@@ -114,8 +111,14 @@ function gameLoop() {
             }
         }
     });
-
+    spawEreas.forEach(spawErea => {
+        spawErea.onUpdate(t0);
+    });
     physicsUpdate();
+
+    t1 = Date.now();
+    let thisFrameLength = t1 - t0;
+    loop = setTimeout(gameLoop, frameLength - thisFrameLength);
 }
 
 function physicsUpdate() {
@@ -140,7 +143,7 @@ function physicsUpdate() {
                 element.speed += element.drag;
                 if (element.speed > 0) element.speed = 0;
             }
-            element.x += element.speed;
+            element.x += element.speed * (t0 - t1);
             element.update = true;
         }
         if (element.destroy) {

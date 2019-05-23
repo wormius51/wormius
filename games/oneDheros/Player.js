@@ -21,8 +21,8 @@ function Player(socketId, name, x, width, color) {
         gameObject : GameObject(x, width, color, name, "player"),
         leftPressed : false,
         rightPressed : false,
-        maxSpeed : 0.2,
-        acceleration : 0.1,
+        maxSpeed : 0.04,
+        acceleration : 0.02,
         punchLeft : () => {
             let effect = effects.DamageEffect(player.gameObject.x - player.gameObject.width);
             effect.owner = player.gameObject.id;
