@@ -63,6 +63,7 @@ function draw(gameObject) {
 }
 
 function drawAll() {
+    if (!me) me = getObjectById(myId);
     context.clearRect(0, 0, gameView.width, gameView.height);
     namesContext.clearRect(0, 0, namesCanvas.width, namesCanvas.height);
     speachContext.clearRect(0, 0, speachCanvas.width, speachCanvas.height);
