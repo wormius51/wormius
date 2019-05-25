@@ -55,6 +55,7 @@ function sparkRight(socketId) {
     if (!player) return;
     if (player.sparkRight) return;
     if (player.gameObject.upgradePoints > 5) {
+        player.gameObject.upgradePoints -= 5;
         player.sparkRight = () => {
             let spark = effects.Spark(player.gameObject.x + player.gameObject.width);
             spark.acceleration += 0.2;
@@ -70,6 +71,7 @@ function sparkLeft(socketId) {
     if (!player) return;
     if (player.sparkLeft) return;
     if (player.gameObject.upgradePoints > 5) {
+        player.gameObject.upgradePoints -= 5;
         player.sparkLeft = () => {
             let spark = effects.Spark(player.gameObject.x - player.gameObject.width);
             spark.acceleration -= 0.2;
