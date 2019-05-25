@@ -26,14 +26,28 @@ function Player(socketId, name, x, width, color) {
         punchLeft : () => {
             let effect = effects.DamageEffect(player.gameObject.x - player.gameObject.width);
             effect.owner = player.gameObject.id;
+            effect.dontPhysics = true;
         },
         punchRight : () => {
             let effect = effects.DamageEffect(player.gameObject.x + player.gameObject.width);
             effect.owner = player.gameObject.id;
+            effect.dontPhysics = true;
         }
     };
     player.gameObject.level = 1;
     player.gameObject.upgradePoints = 0;
+    player.gameObject.mana = 100;
+    player.birthTime = Date.now();
+    player.manaRecoveryTime = 1000;
+    player.gameObject.onUpdate = () => {
+        if (!player.lastManaRecovery || Date.now() - player.lastManaRecovery >= 1000) {
+            if (player.gameObject.mana < 100) {
+                player.gameObject.mana++;
+                player.gameObject.update = true;
+            }
+            player.lastManaRecovery = Date.now();
+        }
+    };
     players.push(player);
     return player;
 }

@@ -18,17 +18,21 @@
         <button id = "rejoin" onclick="rejoin()">Rejoin</button>
         <br>
         <input type="text" id = "message" placeholder="Your message..">
-        <div id = "upgrade">
+        <div id = "upgrade" class = "ability-list">
             <button onclick="upgrade('speedUp')">Speed Up (1)</button>
             <button onclick="upgrade('hpUp')">Hp Up (1)</button>
             <button onclick="upgrade('dashLeft')" class = "start-visible" name = "dashLeft">Dash Left (10)</button>
             <button onclick="upgrade('dashRight')" class = "start-visible" name = "dashRight">Dash Right (10)</button>
+            <button onclick="upgrade('sparkLeft')" class = "start-visible" name = "sparkLeft">Spark Left (5)</button>
+            <button onclick="upgrade('sparkRight')" class = "start-visible" name = "sparkRight">Spark Right (5)</button>
         </div>
-        <div id = "abilities">
+        <div id = "abilities" class = "ability-list">
             <button onclick="useAbility('dashLeft')" class="start-hidden" name = "dashLeft">Dash Left</button>
+            <button onclick="useAbility('dashRight')" class="start-hidden" name = "dashRight">Dash Right</button>
             <button onclick="useAbility('punchLeft')">Punch Left</button>
             <button onclick="useAbility('punchRight')">Punch Right</button>
-            <button onclick="useAbility('dashRight')" class="start-hidden" name = "dashRight">Dash Right</button>
+            <button onclick="useAbility('sparkLeft')" class = "start-hidden" name = "sparkLeft">Spark Left (1)</button>
+            <button onclick="useAbility('sparkRight')" class = "start-hidden" name = "sparkRight">Spark Right (1)</button>
         </div>
     </div>
     

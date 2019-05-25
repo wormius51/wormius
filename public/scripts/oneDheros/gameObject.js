@@ -40,7 +40,7 @@ function updateObject(gameObject) {
     }
 
     if (gameObject.id == myId) {
-        myPositionText.innerText = "My Position : " + Math.floor(gameObject.x) + " , My HP : " + Math.floor(gameObject.hp);
+        myPositionText.innerText = "My Position : " + Math.floor(gameObject.x) + " , HP : " + Math.floor(gameObject.hp) + " , Mana : " + Math.floor(gameObject.mana);
         upgradePointsText.innerText = "Upgrade Points : " + Math.floor(gameObject.upgradePoints);
     }
 }

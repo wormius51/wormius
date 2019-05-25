@@ -10,6 +10,7 @@ function Looker(x) {
     let looker = GameObject(x, 40, "rgb(169, 156, 190)", "looker", "enemy");
     looker.eye = GameObject(x, 10, "red", "eye", "enemy");
     looker.eye.allwaysUpdate = true;
+    looker.eye.dontPhysics = true;
     looker.eyePos = 0;
     looker.left = true;
     looker.state = "look";
@@ -41,7 +42,6 @@ function look(looker) {
     }
     looker.eyePos += (looker.left ? -1 : 1) * 0.2;
     looker.eye.x = looker.x + looker.eyePos;
-    looker.eye.update = true;
 }
 
 function preperCharge(looker) {
@@ -69,7 +69,8 @@ function charge(looker) {
 
 function fire(looker) {
     let effect = effects.LaserBeem(looker.x + (looker.left ? 1 : -1) * looker.width);
-    if (effect) effect.owner = looker.id;
+    effect.owner = looker.id;
+    effect.dontPhysics = true;
     looker.eye.color = "red";
     looker.state = "look";
 }
@@ -81,6 +82,8 @@ function Dasher(x) {
     dasher.ember = GameObject(x, 5, "orange", "flame", "enemy");
     dasher.flame.allwaysUpdate = true;
     dasher.ember.allwaysUpdate = true;
+    dasher.flame.dontPhysics = true;
+    dasher.ember.dontPhysics = true;
     dasher.left = Math.random() > 0.5;
     dasher.onUpdate = () => {
         dasher.flame.x = dasher.x + (dasher.left ? dasher.width : - dasher.width);
@@ -105,7 +108,6 @@ function Dasher(x) {
             other.hp -= dasher.ember.damage;
         }
     };
-
     return dasher;
 }
 

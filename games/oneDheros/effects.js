@@ -66,7 +66,17 @@ function Boost(x, width) {
     return boost;
 }
 
+function Spark(x, width) {
+    if (!width) width = 5;
+    let spark = DamageEffect(x,width);
+    spark.b = 0;
+    spark.color = "yellow";
+    spark.sound = "laser_kaboom.mp3";
+    return spark;
+}
+
 module.exports.Effect = Effect;
 module.exports.DamageEffect = DamageEffect;
 module.exports.LaserBeem = LaserBeem;
 module.exports.Boost = Boost;
+module.exports.Spark = Spark;

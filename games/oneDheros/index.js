@@ -73,7 +73,12 @@ function start() {
         let player = Player.getPlayerById(socket.id);
         if (player && player[data]) {
             try {
-                player[data]();
+                if (!player[data].manaCost || player[data].manaCost <= player.gameObject.mana) {
+                    player[data]();
+                    if (player[data].manaCost)
+                        player.gameObject.mana -= player[data].manaCost;
+                }
+
             } catch (e) {
                 console.log(e);
             }
@@ -90,8 +95,8 @@ function start() {
         }
     });
 
-    spawEreas.push(enemies.SpawnErea(200,1000,"Dasher"));
-    spawEreas.push(enemies.SpawnErea(-200,-1000));
+    spawEreas.push(enemies.SpawnErea(200, 1000, "Dasher"));
+    spawEreas.push(enemies.SpawnErea(-200, -1000));
 
     loop = setTimeout(gameLoop, frameLength);
 }
@@ -131,20 +136,22 @@ function physicsUpdate() {
         if (element.sound) {
             element.update = true;
         }
-        if (element.acceleration) {
-            element.speed += element.acceleration;
-            element.acceleration = 0;
-        }
-        if (element.speed) {
-            if (element.speed > 0) {
-                element.speed -= element.drag;
-                if (element.speed < 0) element.speed = 0;
-            } else {
-                element.speed += element.drag;
-                if (element.speed > 0) element.speed = 0;
+        if (!element.dontPhysics) {
+            if (element.acceleration) {
+                element.speed += element.acceleration;
+                element.acceleration = 0;
             }
-            element.x += element.speed * (t0 - t1);
-            element.update = true;
+            if (element.speed) {
+                if (element.speed > 0) {
+                    element.speed -= element.drag;
+                    if (element.speed < 0) element.speed = 0;
+                } else {
+                    element.speed += element.drag;
+                    if (element.speed > 0) element.speed = 0;
+                }
+                element.x += element.speed * (t0 - t1);
+                element.update = true;
+            }
         }
         if (element.destroy) {
             element.onDeath();
@@ -159,7 +166,10 @@ function physicsUpdate() {
 }
 
 function checkCollisions(gameObjects) {
-    gameObjects.forEach(gameObject => {
+    let colliders = gameObjects.filter(element => {
+        return element.onCollision;
+    });
+    colliders.forEach(gameObject => {
         gameObjects.forEach(other => {
             if (other.id != gameObject.id) {
                 if (Math.abs(other.x - gameObject.x) <= gameObject.width / 2) {

@@ -38,7 +38,7 @@ button {
 
 #game-view {
     position: absolute;
-    top : 60%;
+    top : 80%;
     left: 2.5%;
     width: 95%;
     height: 10%;
@@ -47,13 +47,17 @@ button {
 }
 
 #speach {
-    top: 50%;
+    top: 70%;
 }
 
 #names {
-    top: 70%;
+    top: 90%;
 }
 
 #rejoin {
     visibility: hidden;
+}
+
+.ability-list {
+    overflow-x: scroll;
 }
