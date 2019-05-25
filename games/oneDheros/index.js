@@ -155,13 +155,10 @@ function physicsUpdate() {
         }
         if (element.destroy) {
             element.onDeath();
-            //socketer.getNamespace(namespace).emit('object-removed', GameObject.removeObjectById(element.id));
         } else if (element.new && element.type != "player") {
             element.new = false;
             socketer.getNamespace(namespace).emit('object-added', element);
-        } /*else if (element.update || element.allwaysUpdate) {
-            socketer.getNamespace(namespace).emit('object-updated', element);
-        }*/
+        }
     });
     socketer.getNamespace(namespace).emit('objects-updated', 
     gameObjects.filter(element => {
