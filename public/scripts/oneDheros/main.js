@@ -114,8 +114,20 @@ socket.on('object-updated', data => {
     updateObject(data);
 });
 
+socket.on('objects-updated', data => {
+    data.forEach(element => {
+        updateObject(element);
+    });
+});
+
 socket.on('object-removed', data => {
     removeObjectById(data);
+});
+
+socket.on('objects-removed', data => {
+    data.forEach(element => {
+        removeObjectById(element.id);
+    });
 });
 
 socket.on('set-id', data => {
