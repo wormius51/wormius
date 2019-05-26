@@ -36,6 +36,21 @@ button {
     width: 0px;
 }
 
+.score-board {
+    position: absolute;
+    right: 15px;
+    width: 20%;
+    height: 25%;
+    border-style: groove;
+    border-color: darkslategrey;
+    border-radius: 5px;
+    background-color: azure;
+}
+
+#top5 {
+    right: 22%;
+}
+
 #game-view {
     position: absolute;
     top : 80%;
@@ -56,8 +71,4 @@ button {
 
 #rejoin {
     visibility: hidden;
-}
-
-.ability-list {
-    overflow-x: scroll;
 }

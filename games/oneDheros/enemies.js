@@ -89,7 +89,7 @@ function Dasher(x) {
         dasher.flame.x = dasher.x + (dasher.left ? dasher.width : - dasher.width);
         dasher.ember.x = dasher.flame.x + (dasher.left ? -5 : 5);
         if (Math.abs(dasher.speed) < 0.08) { 
-            dasher.acceleration += dasher.left ? -0.04 : 0.04;
+            dasher.acceleration += dasher.left ? -0.0024 : 0.0024;
         } else {
             dasher.left = Math.random() > 0.5;
         }
@@ -97,14 +97,14 @@ function Dasher(x) {
     dasher.flame.damage = 1;
     dasher.flame.onCollision = other => {
         if (other.type == "player") {
-            other.acceleration += (dasher.flame.x > other.x ? -1 : 1) * 0.05;
+            other.acceleration += (dasher.flame.x > other.x ? -1 : 1) * 0.003;
             other.hp -= dasher.flame.damage;
         }
     };
     dasher.ember.damage = 1.5;
     dasher.ember.onCollision = other => {
         if (other.type == "player") {
-            other.acceleration += (dasher.ember.x > other.x ? -1 : 1) * 0.05;
+            other.acceleration += (dasher.ember.x > other.x ? -1 : 1) * 0.003;
             other.hp -= dasher.ember.damage;
         }
     };

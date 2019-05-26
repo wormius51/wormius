@@ -138,7 +138,7 @@ function physicsUpdate() {
         }
         if (!element.dontPhysics) {
             if (element.acceleration) {
-                element.speed += element.acceleration;
+                element.speed += element.acceleration * frameLength;
                 element.acceleration = 0;
             }
             if (element.speed) {
@@ -149,7 +149,7 @@ function physicsUpdate() {
                     element.speed += element.drag;
                     if (element.speed > 0) element.speed = 0;
                 }
-                element.x += element.speed * (t0 - t1);
+                element.x += element.speed * frameLength;
                 element.update = true;
             }
         }

@@ -26,7 +26,7 @@ function DamageEffect(x, width) {
     effect.onCollision = other => {
         if (other.id != effect.owner) {
             if (other.type == "player") {
-                other.acceleration += (effect.x > other.x ? -1 : 1) * 0.05;
+                other.acceleration += (effect.x > other.x ? -1 : 1) * 0.003;
                 if (effect.enemy) {
                     other.hp -= effect.damage;
                 }
