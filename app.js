@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({extended : false}));
 
 app.use("/",require('./routes/index'));
 
-var routes = ["oneDheros"];
+var routes = ["oneDheros", "food-chain-game"];
 
 routes.forEach((element) => {
     app.use("/" + element,require("./routes/" + element));
@@ -28,6 +28,7 @@ app.set('port',PORT);
 const server = http.createServer(app);
 
 require('./games/oneDheros').start();
+require('./games/food-chain-game').start();
 
 require('./scripts/socketer').listen(server);
 

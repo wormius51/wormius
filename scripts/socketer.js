@@ -36,7 +36,7 @@ function Listener(evenName, callback) {
  */
 function addListener(namespace, evenName, callback) {
     var nsp = namespaces.find(element => {
-        element.name = namespace;
+        return element.name == namespace;
     });;
     if (!nsp) {
         nsp = {
