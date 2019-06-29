@@ -61,20 +61,33 @@ function charge(looker) {
     } else {
         looker.eye.color = "red";
     }
-    looker.charge -= 0.1;
+    looker.charge -= 0.2;
     if (looker.charge <= 0) {
         looker.state = "fire";
     }
 }
 
 function fire(looker) {
-    let effect = effects.LaserBeem(looker.x + (looker.left ? 1 : -1) * looker.width);
-    effect.owner = looker.id;
-    effect.dontPhysics = true;
+    if (!looker.fireBall) {
+        let effect = effects.LaserBeem(looker.x + (looker.left ? 1 : -1) * looker.width);
+        effect.owner = looker.id;
+        effect.dontPhysics = true;
+    } else {
+        let fireBall = effects.FireBall(looker.x + (looker.left ? 1 : -1) * looker.width);
+        fireBall.acceleration += (looker.left ? 1 : -1) * 0.01;
+        fireBall.owner = looker.id;
+        fireBall.enemy = true;
+    }
     looker.eye.color = "red";
     looker.state = "look";
 }
 
+function FireBaller(x) {
+    let fireBaller = Looker(x);
+    fireBaller.fireBall = true;
+    fireBaller.color = "orange";
+    return fireBaller;
+}
 
 function Dasher(x) {
     let dasher = GameObject(x, 10, "rgb(20, 124, 214)", "Dasher", "enemy");
@@ -151,5 +164,6 @@ function SpawnErea(x, width, enemyType, maxPopulation, spawnTime) {
 }
 
 module.exports.Looker = Looker;
+module.exports.FireBaller = FireBaller;
 module.exports.Dasher = Dasher;
 module.exports.SpawnErea = SpawnErea;

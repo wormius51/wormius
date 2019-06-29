@@ -91,12 +91,14 @@ function start() {
             let success = upgrade[data](socket.id);
             if (success) {
                 socket.emit('unlock', data);
+                socket.emit('show-skill', success);
             }
         }
     });
 
     spawEreas.push(enemies.SpawnErea(200, 1000, "Dasher"));
     spawEreas.push(enemies.SpawnErea(-200, -1000));
+    spawEreas.push(enemies.SpawnErea(-1400, -1000, "FireBaller"));
 
     loop = setTimeout(gameLoop, frameLength);
 }

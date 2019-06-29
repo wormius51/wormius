@@ -35,7 +35,7 @@ function Player(socketId, name, x, width, color) {
         }
     };
     player.gameObject.level = 1;
-    player.gameObject.upgradePoints = 0;
+    player.gameObject.upgradePoints = 10000;
     player.gameObject.mana = 100;
     player.birthTime = Date.now();
     player.manaRecoveryTime = 1000;

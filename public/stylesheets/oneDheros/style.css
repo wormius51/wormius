@@ -36,19 +36,9 @@ button {
     width: 0px;
 }
 
-.score-board {
+#score-board-div {
     position: absolute;
     right: 15px;
-    width: 20%;
-    height: 25%;
-    border-style: groove;
-    border-color: darkslategrey;
-    border-radius: 5px;
-    background-color: azure;
-}
-
-#top5 {
-    right: 22%;
 }
 
 #game-view {

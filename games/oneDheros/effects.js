@@ -58,12 +58,24 @@ function LaserBeem(x, width) {
 }
 
 function Boost(x, width) {
+    if (!width) width = 10;
     let boost = DamageEffect(x, width);
     boost.g = 0;
     boost.r = 0;
     boost.color = "blue";
     boost.onCollision = () => {};
     return boost;
+}
+
+function Shield(x, width) {
+    if (!width) width = 7;
+    let shield = Boost(x, width);
+    shield.onCollision = other => {
+        if (other && other.type == "effect") {
+            other.destroy = true;
+        }
+    }
+    return shield;
 }
 
 function Spark(x, width) {
@@ -75,8 +87,39 @@ function Spark(x, width) {
     return spark;
 }
 
+function FireBall(x, width) {
+    if (!width) width = 10;
+    let fireBall = DamageEffect(x,width);
+    fireBall.b = 0;
+    fireBall.g = 0;
+    fireBall.color = "red";
+    fireBall.drag = 0.001
+    fireBall.onUpdate = () => {
+        fireBall.update = true;
+        fireBall.color = "rgba(" + fireBall.r + "," + fireBall.g + "," + fireBall.b + "," + fireBall.opacity + ")";
+        fireBall.opacity -= 0.02;
+        if (fireBall.opacity <= 0) fireBall.destroy = true;
+        if (!fireBall.lastSpark) {
+            fireBall.lastSpark = Date.now();
+            let spark = Spark(fireBall.x);
+            spark.owner = fireBall.owner;
+            spark.enemy = fireBall.enemy;
+        } else {
+            if (Date.now() - fireBall.lastSpark >= 20) {
+                fireBall.lastSpark = Date.now();
+                let spark = Spark(fireBall.x);
+                spark.owner = fireBall.owner;
+                spark.enemy = fireBall.enemy;
+            }
+        }
+    };
+    return fireBall;
+}
+
 module.exports.Effect = Effect;
 module.exports.DamageEffect = DamageEffect;
 module.exports.LaserBeem = LaserBeem;
 module.exports.Boost = Boost;
+module.exports.Shield = Shield;
 module.exports.Spark = Spark;
+module.exports.FireBall = FireBall;
