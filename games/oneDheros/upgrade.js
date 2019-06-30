@@ -31,7 +31,7 @@ function dashRight(socketId) {
             let boost = effects.Boost(player.gameObject.x - player.gameObject.width);
             boost.acceleration = -player.acceleration;
         };
-        return ["shieldRight"];
+        return ["shieldRight","pickaboo"];
     }
 }
 
@@ -46,7 +46,22 @@ function dashLeft(socketId) {
             let boost = effects.Boost(player.gameObject.x + player.gameObject.width);
             boost.acceleration = player.acceleration;
         };
-        return ["shieldLeft"];
+        return ["shieldLeft","pickaboo"];
+    }
+}
+
+function pickaboo(socketId) {
+    let player = Player.getPlayerById(socketId);
+    if (!player) return;
+    if (player.pickaboo) return;
+    if (!player.dashLeft && ! player.dashRight) return;
+    if (player.gameObject.upgradePoints > 5) {
+        player.gameObject.upgradePoints -= 5;
+        player.pickaboo = () => {
+            player.gameObject.invisible = !player.gameObject.invisible;
+        };
+        player.pickaboo.manaCost = 0;
+        return [];
     }
 }
 
@@ -168,6 +183,7 @@ module.exports.speedUp = speedUp;
 module.exports.hpUp = hpUp;
 module.exports.dashRight = dashRight;
 module.exports.dashLeft = dashLeft;
+module.exports.pickaboo = pickaboo;
 module.exports.shieldRight = shieldRight;
 module.exports.shieldLeft = shieldLeft;
 module.exports.sparkLeft = sparkLeft;

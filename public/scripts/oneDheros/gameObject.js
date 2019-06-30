@@ -35,6 +35,7 @@ function updateObject(gameObject) {
         obj.color = gameObject.color;
         obj.level = gameObject.level;
         obj.pvp = gameObject.pvp;
+        obj.invisible = gameObject.invisible;
         if (obj.pvp) {
             obj.name = "⚔️" + obj.name + "⚔️";
         }

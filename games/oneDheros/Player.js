@@ -37,6 +37,7 @@ function Player(socketId, name, x, width, color) {
             player.gameObject.startPvp();
         }
     };
+    player.gameObject.invisible = false;
     player.gameObject.pvp = false;
     player.gameObject.startPvp = () => {
         player.gameObject.pvp = true;
@@ -59,6 +60,14 @@ function Player(socketId, name, x, width, color) {
         if (player.gameObject.pvp && Date.now() - player.gameObject.lastStartedPvp > 60000) {
             player.gameObject.pvp = false;
             player.gameObject.update = true;
+        }
+        if (player.gameObject.invisible) {
+            player.gameObject.mana -= 0.1;
+            player.gameObject.update = true;
+            if (player.gameObject.mana <= 0) {
+                player.gameObject.mana = 0;
+                player.gameObject.invisible = false;
+            }
         }
     };
     players.push(player);

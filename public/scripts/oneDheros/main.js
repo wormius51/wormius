@@ -49,6 +49,7 @@ function background() {
 }
 
 function draw(gameObject) {
+    if (gameObject.invisible) return;
     var grd = context.createLinearGradient(0,0,200,0);
     grd.addColorStop(0,gameObject.color);
     context.fillStyle = grd;

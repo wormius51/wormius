@@ -24,6 +24,7 @@ function DamageEffect(x, width) {
         if (effect.opacity <= 0) effect.destroy = true;
     };
     effect.onCollision = other => {
+        if (other.invisible) return;
         if (other.id != effect.owner) {
             if (other.type == "player") {
                 other.acceleration += (effect.x > other.x ? -1 : 1) * 0.003;
