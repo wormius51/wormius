@@ -32,7 +32,16 @@ function Player(socketId, name, x, width, color) {
             let effect = effects.DamageEffect(player.gameObject.x + player.gameObject.width);
             effect.owner = player.gameObject.id;
             effect.dontPhysics = true;
+        },
+        pvp : () => {
+            player.gameObject.startPvp();
         }
+    };
+    player.gameObject.pvp = false;
+    player.gameObject.startPvp = () => {
+        player.gameObject.pvp = true;
+        player.gameObject.update = true;
+        player.gameObject.lastStartedPvp = Date.now();
     };
     player.gameObject.level = 1;
     player.gameObject.upgradePoints = 0;
@@ -46,6 +55,10 @@ function Player(socketId, name, x, width, color) {
                 player.gameObject.update = true;
             }
             player.lastManaRecovery = Date.now();
+        }
+        if (player.gameObject.pvp && Date.now() - player.gameObject.lastStartedPvp > 60000) {
+            player.gameObject.pvp = false;
+            player.gameObject.update = true;
         }
     };
     players.push(player);

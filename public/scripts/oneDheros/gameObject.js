@@ -34,8 +34,14 @@ function updateObject(gameObject) {
         obj.width = gameObject.width;
         obj.color = gameObject.color;
         obj.level = gameObject.level;
-        
+        obj.pvp = gameObject.pvp;
+        if (obj.pvp) {
+            obj.name = "⚔️" + obj.name + "⚔️";
+        }
     } else {
+        if (gameObject.pvp) {
+            gameObject.name = "⚔️" + gameObject.name + "⚔️";
+        }
         gameObjects.push(gameObject);
     }
 
@@ -43,6 +49,8 @@ function updateObject(gameObject) {
         myPositionText.innerText = "My Position : " + Math.floor(gameObject.x) + " , HP : " + Math.floor(gameObject.hp) + " , Mana : " + Math.floor(gameObject.mana);
         upgradePointsText.innerText = "Upgrade Points : " + Math.floor(gameObject.upgradePoints);
     }
+
+    
 }
 
 function removeObjectById(id) {

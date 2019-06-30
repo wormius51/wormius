@@ -29,6 +29,20 @@ function DamageEffect(x, width) {
                 other.acceleration += (effect.x > other.x ? -1 : 1) * 0.003;
                 if (effect.enemy) {
                     other.hp -= effect.damage;
+                } else if (other.pvp) {
+                    let playerObj = GameObject.getObjectById(effect.owner);
+                    let parent = playerObj;
+                    while (parent) {
+                        playerObj = parent;
+                        parent = GameObject.getObjectById(parent.owner);
+                    }
+                    if (playerObj && playerObj.pvp) {
+                        other.hp -= effect.damage;
+                        playerObj.level += 0.01;
+                        playerObj.update = true;
+                        playerObj.upgradePoints += 0.01;
+                        playerObj.startPvp();
+                    }
                 }
             } else if (other.type == "enemy" && !effect.enemy) {
                 other.hp -= effect.damage;
@@ -63,7 +77,7 @@ function Boost(x, width) {
     boost.g = 0;
     boost.r = 0;
     boost.color = "blue";
-    boost.onCollision = () => {};
+    boost.onCollision = () => { };
     return boost;
 }
 
@@ -78,9 +92,32 @@ function Shield(x, width) {
     return shield;
 }
 
+function HealCloud(x) {
+    let healCloud = Boost(x, 0);
+    healCloud.color = "green";
+    healCloud.b = 0;
+    healCloud.r = 0;
+    healCloud.g = 255;
+    healCloud.sound = undefined;
+    healCloud.onUpdate = () => {
+        healCloud.update = true;
+        healCloud.color = "rgba(" + healCloud.r + "," + healCloud.g + "," + healCloud.b + "," + healCloud.opacity + ")";
+        healCloud.opacity -= 0.02;
+        healCloud.width = (1 - healCloud.opacity) * 20;
+        if (healCloud.opacity <= 0) healCloud.destroy = true;
+    };
+    healCloud.onCollision = other => {
+        if (other.type == "player" && other.hp < 100) {
+            other.hp += healCloud.damage;
+            if (other.hp > 100) other.hp = 100;
+        }
+    };
+    return healCloud;
+}
+
 function Spark(x, width) {
     if (!width) width = 5;
-    let spark = DamageEffect(x,width);
+    let spark = DamageEffect(x, width);
     spark.b = 0;
     spark.color = "yellow";
     spark.sound = "laser_kaboom.mp3";
@@ -89,7 +126,7 @@ function Spark(x, width) {
 
 function FireBall(x, width) {
     if (!width) width = 10;
-    let fireBall = DamageEffect(x,width);
+    let fireBall = DamageEffect(x, width);
     fireBall.b = 0;
     fireBall.g = 0;
     fireBall.color = "red";
@@ -121,5 +158,6 @@ module.exports.DamageEffect = DamageEffect;
 module.exports.LaserBeem = LaserBeem;
 module.exports.Boost = Boost;
 module.exports.Shield = Shield;
+module.exports.HealCloud = HealCloud;
 module.exports.Spark = Spark;
 module.exports.FireBall = FireBall;

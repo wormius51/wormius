@@ -17,6 +17,7 @@
             <canvas class="score-board" height="85" width="250"></canvas>
         </div>
         <button id="mute" onclick="toggleMute()">🔊</button>
+        <button onclick="useAbility('pvp')">⚔️</button>
         <h3 id="my-position">My Position : 0</h3>
         <h3 id="upgrade-points">Upgrade Points : 0</h3>
         <input type="text" id="name" placeholder="Your name..">
@@ -32,6 +33,7 @@
             <button onclick="upgrade('dashRight')" class="start-visible" name="dashRight">Dash Right (10)</button>
             <button onclick="upgrade('shieldRight')" class="start-hidden" name="shieldRight">Shield Right (5)</button>
             <button onclick="upgrade('sparkLeft')" class="start-visible" name="sparkLeft">Spark Left (5)</button>
+            <button onclick="upgrade('heal')" class="start-hidden" name="heal">Heal (10)</button>
             <button onclick="upgrade('fireBallLeft')" class="start-hidden" name="fireBallLeft">Fire Ball Left (15)</button>
             <button onclick="upgrade('sparkRight')" class="start-visible" name="sparkRight">Spark Right (5)</button>
             <button onclick="upgrade('fireBallRight')" class="start-hidden" name="fireBallRight">Fire Ball Right (15)</button>
@@ -45,6 +47,7 @@
             <button onclick="useAbility('punchRight')">Punch Right</button>
             <button onclick="useAbility('sparkLeft')" class="start-hidden" name="sparkLeft">Spark Left (1)</button>
             <button onclick="useAbility('sparkRight')" class="start-hidden" name="sparkRight">Spark Right (1)</button>
+            <button onclick="useAbility('heal')" class="start-hidden" name="heal">Heal (10)</button>
             <button onclick="useAbility('fireBallLeft')" class="start-hidden" name="fireBallLeft">Fire Ball Left (10)</button>
             <button onclick="useAbility('fireBallRight')" class="start-hidden" name="fireBallRight">Fire Ball Right (10)</button>
         </div>

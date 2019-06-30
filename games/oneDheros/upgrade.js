@@ -94,7 +94,7 @@ function sparkRight(socketId) {
             spark.owner = player.gameObject.id;
         };
         player.sparkRight.manaCost = 1;
-        return ["fireBallRight"];
+        return ["fireBallRight","heal"];
     }
 }
 
@@ -110,7 +110,23 @@ function sparkLeft(socketId) {
             spark.owner = player.gameObject.id;
         };
         player.sparkLeft.manaCost = 1;
-        return ["fireBallLeft"];
+        return ["fireBallLeft","heal"];
+    }
+}
+
+function heal(socketId) {
+    let player = Player.getPlayerById(socketId);
+    if (!player) return;
+    if (player.heal) return;
+    if (!player.sparkLeft && ! player.sparkRight) return;
+    if (player.gameObject.upgradePoints > 10) {
+        player.gameObject.upgradePoints -= 10;
+        player.heal = () => {
+            let healCloud = effects.HealCloud(player.gameObject.x);
+            healCloud.owner = player.gameObject.id;
+        };
+        player.heal.manaCost = 10;
+        return [];
     }
 }
 
@@ -156,5 +172,6 @@ module.exports.shieldRight = shieldRight;
 module.exports.shieldLeft = shieldLeft;
 module.exports.sparkLeft = sparkLeft;
 module.exports.sparkRight = sparkRight;
+module.exports.heal = heal;
 module.exports.fireBallRight = fireBallRight;
 module.exports.fireBallLeft = fireBallLeft;

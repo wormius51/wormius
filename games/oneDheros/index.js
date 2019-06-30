@@ -48,9 +48,11 @@ function start() {
 
     socketer.addListener(namespace, "change-name", (data, socket, nsp) => {
         if (!data) return;
+        if (!data.replace) return;
         let player = Player.getPlayerById(socket.id);
         if (player) {
-            if (data.length && data.length <= 30) {
+            if (data.length && data.length <= 30) { 
+                data = data.replace(new RegExp("⚔️", 'g'), "");
                 player.gameObject.name = data;
                 nsp.emit('object-updated', player.gameObject);
             }
@@ -91,6 +93,9 @@ function start() {
             let success = upgrade[data](socket.id);
             if (success) {
                 socket.emit('unlock', data);
+                success = success.filter(element => {
+                    return Player.getPlayerById(socket.id)[element] == undefined;
+                });
                 socket.emit('show-skill', success);
             }
         }

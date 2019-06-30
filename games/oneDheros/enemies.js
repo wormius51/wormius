@@ -97,8 +97,14 @@ function Dasher(x) {
     dasher.ember.allwaysUpdate = true;
     dasher.flame.dontPhysics = true;
     dasher.ember.dontPhysics = true;
+    dasher.startingX = x;
     dasher.left = Math.random() > 0.5;
     dasher.onUpdate = () => {
+        if (dasher.x < dasher.startingX - 100) {
+            dasher.left = false;
+        } else if (dasher.x > dasher.startingX + 100) {
+            dasher.left = true;
+        }
         dasher.flame.x = dasher.x + (dasher.left ? dasher.width : - dasher.width);
         dasher.ember.x = dasher.flame.x + (dasher.left ? -5 : 5);
         if (Math.abs(dasher.speed) < 0.08) { 
