@@ -55,7 +55,7 @@ function draw(gameObject) {
     context.fillStyle = grd;
     let x = gameObject.id != undefined ? gameObject.x - camera.x + 50 : gameObject.x;
     context.fillRect((x * 10) - (gameObject.width * 5),0,gameObject.width * 10,1000);
-    if (gameObject.type == "player") {
+    if (gameObject.type == "player" || gameObject.type == "npc") {
         drawName(gameObject);
     }
     if (gameObject.message) {
@@ -80,7 +80,7 @@ function drawName(gameObject) {
     namesContext.fillStyle = gameObject.color;
     let x = gameObject.id != undefined ? gameObject.x - camera.x + 50 : gameObject.x;
     namesContext.fillText(gameObject.name, (x * 10) - (gameObject.width * 5), nameHeight);
-    namesContext.fillText("Level " + Math.floor(gameObject.level), (x * 10) - (gameObject.width * 5), nameHeight + 20);
+    if (gameObject.type == "player") namesContext.fillText("Level " + Math.floor(gameObject.level), (x * 10) - (gameObject.width * 5), nameHeight + 20);
 }
 
 function drawMessage(gameObject) {

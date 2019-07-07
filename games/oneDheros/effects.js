@@ -25,18 +25,21 @@ function DamageEffect(x, width) {
     };
     effect.onCollision = other => {
         if (other.invisible) return;
+        let playerObj = GameObject.getObjectById(effect.owner);
+        let parent = playerObj;
+        while (parent) {
+            playerObj = parent;
+            parent = GameObject.getObjectById(parent.owner);
+        }
+        if (playerObj && playerObj.quest) {
+            playerObj.quest(playerObj, other);
+        }
         if (other.id != effect.owner) {
             if (other.type == "player") {
                 other.acceleration += (effect.x > other.x ? -1 : 1) * 0.003;
                 if (effect.enemy) {
                     other.hp -= effect.damage;
                 } else if (other.pvp) {
-                    let playerObj = GameObject.getObjectById(effect.owner);
-                    let parent = playerObj;
-                    while (parent) {
-                        playerObj = parent;
-                        parent = GameObject.getObjectById(parent.owner);
-                    }
                     if (playerObj && playerObj.pvp) {
                         other.hp -= effect.damage;
                         playerObj.level += 0.01;
@@ -47,7 +50,6 @@ function DamageEffect(x, width) {
                 }
             } else if (other.type == "enemy" && !effect.enemy) {
                 other.hp -= effect.damage;
-                let playerObj = GameObject.getObjectById(effect.owner);
                 if (playerObj) {
                     playerObj.level += 0.01;
                     playerObj.update = true;

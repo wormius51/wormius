@@ -86,11 +86,12 @@ function FireBaller(x) {
     let fireBaller = Looker(x);
     fireBaller.fireBall = true;
     fireBaller.color = "orange";
+    fireBaller.name = "fireBaller";
     return fireBaller;
 }
 
 function Dasher(x) {
-    let dasher = GameObject(x, 10, "rgb(20, 124, 214)", "Dasher", "enemy");
+    let dasher = GameObject(x, 10, "rgb(20, 124, 214)", "dasher", "enemy");
     dasher.flame = GameObject(x, 5, "red", "flame", "enemy");
     dasher.ember = GameObject(x, 5, "orange", "flame", "enemy");
     dasher.flame.allwaysUpdate = true;

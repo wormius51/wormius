@@ -2,6 +2,7 @@ const socketer = require('../../scripts/socketer');
 const GameObject = require('./gameObject');
 const Player = require('./Player');
 const enemies = require('./enemies');
+const NPC = require('./npc');
 const upgrade = require('./upgrade');
 
 const namespace = "/oneDheros";
@@ -27,7 +28,7 @@ function start() {
         let player = Player(socket.id, data ? data.name : undefined, Math.random() * (rightSpawn - leftSpawn) + leftSpawn);
         nsp.emit('object-added', player.gameObject);
         socket.emit('set-id', player.gameObject.id);
-        player.new = false;
+        player.gameObject.new = false;
     });
 
     socketer.addListener(namespace, "disconnect", (data, socket, nsp) => {
@@ -104,6 +105,10 @@ function start() {
     spawEreas.push(enemies.SpawnErea(200, 1000, "Dasher"));
     spawEreas.push(enemies.SpawnErea(-200, -1000));
     spawEreas.push(enemies.SpawnErea(-1400, -1000, "FireBaller"));
+
+    NPC(50, "purple", "Press A and D or the arrows tomove.");
+    NPC.KillOneLaser(10);
+    NPC.KillFourDashers(100);
 
     loop = setTimeout(gameLoop, frameLength);
 }
