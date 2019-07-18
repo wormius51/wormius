@@ -1,0 +1,104 @@
+body {
+    background-color: darkslategrey;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+button {
+    border-radius: 10px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    padding-bottom: 4px;
+}
+
+p {
+    font-size: 30px;
+}
+
+table {
+    border-style: groove;
+    border-color: dimgrey;
+}
+
+tr {
+    border-style: groove;
+    border-color: rgb(29, 22, 22);
+}
+
+tr .player {
+    border-radius: 5px;
+}
+
+tr .player:nth-of-type(1) {
+    background-color: rgb(22, 22, 175);
+}
+
+tr .player:nth-of-type(2) {
+    background-color: rgb(194, 26, 26);
+}
+
+tr .player:nth-of-type(3) {
+    background-color: rgb(19, 102, 19);
+}
+
+.player-score {
+    font-size: 40px;
+}
+
+.game-button {
+    font-size: 120px;
+}
+
+.game-button:nth-of-type(1) {
+    background-color: rgb(22, 22, 175);
+    border-color: rgb(31, 31, 179);
+}
+
+.game-button:nth-of-type(2) {
+    background-color: rgb(194, 26, 26);
+    border-color: rgb(196, 54, 54);
+}
+
+.game-button:nth-of-type(3) {
+    background-color: rgb(19, 102, 19);
+    border-color: rgb(47, 155, 47);
+}
+
+.game-button span {
+    font-size: 40px;
+}
+
+#room-div {
+    visibility: hidden;
+    height: 100%;
+    width: 100%;
+    background-color: darkslategray;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#podium {
+    visibility: hidden;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: darkslategray;
+}
+
+.player-podium {
+    font-size: 60px;
+}
+
+.player-podium:nth-of-type(1) {
+    background-color: rgb(22, 22, 175);
+    border-color: rgb(31, 31, 179);
+}
+
+.player-podium:nth-of-type(2) {
+    background-color: rgb(194, 26, 26);
+    border-color: rgb(196, 54, 54);
+}
+
+.player-podium:nth-of-type(3) {
+    background-color: rgb(19, 102, 19);
+    border-color: rgb(47, 155, 47);
+}

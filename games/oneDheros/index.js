@@ -18,10 +18,6 @@ var t1 = Date.now();
 var spawEreas = [];
 
 function start() {
-    socketer.addListener(namespace, "test", (data, socket) => {
-        console.log(data);
-        socket.emit('test', "hey");
-    });
 
     socketer.addListener(namespace, "add-player", (data, socket, nsp) => {
         Player.removePlayerById(socket.id);
