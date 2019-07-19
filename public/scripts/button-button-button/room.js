@@ -24,6 +24,7 @@ function nextRoundCount(num) {
 function startGame(room) {
     selected = false;
     currentRoom = room;
+    roundNumber.innerText = "Round: " + (room.round + 1);
     document.getElementById("target-score").innerText = room.targetScore;
     roomDiv.style.visibility = "visible";
     for (let i = 0; i < 3; i++) {

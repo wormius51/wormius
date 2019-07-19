@@ -56,6 +56,13 @@ function start() {
         nsp.emit('joined-room', { roomId: room.id, player: player.avatar });
         if (room.players.length == 3) {
             room.state = "playing";
+            for (let i = 0; i < 3; i++) {
+                if (room.players[i].connected) {
+                    room.choices[i] = -1;
+                } else {
+                    room.choices[i] = Math.floor(Math.random() * 3);
+                }
+            }
             nsp.to(room.id).emit('game-start', room);
         }
     });

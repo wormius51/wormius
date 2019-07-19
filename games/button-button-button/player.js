@@ -10,8 +10,9 @@ function Player (socketId ,name) {
         room: 'lobby',
         avatar: {
             id: uuidv4(),
-            name: name
-        }
+            name: name,
+            connected: true
+        },
     };
     players.push(player);
     return player;
@@ -28,6 +29,7 @@ function removePlayerById(id) {
     players = players.filter(obj => {
         if (obj.socketId == id) {
             avatarId = obj.avatar.id;
+            obj.avatar.connected = false;
             return false;
         }
         return true;

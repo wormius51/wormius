@@ -8,7 +8,7 @@ function Room(player) {
         state: "waiting",
         round: 0,
         targetScore: 100,
-        scores: [0,0,0],
+        scores: [0, 0, 0],
         buttonNumbers: generateButtonNumbers(),
         choices: [-1, -1, -1]
     };
@@ -49,8 +49,17 @@ function startRound(room) {
     room.round++;
     room.state = "playing";
     room.buttonNumbers = generateButtonNumbers();
+    let dCount = 0;
     for (let i = 0; i < 3; i++) {
-        room.choices[i] = -1;
+        if (room.players[i].connected) {
+            room.choices[i] = -1;
+        } else {
+            room.choices[i] = Math.floor(Math.random() * 3);
+            dCount++;
+        }
+    }
+    if (dCount == 3) {
+        finishGame(room);
     }
 }
 
