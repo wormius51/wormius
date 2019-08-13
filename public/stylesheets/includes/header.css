@@ -10,3 +10,25 @@ body {
 .header {
     background-color: darkslategrey;
 }
+
+.primaryText {
+    color: rgb(96, 38, 151);
+}
+
+
+
+main {
+    background-color: rgba(250, 235, 215, 0.753);
+}
+
+body::after {
+    content: "";
+    background: url("/images/showoffs/background.png");
+    opacity: 0.5;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: fixed;
+    z-index: -1;
+}
