@@ -1,5 +1,4 @@
-#footer {
-    position: fixed; 
-    bottom: 0px;
-    background-color: darkslategrey;
+footer {
+    flex-shrink: none;
+    background-color: darkslategrey;   
 }
