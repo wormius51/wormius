@@ -4,17 +4,12 @@
     <div class="container-fluid">
         <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content rounded container-fluid" role="main">
             <h1 class="primaryText">My Games</h1>
-            <div class="itch-container">
-                <iframe frameborder="0" src="https://itch.io/embed/460177" width="552" height="167"></iframe>
-            </div>
-            <div class="itch-container">
-                <iframe frameborder="0" src="https://itch.io/embed/239740" width="552" height="167"></iframe>
-            </div>
-            <div class="itch-container">
-                <iframe frameborder="0" src="https://itch.io/embed/302061" width="552" height="167"></iframe>
-            </div>
-            <div class="itch-container">
-                <iframe frameborder="0" src="https://itch.io/embed/456446" width="552" height="167"></iframe>
+            <div class="container">
+                <div class="row">
+                    <% gameLinks.forEach( gameLink => { %>
+                    <%- include('includes/gameLink.ejs', gameLink) %>
+                    <% }) %>
+                </div>
             </div>
         </main>
     </div>

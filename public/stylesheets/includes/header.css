@@ -15,7 +15,13 @@ body {
     color: rgb(96, 38, 151);
 }
 
-
+.gameLink {
+    background-color: darkslategrey;
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 400px;
+    min-width: 300px;
+}
 
 main {
     background-color: rgba(250, 235, 215, 0.753);
