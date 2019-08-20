@@ -16,7 +16,7 @@ router.get("/", (req, res, next) => {
                     GameLink("Tactical Tactics",
                     "https://chrome.google.com/webstore/detail/tactical-tactics-free/keiookbkgfkglpbooppdhoainanmpcmj",
                     "/images/gameLinks/tactical-tactics.png",
-                    "A chrome extention that helps you train your chess tactics skills."),
+                    "A chrome extension that helps you train your chess tactics skills."),
                 GameLink("Morsing Around",
                     "https://wormius51.itch.io/morsing-around",
                     "/images/gameLinks/morsing-around.png",

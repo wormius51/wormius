@@ -20,8 +20,8 @@
             <p class="lead">
                 First of all, there is a thing in windows, you don't see the full names of the files.
                 It's important that you do know the exact names of your files. To change that,
-                open up some folder, click the "View" tab, then "File name extentions".
-                Now you can see the true names of your files. Files have extentions like ".exe" and ".docx".
+                open up some folder, click the "View" tab, then "File name extensions".
+                Now you can see the true names of your files. Files have extensions like ".exe" and ".docx".
             </p>
             <p class="lead">
                 Now we will create a folder where we will put all the files of the game.
@@ -29,8 +29,8 @@
                 hover over "New" and click "Folder". Give the folder the name you would like for your game.
             </p>
             <p class="lead">
-                You can create all the files using notepad, which exist in the computer by default.
-                However, this is not very comfterble.
+                You can create all the files using notepad, which exist on the computer by default.
+                However, this is not very comfortable.
                 I prefer to use a different text editor called <a href="https://code.visualstudio.com/">Visual Studio
                     Code (download link)</a>.
                 Whatever text editor you choose, open the game folder with it.
@@ -55,7 +55,7 @@
             <p class="lead">
                 Now click index.html file. An empty page will open in the browser. Great game right?
                 OK, let's start doing something. Change the title from "Document" to "Game" for example.
-                Let's allso add a text to the page using an H1 element.
+                Let's also add a text to the page using an H1 element.
             </p>
             <pre class="lead rounded"><code><script type="text" class="rounded">
     <!DOCTYPE html>
@@ -78,8 +78,8 @@
                 Put some image file in the folder.
                 To create an image element in the page write
                 <script type="text"><img src = "images/yourImage.png"></script>.
-                Instad of "yourImage.png" type the name of the image file you put in the images folder (the exact name
-                with the extention).
+                Instead of "yourImage.png" type the name of the image file you put in the images folder (the exact name
+                with the extension).
             </p>
             <pre class="lead rounded"><code><script type="text" class="rounded">
     <!DOCTYPE html>
@@ -163,7 +163,7 @@
             <p class="lead">
                 The image moves 100 pixels below the top of the page and 100px to the right of the left side.
                 You can change the numbers like charImg.style.top = "56px" to see the effect.
-                We will now add variables x and y to controll the position of the images.
+                We will now add variables x and y to control the position of the images.
             </p>
             <pre class="lead rounded"><code><script type="text" class="rounded">
     const textElement = document.getElementById("title");
@@ -220,7 +220,7 @@
                 By setting it to moveChar we made it so moveChar is called. Refresh the page and start pressing keys.
                 The image moves 20 pixels to the right on any key press.
                 Usually in games though, different keys do different things.
-                Each key has a unique number assigned to it and we can use it to respond differently to different keys.
+                Each key has a unique number assigned to it, and we can use it to respond differently to different keys.
             </p>
             <pre class="lead rounded"><code><script type="text" class="rounded">
     const textElement = document.getElementById("title");
@@ -285,7 +285,7 @@
             <p class="lead">
                 The image can now move up, down, left or right, not at the same time though.
                 The reason is that each time the switch goes to one of the cases, only responding to one key.
-                To fix this create a function that sets variables to indecate whether or not a key is held down:
+                To fix this, create a function that sets variables to indecate whether a key is held down:
             </p>
             <pre class="lead rounded"><code><script type="text" class="rounded">
     const textElement = document.getElementById("title");
@@ -341,7 +341,7 @@
             <p class="lead">
                 if statement executes the code if the condition is true. For example:
                 if (s) {y = y + 10} would run if s is true. Refresh the page and.. The image doesn't move.
-                We are not actually calling moveChar now. To call it repitedly we are going to use setInterval:
+                We are not actually calling moveChar now. To call it reputedly we are going to use setInterval:
             </p>
             <pre class="lead rounded"><code><script type="text" class="rounded">
     const textElement = document.getElementById("title");
@@ -397,9 +397,9 @@
 
     window.onkeydown = keyDown</script></code></pre>
             <p class="lead">
-                moveChar is called every 5 miliseconds.
+                moveChar is called every 5 milliseconds.
                 Now we can move up and left at the same time. Two things though:
-                1. The image is moving really fast. So let's use a variable to controll the speed rather then
+                1. The image is moving really fast. So let's use a variable to control the speed rather then
                 hard code it like we did before. 2. The image does not stop after the key is released. We will
                 solve that with onkeyup:
             </p>
@@ -496,7 +496,7 @@
                 score += change is just like score = score + change , just shorter.
                 Now we will create the goal. Put some image for the goal in the images folder.
                 You can create the goal by writing &lt;img src = "images/goal.png"&gt; but i want to take
-                this opertunity to show you how to create it with javascript:
+                this opportunity to show you how to create it with javascript:
             </p>
             <pre class="lead rounded"><code><script type="text" class="rounded">
     var score = 0;
@@ -529,7 +529,7 @@
                 After creating we need to allso append the element to the body of the page,
                 that's why document.body.appendChild(goalImg). goalH and goalW are the height and
                 the width of the goal respectively. Those are needed to detect the collision
-                between the player and the goal sence it's not likely they will land at exactly the same position.
+                between the player and the goal since it's not likely they will land at exactly the same position.
                 Going back to main.js. We need to define charH and charW:
             </p>
             <pre class="lead rounded"><code><script type="text" class="rounded">
@@ -827,16 +827,16 @@
     window.onkeyup = keyUp</script></code></pre>
             <h1 class="primaryText">Uploading Your Game</h1>
             <p class="lead">
-                To uplaod the game you first need to compress the game folder to a zip file.
+                To upload the game you first need to compress the game folder to a zip file.
                 You do this by: right click on the folder -> Send to -> Compressed (zipped) folder.
                 The zip file is what you upload to any site that hosts games.
                 you can upload your game to <a href="https://itch.io/game/new">itch.io</a> for example.
-                In the uplaod page:
+                In the upload page:
                 First, give a title to your project in the input field.
                 Change kind of project from downloadable to HTML.
                 There is a button for "Upload Files". Click that and choose your zip file.
-                Check the chackbox for "This file will be played in the browser".
-                Change the width and height under "Viewport dimentions" to fit the game.
+                Check the checkbox for "This file will be played in the browser".
+                Change the width and height under "Viewport dimensions" to fit the game.
                 Click the button at the bottom "Save & view page".
                 If you want to make your game public click "Edit game" on the top and then change
                 the visibility from draft to public and save.
