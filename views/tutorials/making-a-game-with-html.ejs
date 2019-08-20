@@ -1,0 +1,850 @@
+<% include ../includes/header.ejs %>
+
+<body>
+    <div class="container-fluid">
+        <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content rounded container-fluid row-fluid" role="main">
+            <h1 class="primaryText">Making A Game With HTML</h1>
+            <p>
+                If you prefer to watch videos rather then read,
+                I made a <a href="https://skl.sh/2Gu5tLH">class on SkillShare</a>
+            </p>
+            <h4 class="primaryText">Introduction</h4>
+            <p class="lead">
+                In this tutorial, we will make a game with HTML.
+                Including score, keyboard input and collision detection. So first of all, what is HTML?
+                HTML is a type of text that the browser reads and displays content accordingly.
+                The page that you are looking at right now is the result of your browser interpreting
+                the HTML that it received from this site. To create HTML you don't need anything but a computer.
+            </p>
+            <h4 class="primaryText">Setting Up The Working Environment</h4>
+            <p class="lead">
+                First of all, there is a thing in windows, you don't see the full names of the files.
+                It's important that you do know the exact names of your files. To change that,
+                open up some folder, click the "View" tab, then "File name extentions".
+                Now you can see the true names of your files. Files have extentions like ".exe" and ".docx".
+            </p>
+            <p class="lead">
+                Now we will create a folder where we will put all the files of the game.
+                To create a new folder: press the right mouse button on your desktop or some folder,
+                hover over "New" and click "Folder". Give the folder the name you would like for your game.
+            </p>
+            <p class="lead">
+                You can create all the files using notepad, which exist in the computer by default.
+                However, this is not very comfterble.
+                I prefer to use a different text editor called <a href="https://code.visualstudio.com/">Visual Studio
+                    Code (download link)</a>.
+                Whatever text editor you choose, open the game folder with it.
+            </p>
+            <h4 class="primaryText">HTML File Creation</h4>
+            <p class="lead">
+                Create a file in the game folder and name it "index.html". We want this exact name, no "index.html.txt".
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+    </head>
+    <body>
+        
+    </body>
+    </html></script></code></pre>
+            <p class="lead">
+                Now click index.html file. An empty page will open in the browser. Great game right?
+                OK, let's start doing something. Change the title from "Document" to "Game" for example.
+                Let's allso add a text to the page using an H1 element.
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Game</title>
+    </head>
+    <body>
+        <h1>Game<h1>
+    </body>
+    </html></script></code></pre>
+            <p class="lead">
+                Refresh the page to see the changes.
+            </p>
+            <p class="lead">
+                We will add an image. Create a new folder inside the game folder and name it "images".
+                Put some image file in the folder.
+                To create an image element in the page write
+                <script type="text"><img src = "images/yourImage.png"></script>.
+                Instad of "yourImage.png" type the name of the image file you put in the images folder (the exact name
+                with the extention).
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Game</title>
+    </head>
+    <body>
+        <h1>Game<h1>
+        <img src = "images/yourImage.png">
+    </body>
+    </html></script></code></pre>
+            <p class="lead">
+                In order to manipulate the elements we created here we will add an id for each.
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Game</title>
+    </head>
+    <body>
+        <h1 id = "title">Game<h1>
+        <img id = "char-img" src = "images/yourImage.png">
+    </body>
+    </html></script></code></pre>
+            <h4 class="primaryText">JavaScript File Creation</h4>
+            <p class="lead">
+                Create a new folder in the game folder and name it "scripts".
+                In the new folder create a new file and name it "main.js". In this file we will write javascript code
+                to manipulate the elements in the page.
+                First, create references to the text and the image using the id we gave each of them.
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const textElement = document.getElementById("title");
+    const charImg = document.getElementById("char-img");</script></code></pre>
+            <p class="lead">
+                Let's use this script to change the text of the textElement.
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const textElement = document.getElementById("title");
+    const charImg = document.getElementById("char-img");
+    textElement.innerText = "BOOM!";</script></code></pre>
+            <p class="lead">
+                Refresh the page and... Nothing happens. index.html is not going to guess you mean to use this
+                javascript file.
+                To use it in index.html add this.
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Game</title>
+    </head>
+    <body>
+        <h1 id = "title">Game<h1>
+        <img id = "char-img" src = "images/yourImage.png"></script>
+        &lt;script src = "scripts/main.js"&gt;&lt;/script&gt;<script type="text" class="rounded">
+    </body>
+    </html></script></code></pre>
+            <p class="lead">
+                The line &lt;script src = "scripts/main.js"&gt;&lt;/script&gt; will activate the code.
+                Refresh the page now and see the change. Now we will move the image. Write in main.js:
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const textElement = document.getElementById("title");
+    const charImg = document.getElementById("char-img");
+    textElement.innerText = "BOOM!";
+    charImg.style.position = "absolute";
+    charImg.style.top = "100px";
+    charImg.style.left = "100px";</script></code></pre>
+            <p class="lead">
+                The image moves 100 pixels below the top of the page and 100px to the right of the left side.
+                You can change the numbers like charImg.style.top = "56px" to see the effect.
+                We will now add variables x and y to controll the position of the images.
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const textElement = document.getElementById("title");
+    const charImg = document.getElementById("char-img");
+    textElement.innerText = "BOOM!";
+    var x = 100;
+    var y = 100;
+    charImg.style.position = "absolute";
+    charImg.style.top = y + "px";
+    charImg.style.left = x + "px";</script></code></pre>
+            <h4 class="primaryText">Responding To Keyboard Input</h4>
+            <p class="lead">
+                Now that the position is controlled by variables, we can create a function to move the image:
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const textElement = document.getElementById("title");
+    const charImg = document.getElementById("char-img");
+    textElement.innerText = "BOOM!";
+    var x = 100;
+    var y = 100;
+    charImg.style.position = "absolute";
+    charImg.style.top = y + "px";
+    charImg.style.left = x + "px";
+    
+    function moveChar() {
+        x = x + 20;
+        charImg.style.top = y + "px";
+        charImg.style.left = x + "px";
+    }</script></code></pre>
+            <p class="lead">
+                A function is a piece of code that runs every time we call it.
+                We did not call this function anywhere so it would not run.
+                Lets make it so it is called Whenever we press a key:
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const textElement = document.getElementById("title");
+    const charImg = document.getElementById("char-img");
+    textElement.innerText = "BOOM!";
+    var x = 100;
+    var y = 100;
+    charImg.style.position = "absolute";
+    charImg.style.top = y + "px";
+    charImg.style.left = x + "px";
+    
+    function moveChar() {
+        x = x + 20;
+        charImg.style.top = y + "px";
+        charImg.style.left = x + "px";
+    }
+
+    window.onkeydown = moveChar</script></code></pre>
+            <p class="lead">
+                onkeydown is called every time a key is held down.
+                By setting it to moveChar we made it so moveChar is called. Refresh the page and start pressing keys.
+                The image moves 20 pixels to the right on any key press.
+                Usually in games though, different keys do different things.
+                Each key has a unique number assigned to it and we can use it to respond differently to different keys.
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const textElement = document.getElementById("title");
+    const charImg = document.getElementById("char-img");
+    textElement.innerText = "BOOM!";
+    var x = 100;
+    var y = 100;
+    charImg.style.position = "absolute";
+    charImg.style.top = y + "px";
+    charImg.style.left = x + "px";
+    
+    function moveChar(event) {
+        switch(event.keyCode) {
+            case 68:
+                x = x + 20;
+                break;
+            case 65:
+                x = x - 20;
+                break;
+        }
+        charImg.style.top = y + "px";
+        charImg.style.left = x + "px";
+    }
+
+    window.onkeydown = moveChar</script></code></pre>
+            <p class="lead">
+                68 is the keyCode of D and 65 is the keyCode of A. The switch statement executes different blocks
+                of code in each case. Now A moves the image to the left and D moves it to the right (Refresh).
+                Let's add up and down too:
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const textElement = document.getElementById("title");
+    const charImg = document.getElementById("char-img");
+    textElement.innerText = "BOOM!";
+    var x = 100;
+    var y = 100;
+    charImg.style.position = "absolute";
+    charImg.style.top = y + "px";
+    charImg.style.left = x + "px";
+    
+    function moveChar(event) {
+        switch(event.keyCode) {
+            case 68:
+                x = x + 20;
+                break;
+            case 65:
+                x = x - 20;
+                break;
+            case 87:
+                y = y - 20;
+                break;
+            case 83:
+                y = y + 20;
+                break;
+        }
+        charImg.style.top = y + "px";
+        charImg.style.left = x + "px";
+    }
+
+    window.onkeydown = moveChar</script></code></pre>
+            <h4 class="primaryText">Multiple Keyboard Inputs</h4>
+            <p class="lead">
+                The image can now move up, down, left or right, not at the same time though.
+                The reason is that each time the switch goes to one of the cases, only responding to one key.
+                To fix this create a function that sets variables to indecate whether or not a key is held down:
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const textElement = document.getElementById("title");
+    const charImg = document.getElementById("char-img");
+    textElement.innerText = "BOOM!";
+    var x = 100;
+    var y = 100;
+    charImg.style.position = "absolute";
+    charImg.style.top = y + "px";
+    charImg.style.left = x + "px";
+    
+    var w = false;
+    var s = false;
+    var a = false;
+    var d = false;
+
+    function keyDown(event) {
+        switch(event.keyCode) {
+            case 68:
+                d = true;
+                break;
+            case 65:
+                a = true;
+                break;
+            case 87:
+                w = true;
+                break;
+            case 83:
+                s = true;
+                break;
+        }
+    }
+
+    function moveChar() {
+        if (d) {
+            x = x + 20;
+        }
+        if (a) {
+            x = x - 20;
+        }
+        if (s) {
+            y = y + 20;
+        }
+        if (w) {
+            y = y - 20;
+        }
+    
+        charImg.style.top = y + "px";
+        charImg.style.left = x + "px";
+    }
+
+    window.onkeydown = keyDown</script></code></pre>
+            <p class="lead">
+                if statement executes the code if the condition is true. For example:
+                if (s) {y = y + 10} would run if s is true. Refresh the page and.. The image doesn't move.
+                We are not actually calling moveChar now. To call it repitedly we are going to use setInterval:
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const textElement = document.getElementById("title");
+    const charImg = document.getElementById("char-img");
+    textElement.innerText = "BOOM!";
+    var x = 100;
+    var y = 100;
+    charImg.style.position = "absolute";
+    charImg.style.top = y + "px";
+    charImg.style.left = x + "px";
+    
+    var w = false;
+    var s = false;
+    var a = false;
+    var d = false;
+
+    function keyDown(event) {
+        switch(event.keyCode) {
+            case 68:
+                d = true;
+                break;
+            case 65:
+                a = true;
+                break;
+            case 87:
+                w = true;
+                break;
+            case 83:
+                s = true;
+                break;
+        }
+    }
+
+    function moveChar() {
+        if (d) {
+            x = x + 20;
+        }
+        if (a) {
+            x = x - 20;
+        }
+        if (s) {
+            y = y + 20;
+        }
+        if (w) {
+            y = y - 20;
+        }
+    
+        charImg.style.top = y + "px";
+        charImg.style.left = x + "px";
+    }
+
+    setInterval(moveChar, 5);
+
+    window.onkeydown = keyDown</script></code></pre>
+            <p class="lead">
+                moveChar is called every 5 miliseconds.
+                Now we can move up and left at the same time. Two things though:
+                1. The image is moving really fast. So let's use a variable to controll the speed rather then
+                hard code it like we did before. 2. The image does not stop after the key is released. We will
+                solve that with onkeyup:
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const textElement = document.getElementById("title");
+    const charImg = document.getElementById("char-img");
+    textElement.innerText = "BOOM!";
+    var x = 100;
+    var y = 100;
+    charImg.style.position = "absolute";
+    charImg.style.top = y + "px";
+    charImg.style.left = x + "px";
+    
+    var speed = 10;
+
+    var w = false;
+    var s = false;
+    var a = false;
+    var d = false;
+
+    function keyDown(event) {
+        switch(event.keyCode) {
+            case 68:
+                d = true;
+                break;
+            case 65:
+                a = true;
+                break;
+            case 87:
+                w = true;
+                break;
+            case 83:
+                s = true;
+                break;
+        }
+    }
+
+    function keyUp(event) {
+        switch(event.keyCode) {
+            case 68:
+                d = false;
+                break;
+            case 65:
+                a = false;
+                break;
+            case 87:
+                w = false;
+                break;
+            case 83:
+                s = false;
+                break;
+        }
+    }
+
+    function moveChar() {
+        if (d) {
+            x = x + speed;
+        }
+        if (a) {
+            x = x - speed;
+        }
+        if (s) {
+            y = y + speed;
+        }
+        if (w) {
+            y = y - speed;
+        }
+    
+        charImg.style.top = y + "px";
+        charImg.style.left = x + "px";
+    }
+
+    setInterval(moveChar, 5);
+
+    window.onkeydown = keyDown
+    window.onkeyup = keyUp</script></code></pre>
+            <p class="lead">
+                Adjust the speed variable to get the speed you want.
+            </p>
+            <h4 class="primaryText">Score And Goal Creation</h4>
+            <p class="lead">
+                To handle the score in the game create a new javascript file in the scripts folder and name it score.js.
+                Don't forget to add it to index.html like so: &lt;script src = "scripts/score.js"&gt;&lt;/script&gt; .
+                First, make a variable for the socre and a function to change it:
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    var score = 0;
+    
+    function changeScore(change) {
+        score += change;
+        textElement.innerText = "Score: " + score;    
+    }</script></code></pre>
+            <p class="lead">
+                score += change is just like score = score + change , just shorter.
+                Now we will create the goal. Put some image for the goal in the images folder.
+                You can create the goal by writing &lt;img src = "images/goal.png"&gt; but i want to take
+                this opertunity to show you how to create it with javascript:
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    var score = 0;
+    
+    function changeScore(change) {
+        score += change;
+        textElement.innerText = "Score: " + score;    
+    }
+
+    var goalX = 300;
+    var goalY = 300;
+    var goalW = 128;
+    var goalH = 128;
+    var goalImg;
+
+    function createGoal() {
+        goalImg = document.createElement('img');
+        goalImg.src = "images/goal.png";
+        goalImg.style.position = "absolute";
+        goalImg.style.top = goalY + "px";
+        goalImg.style.left = goalX + "px";
+        goalImg.style.width = goalW + "px";
+        goalImg.style.height = goalH + "px";
+        document.body.appendChild(goalImg);
+    }
+
+    createGoal();</script></code></pre>
+            <p class="lead">
+                document.createElememt('img') creates an image element (you can do this for any other element).
+                After creating we need to allso append the element to the body of the page,
+                that's why document.body.appendChild(goalImg). goalH and goalW are the height and
+                the width of the goal respectively. Those are needed to detect the collision
+                between the player and the goal sence it's not likely they will land at exactly the same position.
+                Going back to main.js. We need to define charH and charW:
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const textElement = document.getElementById("title");
+    const charImg = document.getElementById("char-img");
+    textElement.innerText = "BOOM!";
+    var x = 100;
+    var y = 100;
+    var charH = 128;
+    var charW = 128;
+    charImg.style.position = "absolute";
+    charImg.style.top = y + "px";
+    charImg.style.left = x + "px";
+    charImg.style.height = charH + "px";
+    charImg.style.width = charW + "px";
+
+    var speed = 10;
+
+    var w = false;
+    var s = false;
+    var a = false;
+    var d = false;
+
+    function keyDown(event) {
+        switch(event.keyCode) {
+            case 68:
+                d = true;
+                break;
+            case 65:
+                a = true;
+                break;
+            case 87:
+                w = true;
+                break;
+            case 83:
+                s = true;
+                break;
+        }
+    }
+
+    function keyUp(event) {
+        switch(event.keyCode) {
+            case 68:
+                d = false;
+                break;
+            case 65:
+                a = false;
+                break;
+            case 87:
+                w = false;
+                break;
+            case 83:
+                s = false;
+                break;
+        }
+    }
+
+    function moveChar() {
+        if (d) {
+            x = x + speed;
+        }
+        if (a) {
+            x = x - speed;
+        }
+        if (s) {
+            y = y + speed;
+        }
+        if (w) {
+            y = y - speed;
+        }
+    
+        charImg.style.top = y + "px";
+        charImg.style.left = x + "px";
+    }
+
+    setInterval(moveChar, 5);
+
+    window.onkeydown = keyDown
+    window.onkeyup = keyUp</script></code></pre>
+            <p class="lead">
+                You can adjust those variables ofcorce. Now we will change the score when the player and the goal
+                collide.
+                That means that the left side of the player is not more right then the right side of the goal,
+                the right side of the player is not more left then the left side of the goal, and the same for
+                up and down. We will do this checking in moveChar:
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const textElement = document.getElementById("title");
+    const charImg = document.getElementById("char-img");
+    textElement.innerText = "BOOM!";
+    var x = 100;
+    var y = 100;
+    var charH = 128;
+    var charW = 128;
+    charImg.style.position = "absolute";
+    charImg.style.top = y + "px";
+    charImg.style.left = x + "px";
+    charImg.style.height = charH + "px";
+    charImg.style.width = charW + "px";
+
+    var speed = 10;
+
+    var w = false;
+    var s = false;
+    var a = false;
+    var d = false;
+
+    function keyDown(event) {
+        switch(event.keyCode) {
+            case 68:
+                d = true;
+                break;
+            case 65:
+                a = true;
+                break;
+            case 87:
+                w = true;
+                break;
+            case 83:
+                s = true;
+                break;
+        }
+    }
+
+    function keyUp(event) {
+        switch(event.keyCode) {
+            case 68:
+                d = false;
+                break;
+            case 65:
+                a = false;
+                break;
+            case 87:
+                w = false;
+                break;
+            case 83:
+                s = false;
+                break;
+        }
+    }
+
+    function moveChar() {
+        if (d) {
+            x = x + speed;
+        }
+        if (a) {
+            x = x - speed;
+        }
+        if (s) {
+            y = y + speed;
+        }
+        if (w) {
+            y = y - speed;
+        }
+    
+        charImg.style.top = y + "px";
+        charImg.style.left = x + "px";
+
+        if (x + charW >= goalX && x < goalX + goalW) {
+            if (y + charH >= goalY && y < goalY + goalH) {
+                changeScore(1);
+            }
+        }    
+    }
+
+    setInterval(moveChar, 5);
+
+    window.onkeydown = keyDown
+    window.onkeyup = keyUp</script></code></pre>
+            <p class="lead">
+                The score now goes up when the player touches the goal. Now let's move the goal after giving the score
+                so it wont just be as easy as standing on the goal. In score.js, create a function to move the goal:
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    var score = 0;
+    
+    function changeScore(change) {
+        score += change;
+        textElement.innerText = "Score: " + score;    
+    }
+
+    var goalX = 300;
+    var goalY = 300;
+    var goalW = 128;
+    var goalH = 128;
+    var goalImg;
+
+    function createGoal() {
+        goalImg = document.createElement('img');
+        goalImg.src = "images/goal.png";
+        goalImg.style.position = "absolute";
+        goalImg.style.top = goalY + "px";
+        goalImg.style.left = goalX + "px";
+        goalImg.style.width = goalW + "px";
+        goalImg.style.height = goalH + "px";
+        document.body.appendChild(goalImg);
+    }
+
+    function moveGoal() {
+        goalX = Math.random() * 600;
+        goalY = Math.random() * 600;
+        goalImg.style.top = goalY + "px";
+        goalImg.style.left = goalX + "px";
+    }
+
+    createGoal();</script></code></pre>
+            <p class="lead">
+                Math.random() is a built in function that returns a random number between 0 and 1.
+                So, Math.random() * 600 gives you a number between 0 and 600. In main.js, at the if
+                statement from before, call this moveGoal function:
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const textElement = document.getElementById("title");
+    const charImg = document.getElementById("char-img");
+    textElement.innerText = "BOOM!";
+    var x = 100;
+    var y = 100;
+    var charH = 128;
+    var charW = 128;
+    charImg.style.position = "absolute";
+    charImg.style.top = y + "px";
+    charImg.style.left = x + "px";
+    charImg.style.height = charH + "px";
+    charImg.style.width = charW + "px";
+
+    var speed = 10;
+
+    var w = false;
+    var s = false;
+    var a = false;
+    var d = false;
+
+    function keyDown(event) {
+        switch(event.keyCode) {
+            case 68:
+                d = true;
+                break;
+            case 65:
+                a = true;
+                break;
+            case 87:
+                w = true;
+                break;
+            case 83:
+                s = true;
+                break;
+        }
+    }
+
+    function keyUp(event) {
+        switch(event.keyCode) {
+            case 68:
+                d = false;
+                break;
+            case 65:
+                a = false;
+                break;
+            case 87:
+                w = false;
+                break;
+            case 83:
+                s = false;
+                break;
+        }
+    }
+
+    function moveChar() {
+        if (d) {
+            x = x + speed;
+        }
+        if (a) {
+            x = x - speed;
+        }
+        if (s) {
+            y = y + speed;
+        }
+        if (w) {
+            y = y - speed;
+        }
+    
+        charImg.style.top = y + "px";
+        charImg.style.left = x + "px";
+
+        if (x + charW >= goalX && x < goalX + goalW) {
+            if (y + charH >= goalY && y < goalY + goalH) {
+                changeScore(1);
+                moveGoal();
+            }
+        }    
+    }
+
+    setInterval(moveChar, 5);
+
+    window.onkeydown = keyDown
+    window.onkeyup = keyUp</script></code></pre>
+            <h1 class="primaryText">Uploading Your Game</h1>
+            <p class="lead">
+                To uplaod the game you first need to compress the game folder to a zip file.
+                You do this by: right click on the folder -> Send to -> Compressed (zipped) folder.
+                The zip file is what you upload to any site that hosts games.
+                you can upload your game to <a href="https://itch.io/game/new">itch.io</a> for example.
+                In the uplaod page:
+                First, give a title to your project in the input field.
+                Change kind of project from downloadable to HTML.
+                There is a button for "Upload Files". Click that and choose your zip file.
+                Check the chackbox for "This file will be played in the browser".
+                Change the width and height under "Viewport dimentions" to fit the game.
+                Click the button at the bottom "Save & view page".
+                If you want to make your game public click "Edit game" on the top and then change
+                the visibility from draft to public and save.
+            </p>
+        </main>
+    </div>
+
+    <% include ../includes/footer.ejs %>
+</body>
+
+</html>

@@ -5,12 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="author" content="Eyal Hazor">
+    <meta name="description" content="Online games and gamedev tutorials">
+    <meta name="keywords" content="HTML,JavaScript,Game Development,Tutorial">
     <title><%= title %></title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="shortcut icon" href="images/worm.png" type="images/x-icon">
-    <link rel="stylesheet" href="stylesheets/includes/header.css">
-    <link rel="stylesheet" href="stylesheets/includes/footer.css">
+    <link rel="shortcut icon" href="/images/worm.png" type="images/x-icon">
+    <link rel="stylesheet" href="/stylesheets/includes/header.css">
+    <link rel="stylesheet" href="/stylesheets/includes/footer.css">
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-145688783-1"></script>
     <script>
@@ -26,7 +29,7 @@
 
     <header class="navbar navbar-expand navbar-light flex-column flex-md-row header">
         <a href="/" class="navbar-brand">
-            <img src="images/worm.png" alt="wormius" id="icon">
+            <img src="/images/worm.png" alt="wormius" id="icon">
         </a>
         <div class="navbar-nav-scroll">
             <ul class="navbar-nav bd-navbar-nav flex-row">
@@ -39,11 +42,14 @@
                 <li class="nav-item <%if (title == 'Games') { %>active<% } %> bg-light rounded border ml-1">
                     <a class="nav-link" href="/games">Games</a>
                 </li>
+                <li class="nav-item <%if (title == 'Tutorials') { %>active<% } %> bg-light rounded border ml-1">
+                    <a class="nav-link" href="/tutorials">Tutorials</a>
+                </li>
             </ul>
         </div>
     </header>
 
-    <script src="scripts/includes/header.js"></script>
+    <script src="/scripts/includes/header.js"></script>
 </body>
 
 </html>
