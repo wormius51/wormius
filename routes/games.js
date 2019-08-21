@@ -3,6 +3,7 @@ const router = require('express').Router();
 router.get("/", (req, res, next) => {
     res.render('games',
         {
+            description: "Play games made by me, the great wormius!",
             title: "Games",
             gameLinks: [
                 GameLink("Burn Your Brain",

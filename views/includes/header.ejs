@@ -6,9 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="author" content="Eyal Hazor">
-    <meta name="description" content="Online games and gamedev tutorials">
+    <meta name="description"
+        content="<%if (locals.description) { %><%= description %><% } else { %>Online games and gamedev tutorials<% } %>">
     <meta name="keywords" content="HTML,JavaScript,Game Development,Tutorial">
-    <title><%= title %></title>
+    <title><%if (title == "Home") { %>
+        Wormius Games
+        <% } else { %>
+        <%= title %>
+        <% } %></title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="shortcut icon" href="/images/worm.png" type="images/x-icon">
@@ -22,6 +27,14 @@
         gtag('js', new Date());
 
         gtag('config', 'UA-145688783-1');
+    </script>
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({
+            google_ad_client: "ca-pub-7702090826216846",
+            enable_page_level_ads: true
+        });
     </script>
 </head>
 

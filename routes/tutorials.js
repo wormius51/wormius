@@ -2,15 +2,28 @@ const router = require('express').Router();
 const fs = require('fs');
 const path = require('path');
 
+function Tutorial(name, url, imageSrc, description) {
+    let tutorial = {
+        name: name,
+        url: url,
+        imageSrc: imageSrc,
+        description: description
+    };
+    return tutorial;
+}
+
+let tutorials = [
+    Tutorial("Making a game with HTML", "/tutorials/making-a-game-with-html",
+        "/images/tutorials/making-a-game-with-html/thumbnail.png",
+        "Starting with nothing, you will make a simple game in HTML.")
+];
+
 router.get('/', (req, res) => {
     res.render('tutorials',
         {
+            description: "Learn how to make games",
             title: "Tutorials",
-            tutorials: [
-                Tutorial("Makeing a game with HTML", "/tutorials/making-a-game-with-html",
-                    "/images/tutorials/making-a-game-with-html/thumbnail.png",
-                    "Starting with nothing, you will make a simple game in HTML.")
-            ]
+            tutorials: tutorials
         });
 });
 
@@ -22,7 +35,14 @@ router.get('/:tutname', (req, res) => {
     let p = path.join(__dirname, '..', 'views', 'tutorials', req.params.tutname + '.ejs');
     ifExists(p, exists => {
         if (exists) {
-            res.render(path.join('tutorials', req.params.tutname), { title: req.params.tutname });
+            let tutorial = tutorials.find(tut => {
+                return tut.url.match(req.params.tutname);
+            });
+            let args = { title: req.params.tutname };
+            if (tutorial) {
+                args.description = tutorial.description;
+            }
+            res.render(path.join('tutorials', req.params.tutname), args);
         } else {
             res.status(404).send({error: "This page was not found"});
         }
@@ -37,16 +57,6 @@ function ifExists(path, callback) {
         }
         callback(exists);
     });
-}
-
-function Tutorial(name, url, imageSrc, description) {
-    let tutorial = {
-        name: name,
-        url: url,
-        imageSrc: imageSrc,
-        description: description
-    };
-    return tutorial;
 }
 
 module.exports = router;
