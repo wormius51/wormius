@@ -1,0 +1,9 @@
+body {
+    background-color: burlywood;
+}
+
+canvas {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
