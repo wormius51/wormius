@@ -79,10 +79,22 @@ function Player(x, y, width, height, name, color) {
                     victory();
                 break;
             case "enemy":
-                if (player.name == "player")
-                    player.destroy = true;
-                else
-                    bounce(player, other);
+                if (player.powerup) {
+                    other.destroy = true;
+                } else {
+                    if (player.name == "player")
+                        player.destroy = true;
+                    else
+                        bounce(player, other);
+                }
+                break;
+            case "powerup":
+                player.powerup = true;
+                player.color = "white";
+                other.destroy = true;
+                break;
+            case "player":
+                other.speed = copyVector2D(player.speed);
                 break;
         }
     }
@@ -114,14 +126,36 @@ function Movable(x, y, width, height, name, color, speed) {
     return movable;
 }
 
+function Patrol(points, width, height, name, color, moveSpeed) {
+    if (!moveSpeed) moveSpeed = 0.3;
+    let object = Movable(points[0].x, points[0].y, width, height, name, color);
+    object.points = points;
+    object.moveSpeed = moveSpeed;
+    object.currentPointIndex = 0;
+    object.onUpdate = deltaTime => {
+        if (!isFocus) return;
+        let nextIndex = (object.currentPointIndex + 1) % object.points.length;
+        let nextPoint = object.points[nextIndex];
+        let speed = copyVector2D(nextPoint);
+        speed.subVector(object.position);
+        if (speed.normal() <= moveSpeed * deltaTime) {
+            object.currentPointIndex = nextIndex;
+        }
+        speed.normalize();
+        speed.numMul(object.moveSpeed);
+        object.speed = speed;
+    };
+    return object;
+}
+
 function Border(thickness, width, height) {
     if (!width) width = gameWidth;
     if (!height) height = gameHeight;
     return [
-        Block(0, 0, height, thickness),
-        Block(0, width - thickness, height, thickness),
-        Block(0, 0, thickness, width),
-        Block(height - thickness, 0, thickness, width)
+        Block(0, 0, width, thickness),
+        Block(0, height - thickness, width, thickness),
+        Block(0, 0, thickness, height),
+        Block(width - thickness, 0, thickness, height)
     ]
 
 }
@@ -150,6 +184,7 @@ function checkCollisions(gameObject) {
 }
 
 function updateGameObjects(deltaTime) {
+    if (antiblur && !isFocus) return;
     gameObjects.forEach(gameObject => {
         updateGameObject(gameObject, deltaTime);
         checkCollisions(gameObject);
@@ -160,24 +195,4 @@ function updateGameObjects(deltaTime) {
         }
         return !gameObject.destroy;
     });
-}
-
-function Vector2D(x, y) {
-    let vector2D = {
-        x: x,
-        y: y,
-        addVector: other => {
-            vector2D.x += other.x;
-            vector2D.y += other.y;
-        },
-        numMul: num => {
-            vector2D.x *= num;
-            vector2D.y *= num;
-        }
-    }
-    return vector2D;
-}
-
-function copyVector2D(vector2D) {
-    return Vector2D(vector2D.x, vector2D.y);
 }

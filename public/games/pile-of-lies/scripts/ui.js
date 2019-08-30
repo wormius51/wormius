@@ -104,10 +104,10 @@ function uiClick(event) {
 
 function setUpUi() {
     uiElements = [];
-    uiCanvas.width = window.innerWidth;
-    uiCanvas.height = window.innerHeight;
-    mainMenu = UiElement(gameWidth * 0.1, 40, gameWidth * 1.5, 400, "Pile Of Lies", { backgroundColor: "rgb(187, 202, 52)", paddingX: gameWidth * 0.5, paddingY: 40, fontSize: 50 });
-    let playButton = UiElement(mainMenu.x + mainMenu.width * 0.4, 200, 100, 50, "Play", {
+    uiCanvas.width = gameWidth;
+    uiCanvas.height = gameHeight;
+    mainMenu = UiElement(gameWidth * 0.1, 40, gameWidth * 0.8, 400, "Pile Of Lies", { backgroundColor: "rgb(187, 202, 52)", paddingX: gameWidth * 0.3, paddingY: 40, fontSize: 50 });
+    let playButton = UiElement(mainMenu.x + mainMenu.width * 0.45, 200, 100, 50, "Play", {
         backgroundColor: "blue",
         color: "white",
         paddingX: 20
@@ -118,8 +118,8 @@ function setUpUi() {
     mainMenu.children.push(playButton);
     playButton.zIndex = 1;
 
-    deathUi = UiElement(gameWidth * 0.1, 40, gameWidth * 1.5, 400, "☠️☠️☠️", { backgroundColor: "rgb(187, 202, 52)", paddingX: gameWidth * 0.5, paddingY: 40, fontSize: 50, color: "red" });
-    let replayButton = UiElement(mainMenu.x + mainMenu.width * 0.4, 200, 120, 50, "Replay", {
+    deathUi = UiElement(gameWidth * 0.1, 40, gameWidth * 0.8, 400, "☠️☠️☠️", { backgroundColor: "rgb(187, 202, 52)", paddingX: gameWidth * 0.3, paddingY: 40, fontSize: 50, color: "red" });
+    let replayButton = UiElement(mainMenu.x + mainMenu.width * 0.45, 200, 120, 50, "Replay", {
         backgroundColor: "blue",
         color: "white",
         paddingX: 20
@@ -131,8 +131,8 @@ function setUpUi() {
     replayButton.zIndex = 1;
     setVisible(deathUi, false);
 
-    victoryUi = UiElement(gameWidth * 0.1, 40, gameWidth * 1.5, 400, "Nice one!", { backgroundColor: "rgb(187, 202, 52)", paddingX: gameWidth * 0.5, paddingY: 40, fontSize: 50, color: "green" });
-    let nextButton = UiElement(mainMenu.x + mainMenu.width * 0.4, 200, 120, 50, "Next", {
+    victoryUi = UiElement(gameWidth * 0.1, 40, gameWidth * 0.8, 400, "Nice one!", { backgroundColor: "rgb(187, 202, 52)", paddingX: gameWidth * 0.25, paddingY: 40, fontSize: 50, color: "green" });
+    let nextButton = UiElement(mainMenu.x + mainMenu.width * 0.45, 200, 120, 50, "Next", {
         backgroundColor: "blue",
         color: "white",
         paddingX: 20
