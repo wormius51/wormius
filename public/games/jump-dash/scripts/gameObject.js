@@ -121,6 +121,8 @@ function Player(position) {
             player.maxDashes++;
         } else if (other.finishLevel) {
             loadLevel(currentLevel + 1);
+        } else if (other.collectable) {
+            other.destroy = true;
         }
     }
     player.onDeath = death;
@@ -136,10 +138,7 @@ function Camera() {
         mulVectorNum(camera.velocity, 0);
         addVectors(camera.velocity, player.position);
         subVectors(camera.velocity, camera.position);
-        let distance = normal(camera.velocity);
-        normalize(camera.velocity);
-
-        mulVectorNum(camera.velocity, distance * camera.followPresentage);
+        mulVectorNum(camera.velocity, camera.followPresentage);
     };
     return camera;
 }
@@ -206,4 +205,17 @@ function Goal(position) {
     let goal = GameObject(position, Vector2D(50,300),"yellow");
     goal.finishLevel = true;
     return goal;
+}
+
+function Coin(position, value) {
+    if (!value) value = 1000;
+    let coin = GameObject(position,Vector2D(30,30),"yellow");
+    coin.value = value;
+    coin.collectable = true;
+    coin.g = 0;
+    coin.onDeath = () => {
+        changeScore(coin.value);
+        TextObject(copyVector2D(coin.position), coin.value, 30 + 3 * Math.log(coin.value), 1000, "green");
+    };
+    return coin;
 }

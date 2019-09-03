@@ -36,6 +36,24 @@ const levels = [
         Goal(Vector2D(2600, 200));
     },
     () => {
+        player = Player(Vector2D(100, 100));
+        Block(Vector2D(-300, 200), Vector2D(3000, 60));
+        Block(Vector2D(-300, -100), Vector2D(50, 350));
+        Block(Vector2D(300,0),Vector2D(400,100));
+        Enemy(Vector2D(-100,-300)).maxWalkTime = 700
+        Block(Vector2D(300,-200),Vector2D(200,100));
+        Block(Vector2D(-100,-100),Vector2D(200,100));
+        Enemy(Vector2D(800,0),-3);
+        Block(Vector2D(600,-200),Vector2D(200,100));
+        Block(Vector2D(900,100),Vector2D(100,150));
+        FlyingEnemy(Vector2D(900,-50));
+        Block(Vector2D(1100,100),Vector2D(400,150));
+        Block(Vector2D(1100,-250),Vector2D(800,300));
+        Coin(Vector2D(1600, 100));
+        Block(Vector2D(1700,0),Vector2D(200,250));
+        Goal(Vector2D(2600, 200));
+    },
+    () => {
         player = Player(Vector2D(100, 300));
         Block(Vector2D(600, 200), Vector2D(40, 500));
         Block(Vector2D(0, 500), Vector2D(900, 60));
