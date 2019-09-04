@@ -39,6 +39,7 @@ function frame(timeStamp) {
 }
 
 window.addEventListener('load', () => {
+    setUpUi();
     window.requestAnimationFrame(frame);
     loadLevel(0);
 });

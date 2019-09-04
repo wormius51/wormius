@@ -69,9 +69,9 @@ const levels = [
 
 function loadLevel(index) {
     clearGameObjects();
-    score = 0;
+    changeScore(-score);
     currentLevel = index;
     levels[currentLevel]();
     camera = Camera();
-    redrawUI();
+    drawUiElements();
 }
