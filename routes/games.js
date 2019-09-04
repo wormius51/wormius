@@ -25,7 +25,7 @@ router.get("/", (req, res, next) => {
                 GameLink("oneDheros",
                     "/oneDheros",
                     "/images/gameLinks/oneDheros.png",
-                    "A 1 dimensional multiplayer game where you hit enemies or each other to game upgrade points and unlock skills.")
+                    "A 1 dimensional multiplayer game where you hit enemies or each other to gain upgrade points and unlock skills.")
             ]
         });
 });
