@@ -56,5 +56,7 @@ function drawGameObject(gameObject) {
 
 function drawGameScreen() {
     gameContext.clearRect(0,0,gameCanvas.width,gameCanvas.height);
-    gameObjects.forEach(drawGameObject);
+    gameObjects.sort((a,b) => {
+        return a.zIndex - b.zIndex;
+    }).forEach(drawGameObject);
 }

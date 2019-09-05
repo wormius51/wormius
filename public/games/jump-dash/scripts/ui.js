@@ -38,7 +38,7 @@ function unpause() {
     inMenu = false;
     paused = false;
     settingKey = undefined;
-    setVisible(optionsPannel,false);
+    setVisible(optionsPannel, false);
     window.requestAnimationFrame(frame);
 }
 
@@ -149,23 +149,31 @@ function uiClick(event) {
 }
 
 function setUpUi() {
-    optionsPannel = UiElement(200,50,500,450,"",{backgroundColor: "rgb(88, 78, 153)"});
+    optionsPannel = UiElement(200, 50, 500, 450, "", { backgroundColor: "rgb(88, 78, 153)" });
+    let sfxText = UiElement(400, 200, 200, 50, "SFX volume: " + soundConfig.sfxVolume, { color: "white" }, () => {
+        changeSfxVolume();
+        sfxText.text = "SFX volume: " + soundConfig.sfxVolume;
+        drawUiElements();
+    });
     optionsPannel.children = [
-        UiElement(400,200,100,50,"Controls",{color: "white"}, setControls),
-        UiElement(400,300,100,50,"Resume",{color: "white"},
-        () => {
-            unpause();
-        })
+        UiElement(400, 100, 200, 50, "Controls", { color: "white" }, setControls),
+        sfxText,
+        UiElement(400, 300, 200, 50, "Resume", { color: "white" }, unpause),
+
     ];
-    setControlsText = UiElement(350,250,100,50,"press key for left",{color: "white"});
+    setControlsText = UiElement(350, 150, 100, 50, "press key for left", { color: "white" });
     optionsPannel.children.push(setControlsText);
     setVisible(optionsPannel, false);
     UiElement(20, 120, 100, 100, "Options", {},
         () => {
-            inMenu = true;
-            pause();
-            setVisible(optionsPannel, true);
-            setVisible(setControlsText,false);
+            if (!inMenu) {
+                inMenu = true;
+                pause();
+                setVisible(optionsPannel, true);
+                setVisible(setControlsText, false);
+            } else {
+                unpause();
+            }
         });
 
     levelText = UiElement(20, 40, 100, 50, "Level: 1");
@@ -176,7 +184,7 @@ window.addEventListener('click', uiClick);
 
 function setControls() {
     setControlsText.text = "press key for ";
-    if (!settingKey)  {
+    if (!settingKey) {
         setControlsText.text += "left";
         settingKey = "leftKey";
     } else if (settingKey == "leftKey") {
@@ -189,5 +197,5 @@ function setControls() {
         unpause();
         return
     }
-    setVisible(setControlsText,true);
+    setVisible(setControlsText, true);
 }

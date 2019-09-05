@@ -24,7 +24,8 @@ function GameObject(position, scale, color, damage, killable) {
         grounded: false,
         g: 0.1,
         damage: damage,
-        killable: killable
+        killable: killable,
+        zIndex: 0
     };
     currentId++;
     gameObjects.push(gameObject);
@@ -76,6 +77,12 @@ function Player(position) {
                 player.velocity.y = - player.jumpSpeed;
                 player.dashTime = player.maxDashTime;
                 player.dashes = 0;
+                let r = Math.floor(Math.random() * 4);
+                while(r == this.r) {
+                    r = Math.floor(Math.random() * 4);
+                }
+                this.r = r;
+                plaSound("jump" + r);
             } else {
                 if (player.dashTime < player.maxDashTime) {
                     player.dash(deltaTime);
@@ -100,7 +107,10 @@ function Player(position) {
         }
     };
     player.dash = deltaTime => {
-        if (player.dashTime == 0) player.dashes++;
+        if (player.dashTime == 0) { 
+            player.dashes++;
+            plaSound("dash");
+        };
         player.isDashing = true;
         player.velocity.x = player.direction * player.dashSpeed;
         if (!player.velocity.x) player.velocity.x = player.dashSpeed;
@@ -120,9 +130,11 @@ function Player(position) {
             other.destroy = true;
             player.maxDashes++;
         } else if (other.finishLevel) {
+            plaSound("score");
             loadLevel(currentLevel + 1);
         } else if (other.collectable) {
             other.destroy = true;
+            plaSound("score");
         }
     }
     player.onDeath = death;
@@ -198,6 +210,7 @@ function TextObject(position, text, fontSize, lifeTime, color) {
         gameContext.font = "bold " + textObject.fontSize + "px verda";
         gameContext.fillText(textObject.text, positionOnScreen.x, positionOnScreen.y);
     }
+    textObject.zIndex = -1;
     return textObject;
 }
 

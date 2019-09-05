@@ -54,16 +54,31 @@ const levels = [
         Goal(Vector2D(2600, 200));
     },
     () => {
-        player = Player(Vector2D(100, 300));
-        Block(Vector2D(600, 200), Vector2D(40, 500));
-        Block(Vector2D(0, 500), Vector2D(900, 60));
-        Block(Vector2D(400, 350), Vector2D(600, 60));
-        Block(Vector2D(-200, 300), Vector2D(40, 500));
-        Block(Vector2D(-900, 600), Vector2D(900, 60));
-        Block(Vector2D(-400, 450), Vector2D(600, 60));
-        Enemy(Vector2D(500, 0))
-        FlyingEnemy(Vector2D(20, 200));
-        FlyingEnemy(Vector2D(-100, 200));
+        player = Player(Vector2D(100, 100));
+        Block(Vector2D(-300, 300), Vector2D(500, 60));
+        Block(Vector2D(-300, 0), Vector2D(50, 350));
+        Block(Vector2D(0, 200), Vector2D(100, 150));
+        FlyingEnemy(Vector2D(200,-50));
+        FlyingEnemy(Vector2D(450,0));
+        FlyingEnemy(Vector2D(700, 50));
+        FlyingEnemy(Vector2D(950, 100));
+        FlyingEnemy(Vector2D(1300, 150));
+        FlyingEnemy(Vector2D(1550, 200));
+        FlyingEnemy(Vector2D(1800, 200));
+        Block(Vector2D(1200,500),Vector2D(2000,100));
+        Block(Vector2D(1500,300), Vector2D(100,250));
+        Block(Vector2D(1200,700),Vector2D(2000,100));
+        Enemy(Vector2D(1400,600));
+        Enemy(Vector2D(1800,600));
+        Enemy(Vector2D(2200,600));
+        Block(Vector2D(3300,550),Vector2D(300,200));
+        Goal(Vector2D(3000,200));
+    },
+    () => {
+        player = Player(Vector2D(100, 100));
+        Block(Vector2D(-300, 200), Vector2D(1200, 60));
+        Block(Vector2D(-300, -100), Vector2D(50, 350));
+        TextObject(Vector2D(-150, 50), "That's all for now. will add new levels soon.", 60, undefined, "black");
     }
 ];
 
@@ -73,5 +88,6 @@ function loadLevel(index) {
     currentLevel = index;
     levels[currentLevel]();
     camera = Camera();
+    levelText.text = "Level:" + (currentLevel + 1);
     drawUiElements();
 }

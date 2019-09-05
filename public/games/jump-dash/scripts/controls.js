@@ -2,7 +2,7 @@
  * contains the information about the state of the keys.
  */
 var controls = {
-    upKey: { key: "Space", keyCode: 32, pressed: false },
+    upKey: { key: "SPACE", keyCode: 32, pressed: false },
     downKey: { key: "S", keyCode: 83, pressed: false },
     leftKey: { key: "A", keyCode: 65, pressed: false },
     rightKey: { key: "D", keyCode: 68, pressed: false }
@@ -15,7 +15,7 @@ function saveControls () {
 }
 
 function loadControls () {
-    let varRgx = /controls=({.+})/
+    let varRgx = /controls=({[^;]+})/
     let controlsString = varRgx.exec(document.cookie);
     if (!controlsString) {
         return;
@@ -54,6 +54,7 @@ function keyChange(event, changeTo) {
     } else {
         if (changeTo) {
             controls[settingKey].key = event.key.toUpperCase();
+            if (controls[settingKey].key.match(/\s+/)) controls[settingKey].key = "SPACE";
             controls[settingKey].keyCode = event.keyCode;
             setControls();
             saveControls();
