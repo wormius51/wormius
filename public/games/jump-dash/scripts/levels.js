@@ -37,7 +37,7 @@ const levels = [
     },
     () => {
         player = Player(Vector2D(100, 100));
-        Block(Vector2D(-300, 200), Vector2D(3000, 60));
+        Block(Vector2D(-300, 200), Vector2D(3000, 200));
         Block(Vector2D(-300, -100), Vector2D(50, 350));
         Block(Vector2D(300,0),Vector2D(400,100));
         Enemy(Vector2D(-100,-300)).maxWalkTime = 700
@@ -51,7 +51,33 @@ const levels = [
         Block(Vector2D(1100,-250),Vector2D(800,300));
         Coin(Vector2D(1600, 100));
         Block(Vector2D(1700,0),Vector2D(200,250));
-        Goal(Vector2D(2600, 200));
+        Enemy(Vector2D(1300,-300));
+        Enemy(Vector2D(1500,-300));
+        Goal(Vector2D(2600, 0));
+    },
+    () => {
+        player = Player(Vector2D(100, 100));
+        Block(Vector2D(-300, 200), Vector2D(500, 60));
+        Block(Vector2D(-300, -100), Vector2D(50, 350));
+        Block(Vector2D(200, 300), Vector2D(300, 60));
+        Enemy(Vector2D(300,250)).maxWalkTime = 750;
+        Block(Vector2D(570,0),Vector2D(60,800));
+        Block(Vector2D(150,200),Vector2D(60,800));
+        Block(Vector2D(300, 500), Vector2D(300, 60));
+        Enemy(Vector2D(300,450)).maxWalkTime = 750;
+        Block(Vector2D(200, 700), Vector2D(300, 60));
+        Enemy(Vector2D(300,650)).maxWalkTime = 750;
+        Block(Vector2D(150, 950), Vector2D(1000, 60));
+        Block(Vector2D(700,850),Vector2D(400,150));
+        Enemy(Vector2D(700,800)).maxWalkTime = 750;
+        Enemy(Vector2D(900,800)).maxWalkTime = 750;
+        Block(Vector2D(1200,700),Vector2D(200,60));
+        Enemy(Vector2D(1200,650)).maxWalkTime = 750;
+        Block(Vector2D(900,600),Vector2D(200,60));
+        Enemy(Vector2D(900,550)).maxWalkTime = 750;
+        Block(Vector2D(1200,500),Vector2D(300,60));
+        Enemy(Vector2D(1200,450)).maxWalkTime = 750;
+        Goal(Vector2D(1440,200));
     },
     () => {
         player = Player(Vector2D(100, 100));
@@ -88,6 +114,6 @@ function loadLevel(index) {
     currentLevel = index;
     levels[currentLevel]();
     camera = Camera();
-    levelText.text = "Level:" + (currentLevel + 1);
+    levelText.text = "Level: " + (currentLevel + 1);
     drawUiElements();
 }

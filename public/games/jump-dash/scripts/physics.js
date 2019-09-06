@@ -1,3 +1,4 @@
+const fallSpeedLimit = 30;
 
 function Vector2D(x, y) {
     let vector2D = {
@@ -156,5 +157,6 @@ function blockGameObject(gameObject, blocker) {
 }
 
 function fallGameObject(gameObject, deltaTime) {
-    gameObject.velocity.y += gameObject.g * deltaTime;
+    if (gameObject.velocity.y < fallSpeedLimit)
+        gameObject.velocity.y += gameObject.g * deltaTime;
 }

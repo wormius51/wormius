@@ -125,7 +125,8 @@ function Player(position) {
     }
     player.onCollision = other => {
         if (other.damage && !player.isDashing) {
-            player.destroy = true;
+            if (!player.invincible)
+                player.destroy = true;
         } else if (other.killable && player.isDashing) {
             other.destroy = true;
             player.maxDashes++;
