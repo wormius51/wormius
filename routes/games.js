@@ -8,7 +8,7 @@ router.get("/", (req, res, next) => {
             gameLinks: [
                 GameLink("Jump Dash",
                     "/games/jump-dash","/images/gameLinks/jump-dash.png",
-                    "A game where you jump, and than you dash. Try it."),
+                    "A game where you jump, and then you dash. Try it."),
                 GameLink("Burn Your Brain",
                     "https://wormius51.itch.io/burn-your-brain",
                     "/images/gameLinks/burn-your-brain.png",
