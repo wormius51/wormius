@@ -1,9 +1,6 @@
 const uiCanvas = document.getElementById("ui-canvas");
 const uiContext = uiCanvas.getContext("2d");
 
-uiCanvas.width = window.innerWidth;
-uiCanvas.height = window.innerHeight;
-
 var font = "verda";
 var bold = false;
 var uiElements = [];
@@ -86,11 +83,11 @@ function drawUiElement(uiElement) {
     if (uiElement.style) {
         if (uiElement.style.borderColor) {
             uiContext.strokeStyle = uiElement.style.borderColor;
-            uiContext.strokeRect(uiElement.x, uiElement.y, uiElement.width, uiElement.height);
+            uiContext.strokeRect(uiElement.x * scaleRatio, uiElement.y * scaleRatio, uiElement.width * scaleRatio, uiElement.height * scaleRatio);
         }
         if (uiElement.style.backgroundColor) {
             uiContext.fillStyle = uiElement.style.backgroundColor;
-            uiContext.fillRect(uiElement.x, uiElement.y, uiElement.width, uiElement.height);
+            uiContext.fillRect(uiElement.x * scaleRatio, uiElement.y * scaleRatio, uiElement.width * scaleRatio, uiElement.height * scaleRatio);
         }
     }
     if (uiElement.text) {
@@ -116,11 +113,11 @@ function drawUiElement(uiElement) {
             }
         }
         y += fontSize;
-        uiContext.font = fontSize + "px " + font;
+        uiContext.font = (fontSize * scaleRatio) + "px " + font;
         if (bold) {
             uiContext.font = "bold " + uiContext.font;
         }
-        uiContext.fillText(uiElement.text, x, y);
+        uiContext.fillText(uiElement.text, x * scaleRatio, y * scaleRatio);
     }
 }
 
@@ -137,8 +134,8 @@ function uiClick(event) {
     let y = event.clientY;
     let elementsSelected = uiElements.filter(element => {
         if (!element.visible) return false;
-        if (x < element.x || x > element.x + element.width) return false;
-        if (y < element.y || y > element.y + element.height) return false;
+        if (x < element.x * scaleRatio || x > element.x * scaleRatio + element.width) return false;
+        if (y < element.y * scaleRatio || y > element.y * scaleRatio + element.height) return false;
         return true;
     });
     elementsSelected.forEach(element => {
@@ -149,6 +146,8 @@ function uiClick(event) {
 }
 
 function setUpUi() {
+    uiCanvas.width = gameCanvas.width;
+    uiCanvas.height = gameCanvas.height;
     optionsPannel = UiElement(200, 50, 500, 450, "", { backgroundColor: "rgb(88, 78, 153)" });
     let sfxText = UiElement(400, 200, 200, 50, "SFX volume: " + soundConfig.sfxVolume, { color: "white" }, () => {
         changeSfxVolume();

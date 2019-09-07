@@ -1,8 +1,12 @@
 const gameCanvas = document.getElementById("game-canvas");
 const gameContext = gameCanvas.getContext("2d");
 
-gameCanvas.width = 900;
-gameCanvas.height = 600;
+let originalWidth = 900;
+let originalHeight = 600;
+let scaleRatio = window.innerHeight / originalHeight;
+
+gameCanvas.width = originalWidth;
+gameCanvas.height = originalHeight;
 
 var paused = false;
 
@@ -38,25 +42,38 @@ function frame(timeStamp) {
     }
 }
 
+function adjustScale() {
+    gameCanvas.width = window.innerWidth;
+    gameCanvas.height = window.innerHeight
+    scaleRatio = window.innerHeight / originalHeight;
+    drawUiElements();
+}
+
 window.addEventListener('load', () => {
+    adjustScale();
     setUpUi();
     window.requestAnimationFrame(frame);
     loadLevel(0);
 });
 
+window.addEventListener('resize', adjustScale);
+
 function drawGameObject(gameObject) {
     gameContext.fillStyle = gameObject.color;
     let positionOnScreen = Vector2D(gameObject.position.x - camera.position.x + gameCanvas.width / 2,
         gameObject.position.y - camera.position.y + gameCanvas.height / 2);
-    gameContext.fillRect(positionOnScreen.x, 
+    mulVectorNum(positionOnScreen,scaleRatio);
+    let scale = copyVector2D(gameObject.scale);
+    mulVectorNum(scale, scaleRatio);
+    gameContext.fillRect(positionOnScreen.x,
         positionOnScreen.y,
-        gameObject.scale.x, gameObject.scale.y);
+        scale.x, scale.y);
     gameObject.onDraw(positionOnScreen);
 }
 
 function drawGameScreen() {
-    gameContext.clearRect(0,0,gameCanvas.width,gameCanvas.height);
-    gameObjects.sort((a,b) => {
+    gameContext.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+    gameObjects.sort((a, b) => {
         return a.zIndex - b.zIndex;
     }).forEach(drawGameObject);
 }

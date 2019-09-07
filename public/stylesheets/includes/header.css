@@ -77,6 +77,23 @@ body::after {
     height: 100%;
 }
 
+.game-container{
+    position: relative;
+    width: 100%;
+    padding-bottom: 70%; 
+    height: 0;
+    overflow: hidden;
+}
+
+.game-container iframe{
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
 code script{
     background-color: black;
     color: white;

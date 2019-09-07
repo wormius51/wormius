@@ -6,6 +6,9 @@ router.get("/", (req, res, next) => {
             description: "Play games made by me, the great wormius!",
             title: "Games",
             gameLinks: [
+                GameLink("Jump Dash",
+                    "/games/jump-dash","/images/gameLinks/jump-dash.png",
+                    "A game where you jump, and than you dash. Try it."),
                 GameLink("Burn Your Brain",
                     "https://wormius51.itch.io/burn-your-brain",
                     "/images/gameLinks/burn-your-brain.png",
@@ -39,5 +42,9 @@ function GameLink(name, url, imageSrc, description) {
     };
     return gameLink;
 }
+
+router.get("/jump-dash", (req, res, next) => {
+    res.render('jump-dash',{title: "Jump Dash"});
+});
 
 module.exports = router;

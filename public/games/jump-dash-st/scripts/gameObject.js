@@ -208,7 +208,7 @@ function TextObject(position, text, fontSize, lifeTime, color) {
         }
     };
     textObject.onDraw = positionOnScreen => {
-        gameContext.font = "bold " + textObject.fontSize + "px verda";
+        gameContext.font = "bold " + (textObject.fontSize * scaleRatio) + "px verda";
         gameContext.fillText(textObject.text, positionOnScreen.x, positionOnScreen.y);
     }
     textObject.zIndex = -1;
