@@ -14,6 +14,7 @@ if (isMobile) {
     controls.upKey.key = "TOP";
     controls.leftKey.key = "LEFT";
     controls.rightKey.key = "RIGHT";
+    screen.lockOrientation('landscape');
 }
 
 function saveControls () {
