@@ -150,8 +150,8 @@ function uiClick(event) {
     let y = event.clientY;
     let elementsSelected = uiElements.filter(element => {
         if (!element.visible) return false;
-        if (x < element.x * scaleRatio || x > element.x * scaleRatio + element.width) return false;
-        if (y < element.y * scaleRatio || y > element.y * scaleRatio + element.height) return false;
+        if (x < element.x * scaleRatio || x > (element.x + element.width) * scaleRatio) return false;
+        if (y < element.y * scaleRatio || y > (element.y + element.height) * scaleRatio) return false;
         return true;
     });
     elementsSelected.forEach(element => {
