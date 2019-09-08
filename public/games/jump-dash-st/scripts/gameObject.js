@@ -16,10 +16,10 @@ function GameObject(position, scale, color, damage, killable) {
         velocity: Vector2D(0, 0),
         scale: scale,
         color: color,
-        onUpdate: deltaTime => {},
-        onCollision: other => {},
-        onDeath: () => {},
-        onDraw: positionOnScreen => {},
+        onUpdate: deltaTime => { },
+        onCollision: other => { },
+        onDeath: () => { },
+        onDraw: positionOnScreen => { },
         solid: true,
         grounded: false,
         g: 0.1,
@@ -78,7 +78,7 @@ function Player(position) {
                 player.dashTime = player.maxDashTime;
                 player.dashes = 0;
                 let r = Math.floor(Math.random() * 4);
-                while(r == this.r) {
+                while (r == this.r) {
                     r = Math.floor(Math.random() * 4);
                 }
                 this.r = r;
@@ -107,7 +107,7 @@ function Player(position) {
         }
     };
     player.dash = deltaTime => {
-        if (player.dashTime == 0) { 
+        if (player.dashTime == 0) {
             player.dashes++;
             plaSound("dash");
         };
@@ -178,22 +178,85 @@ function Enemy(position, walkSpeed) {
         enemy.walkTime += deltaTime;
     };
     enemy.onDeath = () => {
-        let scoreChange = enemy.value * scoreMultiplier;
-        changeScore(scoreChange);
-        scoreMultiplier++;
-        TextObject(copyVector2D(enemy.position), scoreChange, 30 + 3 * Math.log(scoreChange), 1000, "green");
+        if (enemy.value) {
+            let scoreChange = enemy.value * scoreMultiplier;
+            changeScore(scoreChange);
+            scoreMultiplier++;
+            TextObject(copyVector2D(enemy.position), scoreChange, 30 + 3 * Math.log(scoreChange), 1000, "green");
+        }
     };
     return enemy;
 }
 
-function FlyingEnemy(position, walkSpeed) {
-    let flyingEnemy = Enemy(position, walkSpeed);
+function FlyingEnemy(position, speed) {
+    let flyingEnemy = Enemy(position, speed);
     flyingEnemy.g = 0;
     return flyingEnemy;
 }
 
+function Hunter(position, speed) {
+    let hunter = FlyingEnemy(position, speed);
+    hunter.onUpdate = deltaTime => {
+        mulVectorNum(hunter.velocity, 0);
+        addVectors(hunter.velocity, player.position);
+        subVectors(hunter.velocity, hunter.position);
+        normalize(hunter.velocity);
+        mulVectorNum(hunter.velocity, hunter.walkSpeed);
+    };
+    return hunter;
+}
+
+function MasterHunter(position, walkSpeed) {
+    let masterHunter = FlyingEnemy(position, walkSpeed);
+    masterHunter.value = 100;
+    masterHunter.scale = Vector2D(100, 100);
+    masterHunter.spawTime = 2000;
+    masterHunter.time = 0;
+    masterHunter.children = [];
+    masterHunter.onUpdate = deltaTime => {
+        masterHunter.time += deltaTime;
+        if (masterHunter.time >= masterHunter.spawTime) {
+            masterHunter.time = 0;
+            if (masterHunter.children.length < 3) {
+                let hunter = Hunter(copyVector2D(position), masterHunter.walkSpeed).scale = Vector2D(70, 70);
+                masterHunter.children.push(hunter);
+            }
+        }
+    };
+    return masterHunter;
+}
+
+function Rocket(position, speed) {
+    if (!speed) speed = 4;
+    let rocket = Hunter(position, speed);
+    rocket.scale = Vector2D(20, 20);
+    rocket.value = 0;
+    rocket.onCollision = other => {
+        if (other.solid && !other.damage && !other.maxDashTime) {
+            rocket.destroy = true;
+        }
+    }
+    return rocket;
+}
+
+function RocketLuncher(position) {
+    let rocketLuncher = Enemy(position, 0);
+    rocketLuncher.value = 30;
+    rocketLuncher.scale = Vector2D(40, 70);
+    rocketLuncher.color = "orange";
+    rocketLuncher.spawTime = 1000;
+    rocketLuncher.time = 0;
+    rocketLuncher.onUpdate = deltaTime => {
+        rocketLuncher.time += deltaTime;
+        if (rocketLuncher.time >= rocketLuncher.spawTime) {
+            rocketLuncher.time = 0;
+            Rocket(copyVector2D(rocketLuncher.position));
+        }
+    };
+}
+
 function TextObject(position, text, fontSize, lifeTime, color) {
-    let textObject = GameObject(position,Vector2D(0,0), color);
+    let textObject = GameObject(position, Vector2D(0, 0), color);
     textObject.solid = false;
     textObject.g = 0;
     textObject.text = text;
@@ -216,14 +279,14 @@ function TextObject(position, text, fontSize, lifeTime, color) {
 }
 
 function Goal(position) {
-    let goal = GameObject(position, Vector2D(50,300),"yellow");
+    let goal = GameObject(position, Vector2D(50, 300), "yellow");
     goal.finishLevel = true;
     return goal;
 }
 
 function Coin(position, value) {
     if (!value) value = 1000;
-    let coin = GameObject(position,Vector2D(30,30),"yellow");
+    let coin = GameObject(position, Vector2D(30, 30), "yellow");
     coin.value = value;
     coin.collectable = true;
     coin.g = 0;

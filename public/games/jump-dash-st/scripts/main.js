@@ -61,9 +61,15 @@ window.addEventListener('resize', adjustScale);
 
 function drawGameObject(gameObject) {
     gameContext.fillStyle = gameObject.color;
-    let positionOnScreen = Vector2D(gameObject.position.x - camera.position.x + gameCanvas.width / 2,
-        gameObject.position.y - camera.position.y + gameCanvas.height / 2);
-    mulVectorNum(positionOnScreen,scaleRatio);
+    let positionOnScreen = Vector2D(gameObject.position.x - camera.position.x,
+        gameObject.position.y - camera.position.y);
+    let offset = Vector2D(player.scale.x, player.scale.x);
+    mulVectorNum(offset, -0.5);
+    addVectors(positionOnScreen, offset);
+    mulVectorNum(positionOnScreen, scaleRatio);
+    offset = Vector2D(gameCanvas.width,gameCanvas.height);
+    mulVectorNum(offset,0.5);
+    addVectors(positionOnScreen, offset);
     let scale = copyVector2D(gameObject.scale);
     mulVectorNum(scale, scaleRatio);
     gameContext.fillRect(positionOnScreen.x,

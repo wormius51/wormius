@@ -1,3 +1,5 @@
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
 /**
  * contains the information about the state of the keys.
  */
@@ -8,13 +10,21 @@ var controls = {
     rightKey: { key: "D", keyCode: 68, pressed: false }
 };
 
+if (isMobile) {
+    controls.upKey.key = "TOP";
+    controls.leftKey.key = "LEFT";
+    controls.rightKey.key = "RIGHT";
+}
+
 function saveControls () {
+    if (isMobile) return;
     let controlsString = JSON.stringify(controls);
     let date = new Date(Date.now() + 99999999999999);
     document.cookie = "controls=" + controlsString + "; path=/; expires=" + date.toUTCString();
 }
 
 function loadControls () {
+    if (isMobile) return;
     let varRgx = /controls=({[^;]+})/
     let controlsString = varRgx.exec(document.cookie);
     if (!controlsString) {
@@ -68,4 +78,36 @@ window.addEventListener('keydown', event => {
 
 window.addEventListener('keyup', event => {
     keyChange(event, false);
+});
+
+function tapChange(event, changeTo) {
+    for (let i = 0; i < event.changedTouches.length; i++) {
+        let touch = event.changedTouches[i];
+        if (touch.pageX < gameCanvas.width / 2) {
+            keyChange({keyCode: controls.leftKey.keyCode, key: "LEFT"}, changeTo);
+            if (changeTo)
+                keyChange({keyCode: controls.rightKey.keyCode, key: "RIGHT"}, false);
+        } else {
+            keyChange({keyCode: controls.rightKey.keyCode, key: "RIGHT"}, changeTo);
+            if (changeTo)
+                keyChange({keyCode: controls.leftKey.keyCode, key: "LEFT"}, false);
+        }
+        if (touch.pageY < gameCanvas.height / 2) {
+            keyChange({keyCode: controls.upKey.keyCode, key: "TOP"}, changeTo);
+        } else {
+            keyChange({keyCode: controls.upKey.keyCode, key: "TOP"}, false);
+        }
+    }
+}
+
+window.addEventListener('touchstart', event => {
+    tapChange(event, true);
+});
+
+window.addEventListener('touchmove', event => {
+    tapChange(event, true);
+});
+
+window.addEventListener('touchend', event => {
+    tapChange(event, false);
 });

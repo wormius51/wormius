@@ -17,6 +17,10 @@ var scoreText;
 var optionsPannel;
 var setControlsText;
 
+if (isMobile) {
+    screen.orientation.lock('landscape');
+}
+
 function changeScore(change) {
     score += change;
     scoreText.text = "Score: " + score;
@@ -51,6 +55,12 @@ window.addEventListener('keydown', event => {
             pause();
         }
     } else if (paused && !inMenu) {
+        unpause();
+    }
+});
+
+window.addEventListener('touchstart', event => {
+    if (paused && !inMenu) {
         unpause();
     }
 });
@@ -126,6 +136,8 @@ function drawUiElement(uiElement) {
 }
 
 function drawUiElements() {
+    uiCanvas.width = gameCanvas.width;
+    uiCanvas.height = gameCanvas.height;
     uiElements = uiElements.sort((a, b) => {
         return a.zIndex - b.zIndex;
     });
@@ -159,11 +171,12 @@ function setUpUi() {
         drawUiElements();
     });
     optionsPannel.children = [
-        UiElement(400, 100, 200, 50, "Controls", { color: "white" }, setControls),
         sfxText,
-        UiElement(400, 300, 200, 50, "Resume", { color: "white" }, unpause),
-
+        UiElement(400, 300, 200, 50, "Resume", { color: "white" }, unpause)
     ];
+    if (!isMobile) {
+        optionsPannel.children.push(UiElement(400, 100, 200, 50, "Controls", { color: "white" }, setControls));
+    }
     setControlsText = UiElement(350, 150, 100, 50, "press key for left", { color: "white" });
     optionsPannel.children.push(setControlsText);
     setVisible(optionsPannel, false);
