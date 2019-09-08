@@ -14,7 +14,6 @@ if (isMobile) {
     controls.upKey.key = "TOP";
     controls.leftKey.key = "LEFT";
     controls.rightKey.key = "RIGHT";
-    document.body.style.transform = 'rotate(90deg)';
 }
 
 function saveControls () {
