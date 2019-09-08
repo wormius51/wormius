@@ -11,6 +11,7 @@ uiContext.fillStyle = "white";
 var inMenu = false;
 var settingKey;
 
+var deathText;
 var levelText;
 var scoreText;
 var optionsPannel;
@@ -25,6 +26,9 @@ function changeScore(change) {
 function death() {
     loadLevel(currentLevel);
     pause();
+    deaths++;
+    deathText.text = "Deaths: " + deaths;
+    drawUiElements();
 }
 
 function pause() {
@@ -163,7 +167,7 @@ function setUpUi() {
     setControlsText = UiElement(350, 150, 100, 50, "press key for left", { color: "white" });
     optionsPannel.children.push(setControlsText);
     setVisible(optionsPannel, false);
-    UiElement(20, 120, 100, 100, "Options", {},
+    UiElement(20, 160, 100, 100, "Options", {},
         () => {
             if (!inMenu) {
                 inMenu = true;
@@ -174,9 +178,9 @@ function setUpUi() {
                 unpause();
             }
         });
-
-    levelText = UiElement(20, 40, 100, 50, "Level: 1");
-    scoreText = UiElement(20, 80, 100, 50, "Score: 0");
+    deathText = UiElement(20, 40, 100, 50, "Deaths: 0");
+    levelText = UiElement(20, 80, 100, 50, "Level: 1");
+    scoreText = UiElement(20, 120, 100, 50, "Score: 0");
 }
 
 window.addEventListener('click', uiClick);

@@ -10,6 +10,7 @@ gameCanvas.height = originalHeight;
 
 var paused = false;
 
+var deaths = 0;
 var score = 0;
 var scoreMultiplier = 1;
 
