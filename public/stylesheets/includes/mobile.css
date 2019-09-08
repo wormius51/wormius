@@ -1,0 +1,28 @@
+
+
+iframe {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+@media screen and (orientation:portrait) {
+    iframe {
+        top: unset;
+        left: unset;
+        transform-origin: bottom left;
+        -ms-transform: rotate(90deg); /* IE 9 */
+        -webkit-transform: rotate(90deg); /* Safari prior 9.0 */
+        transform: rotate(90deg); /* Standard syntax */
+        height: 100vw;
+        width: 100vh;
+        bottom: 100%;
+    }
+}
+
+@media screen and (orientation:landscape) {
+    iframe {
+        height: 100vh;
+        width: 100vw;
+    }
+}

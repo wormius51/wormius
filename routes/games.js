@@ -47,4 +47,8 @@ router.get("/jump-dash", (req, res, next) => {
     res.render('jump-dash',{title: "Jump Dash"});
 });
 
+router.get("/jump-dash-fullscreen", (req, res, next) => {
+    res.render('jump-dash-fullscreen',{title: "Jump Dash Fullscreen"});
+});
+
 module.exports = router;
