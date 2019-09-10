@@ -25,14 +25,16 @@ function changeScore(change) {
     score += change;
     scoreText.text = "Score: " + score;
     drawUiElements();
+    levelScore += change;
 }
 
 function death() {
+    changeScore(-levelScore);
     loadLevel(currentLevel);
     pause();
     deaths++;
     deathText.text = "Deaths: " + deaths;
-    drawUiElements();
+    scoreMultiplier = 1;
 }
 
 function pause() {
@@ -45,6 +47,15 @@ function unpause() {
     settingKey = undefined;
     setVisible(optionsPannel, false);
     window.requestAnimationFrame(frame);
+}
+
+function restart() {
+    deaths = 0;
+    deathText.text = "Deaths: " + deaths;
+    score = 0;
+    levelScore = 0;
+    loadLevel(0);
+    unpause();
 }
 
 window.addEventListener('keydown', event => {
@@ -172,7 +183,8 @@ function setUpUi() {
     });
     optionsPannel.children = [
         sfxText,
-        UiElement(400, 300, 200, 50, "Resume", { color: "white" }, unpause)
+        UiElement(400, 300, 200, 50, "Resume", { color: "white" }, unpause),
+        UiElement(400,50,200,50, "Restart Game", { color: "white" }, restart)
     ];
     if (!isMobile) {
         optionsPannel.children.push(UiElement(400, 100, 200, 50, "Controls", { color: "white" }, setControls));
@@ -194,6 +206,7 @@ function setUpUi() {
     deathText = UiElement(20, 40, 100, 50, "Deaths: 0");
     levelText = UiElement(20, 80, 100, 50, "Level: 1");
     scoreText = UiElement(20, 120, 100, 50, "Score: 0");
+    UiElement(20,560,100,50,"Version: " + version);
 }
 
 window.addEventListener('click', uiClick);

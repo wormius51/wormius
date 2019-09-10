@@ -182,7 +182,7 @@ function Enemy(position, walkSpeed) {
             let scoreChange = enemy.value * scoreMultiplier;
             changeScore(scoreChange);
             scoreMultiplier++;
-            TextObject(copyVector2D(enemy.position), scoreChange, 30 + 3 * Math.log(scoreChange), 1000, "green");
+            TextObject(copyVector2D(enemy.position), scoreChange, 30 + 3 * Math.log(scoreChange), 1000, "green").zIndex = 10;
         }
     };
     return enemy;
@@ -196,12 +196,18 @@ function FlyingEnemy(position, speed) {
 
 function Hunter(position, speed) {
     let hunter = FlyingEnemy(position, speed);
+    hunter.aimTime = 500;
+    hunter.time = 0;
     hunter.onUpdate = deltaTime => {
-        mulVectorNum(hunter.velocity, 0);
-        addVectors(hunter.velocity, player.position);
-        subVectors(hunter.velocity, hunter.position);
-        normalize(hunter.velocity);
-        mulVectorNum(hunter.velocity, hunter.walkSpeed);
+        hunter.time += deltaTime;
+        if (hunter.time >= hunter.aimTime) {
+            hunter.time = 0;
+            mulVectorNum(hunter.velocity, 0);
+            addVectors(hunter.velocity, player.position);
+            subVectors(hunter.velocity, hunter.position);
+            normalize(hunter.velocity);
+            mulVectorNum(hunter.velocity, hunter.walkSpeed);
+        }
     };
     return hunter;
 }
@@ -253,6 +259,119 @@ function RocketLuncher(position) {
             Rocket(copyVector2D(rocketLuncher.position));
         }
     };
+    return rocketLuncher;
+}
+
+var eyeBoxesKilled = 0;
+
+function EyeBox(position, scale) {
+    if (!scale) scale = Vector2D(200, 200);
+    let eyeBox = GameObject(position, scale, "clear");
+    eyeBox.solid = false;
+    eyeBox.g = 0;
+    eyeBox.hunter = Hunter(copyVector2D(position));
+    eyeBox.hunter.onDeath = () => {
+        eyeBoxesKilled++;
+        if (eyeBoxesKilled >= 2) {
+            eyeBoxesKilled = 0;
+            let position = copyVector2D(eyeBox.position);
+            addVectors(position, Vector2D(-70, -70));
+            Goal(position);
+        }
+    };
+    addVectors(eyeBox.hunter.position, eyeBox.hunter.scale);
+    eyeBox.top = Block(copyVector2D(position), Vector2D(eyeBox.scale.x + 50, 50));
+    eyeBox.bottom = Block(copyVector2D(position), Vector2D(eyeBox.scale.x + 50, 50));
+    eyeBox.left = Block(copyVector2D(position), Vector2D(50, eyeBox.scale.y + 50));
+    eyeBox.right = Block(copyVector2D(position), Vector2D(50, eyeBox.scale.y + 50));
+    eyeBox.wave = -1;
+    eyeBox.minions = [];
+    eyeBox.time = 0;
+    eyeBox.attackTime = 5000;
+    eyeBox.onUpdate = deltaTime => {
+        eyeBox.positionWalls();
+
+        eyeBox.minions = eyeBox.minions.filter(minion => {
+            return !minion.destroy;
+        });
+        if (eyeBox.minions.length == 0) {
+            eyeBox.time += deltaTime;
+            if (eyeBox.time >= eyeBox.attackTime) {
+                eyeBox.wave++;
+                eyeBox.time = 0;
+                eyeBox.spawnMinions(eyeBox.wave);
+            }
+        }
+    }
+
+    eyeBox.positionWalls = () => {
+        eyeBox.top.position.x = eyeBox.position.x;
+        eyeBox.top.position.y = eyeBox.position.y;
+
+        eyeBox.bottom.position.x = eyeBox.position.x;
+        eyeBox.bottom.position.y = eyeBox.position.y + eyeBox.scale.y;
+
+        eyeBox.left.position.y = eyeBox.position.y;
+        eyeBox.left.position.x = eyeBox.position.x;
+
+        eyeBox.right.position.y = eyeBox.position.y;
+        eyeBox.right.position.x = eyeBox.position.x + eyeBox.scale.x;
+    };
+
+    eyeBox.dropEnemy = () => {
+        let position = copyVector2D(eyeBox.position);
+        addVectors(position, Vector2D(-70, -70));
+        let enemy = Enemy(position);
+        eyeBox.minions.push(enemy);
+        return enemy;
+    }
+
+    eyeBox.dropRocketLuncher = () => {
+        let position = copyVector2D(eyeBox.position);
+        addVectors(position, Vector2D(-70, -70));
+        eyeBox.minions.push(RocketLuncher(position));
+    };
+
+    eyeBox.dropMountedLuncher = () => {
+        let enemy = eyeBox.dropEnemy();
+        let position = copyVector2D(eyeBox.position);
+        addVectors(position, Vector2D(-70, -130));
+        let rocketLuncher = RocketLuncher(position);
+        eyeBox.minions.push(rocketLuncher);
+        rocketLuncher.onUpdate = deltaTime => {
+            rocketLuncher.position.x = enemy.position.x;
+            rocketLuncher.time += deltaTime;
+            if (rocketLuncher.time >= rocketLuncher.spawTime) {
+                rocketLuncher.time = 0;
+                Rocket(copyVector2D(rocketLuncher.position));
+            }
+        };
+        return rocketLuncher;
+    }
+
+    eyeBox.spawnMinions = wave => {
+        switch (wave) {
+            case 0:
+                eyeBox.dropEnemy();
+                break;
+            case 1:
+                eyeBox.dropEnemy();
+                eyeBox.dropEnemy();
+                break;
+            case 2:
+                eyeBox.dropRocketLuncher();
+                break;
+            case 3:
+                eyeBox.dropMountedLuncher();
+                break;
+            case 4:
+                eyeBox.bottom.destroy = true;
+                break;
+        }
+    };
+
+    eyeBox.onUpdate(0);
+    return eyeBox;
 }
 
 function TextObject(position, text, fontSize, lifeTime, color) {
@@ -292,7 +411,7 @@ function Coin(position, value) {
     coin.g = 0;
     coin.onDeath = () => {
         changeScore(coin.value);
-        TextObject(copyVector2D(coin.position), coin.value, 30 + 3 * Math.log(coin.value), 1000, "green");
+        TextObject(copyVector2D(coin.position), coin.value, 30 + 3 * Math.log(coin.value), 1000, "green").zIndex = 10;
     };
     return coin;
 }

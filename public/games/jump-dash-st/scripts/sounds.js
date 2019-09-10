@@ -4,7 +4,7 @@ var soundConfig = {
 
 function plaSound(sound) {
     let audio = new Audio();
-    audio.src = "/games/jump-dash-st/sounds/" + sound + ".mp4";
+    audio.src = "sounds/" + sound + ".mp4";
     audio.volume = soundConfig.sfxVolume;
     audio.play();
 }

@@ -1,6 +1,8 @@
 const gameCanvas = document.getElementById("game-canvas");
 const gameContext = gameCanvas.getContext("2d");
 
+const version = "0.0.0.1";
+
 let originalWidth = 900;
 let originalHeight = 600;
 let scaleRatio = window.innerHeight / originalHeight;
@@ -12,6 +14,7 @@ var paused = false;
 
 var deaths = 0;
 var score = 0;
+var levelScore = 0;
 var scoreMultiplier = 1;
 
 var lastFrameTimeStamp = 0;
@@ -60,6 +63,7 @@ window.addEventListener('load', () => {
 window.addEventListener('resize', adjustScale);
 
 function drawGameObject(gameObject) {
+
     gameContext.fillStyle = gameObject.color;
     let positionOnScreen = Vector2D(gameObject.position.x - camera.position.x,
         gameObject.position.y - camera.position.y);
@@ -67,14 +71,16 @@ function drawGameObject(gameObject) {
     mulVectorNum(offset, -0.5);
     addVectors(positionOnScreen, offset);
     mulVectorNum(positionOnScreen, scaleRatio);
-    offset = Vector2D(gameCanvas.width,gameCanvas.height);
-    mulVectorNum(offset,0.5);
+    offset = Vector2D(gameCanvas.width, gameCanvas.height);
+    mulVectorNum(offset, 0.5);
     addVectors(positionOnScreen, offset);
     let scale = copyVector2D(gameObject.scale);
     mulVectorNum(scale, scaleRatio);
-    gameContext.fillRect(positionOnScreen.x,
-        positionOnScreen.y,
-        scale.x, scale.y);
+    if (gameObject.color != "clear") {
+        gameContext.fillRect(positionOnScreen.x,
+            positionOnScreen.y,
+            scale.x, scale.y);
+    }
     gameObject.onDraw(positionOnScreen);
 }
 
