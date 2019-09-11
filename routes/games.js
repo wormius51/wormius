@@ -44,11 +44,19 @@ function GameLink(name, url, imageSrc, description) {
 }
 
 router.get("/jump-dash", (req, res, next) => {
-    res.render('jump-dash',{title: "Jump Dash"});
+    res.render('jump-dash',
+    {title: "Jump Dash",
+    description: "A game where you jump, and then you dash.",
+    keywords: ["game","platformer","webgame"],
+    image: "/images/gameLinks/jump-dash.png"});
 });
 
 router.get("/jump-dash-fullscreen", (req, res, next) => {
-    res.render('jump-dash-fullscreen',{title: "Jump Dash Fullscreen"});
+    res.render('jump-dash-fullscreen',
+    {title: "Jump Dash Fullscreen",
+    description: "A game where you jump, and then you dash.",
+    keywords: ["game","platformer","webgame"],
+    image: "/images/gameLinks/jump-dash.png"});
 });
 
 module.exports = router;

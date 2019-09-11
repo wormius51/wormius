@@ -8,7 +8,8 @@
     <meta name="author" content="Eyal Hazor">
     <meta name="description"
         content="<%if (locals.description) { %><%= description %><% } else { %>Online games and gamedev tutorials<% } %>">
-    <meta name="keywords" content="HTML,JavaScript,Game Development,Tutorial">
+    <meta name="keywords" content="<%if (locals.keywords) { %><% keywords.forEach( keyword => { %><%= keyword %>,<% }); %><% } else { %>HTML,JavaScript,Game Development,Tutorial<% } %>">
+    <meta name="og:image" content="<%if (locals.image) { %><%= image %><% } else { %>/images/worm.png<% } %>">
     <title><%if (title == "Home") { %>
         Wormius Games
         <% } else { %>
