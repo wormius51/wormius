@@ -52,6 +52,7 @@ function loadUnlocks() {
     for (let i = 0; i < loadedUnlocks.skins.length; i++) {
         unlocks.skins[i].unlocked = loadedUnlocks.skins[i].unlocked;
     }
+    unlocks.currentSkin = loadedUnlocks.currentSkin;
 }
 
 window.addEventListener('load', loadUnlocks);
