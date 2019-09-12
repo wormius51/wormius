@@ -223,6 +223,7 @@ function setUpUi() {
     unlockTextBox = UiElement(uiCanvas.width / scaleRatio, 20, 500, 80, "", { backgroundColor: "rgb(88, 78, 153)" ,color: "white", paddingX: 80, paddingY: 10 });
     let itemBox = UiElement(uiCanvas.width / scaleRatio + 10, 30, 60, 60, "",{ backgroundColor: "blue" });
     unlockTextBox.children.push(itemBox);
+    setVisible(unlockTextBox,false);
 }
 
 window.addEventListener('click', uiClick);
@@ -281,6 +282,7 @@ function unlockSkinButton(i, skin) {
 function showUnlock(skin) {
     unlockTextBox.text = skin.description;
     unlockTextBox.children[0].style.image = images[skin.name];
+    setVisible(unlockTextBox,true);
     moveunlockBox(0);
 }
 
@@ -297,6 +299,7 @@ function moveunlockBox(offset) {
         setTimeout(() => {
             unlockTextBox.x = uiCanvas.width / scaleRatio;
             unlockTextBox.children[0].x = uiCanvas.width / scaleRatio + 10;
+            setVisible(unlockTextBox,false);
             drawUiElements();
         }, 2000);
     }
