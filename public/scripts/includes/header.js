@@ -2,4 +2,5 @@ const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/
 
 function gameFullScreen() {
     document.getElementsByClassName("game-container")[0].children[0].requestFullscreen();
+    screen.orientation.lock('landscape');
 }
