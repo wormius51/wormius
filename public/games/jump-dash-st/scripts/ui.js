@@ -17,6 +17,11 @@ var scoreText;
 var optionsPannel;
 var setControlsText;
 
+var skinsText;
+var skinButtons = [];
+
+var unlockTextBox;
+
 if (isMobile) {
     screen.orientation.lock('landscape');
 }
@@ -29,6 +34,7 @@ function changeScore(change) {
 }
 
 function death() {
+    checkUnlocks();
     changeScore(-levelScore);
     loadLevel(currentLevel);
     pause();
@@ -114,6 +120,9 @@ function drawUiElement(uiElement) {
             uiContext.fillStyle = uiElement.style.backgroundColor;
             uiContext.fillRect(uiElement.x * scaleRatio, uiElement.y * scaleRatio, uiElement.width * scaleRatio, uiElement.height * scaleRatio);
         }
+        if (uiElement.style.image) {
+            uiContext.drawImage(uiElement.style.image, uiElement.x * scaleRatio, uiElement.y * scaleRatio, uiElement.width * scaleRatio, uiElement.height * scaleRatio);
+        }
     }
     if (uiElement.text) {
         let x = uiElement.x;
@@ -181,16 +190,19 @@ function setUpUi() {
         sfxText.text = "SFX volume: " + soundConfig.sfxVolume;
         drawUiElements();
     });
+    skinsText = UiElement(250, 350, 200, 50, "Skins", { color: "white" })
     optionsPannel.children = [
         sfxText,
         UiElement(400, 300, 200, 50, "Resume", { color: "white" }, unpause),
-        UiElement(400,50,200,50, "Restart Game", { color: "white" }, restart)
+        UiElement(400, 50, 200, 50, "Restart Game", { color: "white" }, restart),
+        skinsText,
     ];
     if (!isMobile) {
         optionsPannel.children.push(UiElement(400, 100, 200, 50, "Controls", { color: "white" }, setControls));
     }
     setControlsText = UiElement(350, 150, 100, 50, "press key for left", { color: "white" });
     optionsPannel.children.push(setControlsText);
+    makeSkinButtons();
     setVisible(optionsPannel, false);
     UiElement(20, 160, 100, 100, "Options", {},
         () => {
@@ -206,7 +218,11 @@ function setUpUi() {
     deathText = UiElement(20, 40, 100, 50, "Deaths: 0");
     levelText = UiElement(20, 80, 100, 50, "Level: 1");
     scoreText = UiElement(20, 120, 100, 50, "Score: 0");
-    UiElement(20,560,100,50,"Version: " + version);
+    UiElement(20, 560, 100, 50, "Version: " + version);
+
+    unlockTextBox = UiElement(uiCanvas.width / scaleRatio, 20, 500, 80, "", { backgroundColor: "rgb(88, 78, 153)" ,color: "white", paddingX: 80, paddingY: 10 });
+    let itemBox = UiElement(uiCanvas.width / scaleRatio + 10, 30, 60, 60, "",{ backgroundColor: "blue" });
+    unlockTextBox.children.push(itemBox);
 }
 
 window.addEventListener('click', uiClick);
@@ -227,4 +243,61 @@ function setControls() {
         return
     }
     setVisible(setControlsText, true);
+}
+
+function makeSkinButtons() {
+    for (let i = 0; i < unlocks.skins.length; i++) {
+        let skin = unlocks.skins[i];
+        let skinButton = UiElement(250 + 70 * i, 400, 60, 60);
+        skinButtons.push(skinButton);
+        if (skin.unlocked) {
+            unlockSkinButton(i, skin.name);
+        } else {
+            skinButton.style = { backgroundColor: "grey", };
+            skinButton.onClick = () => {
+                skinsText.text = skin.description;
+                drawUiElements();
+            }
+        }
+        optionsPannel.children.push(skinButton);
+
+    }
+}
+
+function unlockSkinButton(i, skin) {
+    let skinButton = skinButtons[i];
+    skinButton.text = "";
+    skinButton.style = { backgroundColor: "blue", image: images[skin] };
+    skinButton.onClick = () => {
+        unlocks.currentSkin = skin;
+        saveUnlocks();
+        if (player) {
+            player.image = images[skin];
+        }
+        unpause();
+    };
+}
+
+function showUnlock(skin) {
+    unlockTextBox.text = skin.description;
+    unlockTextBox.children[0].style.image = images[skin.name];
+    moveunlockBox(0);
+}
+
+function moveunlockBox(offset) {
+    if (offset < unlockTextBox.width) {
+        unlockTextBox.x = gameCanvas.width / scaleRatio - offset
+        unlockTextBox.children[0].x = gameCanvas.width / scaleRatio + 10 - offset;
+        drawUiElements();
+        offset += 20 / (1 + offset / 23);
+        setTimeout(() => {
+            moveunlockBox(offset);
+        }, 5);
+    } else {
+        setTimeout(() => {
+            unlockTextBox.x = uiCanvas.width / scaleRatio;
+            unlockTextBox.children[0].x = uiCanvas.width / scaleRatio + 10;
+            drawUiElements();
+        }, 2000);
+    }
 }

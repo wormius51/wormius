@@ -2,10 +2,13 @@ const router = require('express').Router();
 const fs = require('fs');
 const path = require('path');
 
-function Tutorial(name, url, imageSrc, description) {
+function Tutorial(name, imageSrc, description) {
+    let fileName = name.toLowerCase();;
+    fileName = fileName.replace(/\s/g,"-");
     let tutorial = {
         name: name,
-        url: url,
+        fileName: fileName,
+        url: "/tutorials/" +  fileName,
         imageSrc: imageSrc,
         description: description
     };
@@ -13,9 +16,12 @@ function Tutorial(name, url, imageSrc, description) {
 }
 
 let tutorials = [
-    Tutorial("Making a game with HTML", "/tutorials/making-a-game-with-html",
+    Tutorial("Making A Game With HTML",
         "/images/tutorials/making-a-game-with-html/thumbnail.png",
-        "Starting with nothing, you will make a simple game in HTML.")
+        "Starting with nothing, you will make a simple game in HTML.")/*,
+    Tutorial("Making A Platformer With HTML",
+        "/images/gameLinks/jump-dash.png",
+        "In this tutorial you will make a platformer with basic physics using HTML.")*/
 ];
 
 router.get('/', (req, res) => {
@@ -29,24 +35,17 @@ router.get('/', (req, res) => {
 
 router.get('/:tutname', (req, res) => {
     if (req.params.tutname.match(/\.\./g)) {
-        res.status(403).send({error: "Think you are funny?"});
+        res.status(403).send({ error: "Think you are funny?" });
         return;
     }
-    let p = path.join(__dirname, '..', 'views', 'tutorials', req.params.tutname + '.ejs');
-    ifExists(p, exists => {
-        if (exists) {
-            let tutorial = tutorials.find(tut => {
-                return tut.url.match(req.params.tutname);
-            });
-            let args = { title: req.params.tutname };
-            if (tutorial) {
-                args.description = tutorial.description;
-            }
-            res.render(path.join('tutorials', req.params.tutname), args);
-        } else {
-            res.status(404).send({error: "This page was not found"});
-        }
+    let tutorial = tutorials.find(tut => {
+        return tut.fileName.match(req.params.tutname);
     });
+    if (tutorial) {
+        res.render("tutorials/" +  tutorial.fileName, {title: tutorial.name, description: tutorial.description, image: tutorial.imageSrc});
+    } else {
+        res.status(404).send({ error: "Not found." });
+    }
 });
 
 function ifExists(path, callback) {

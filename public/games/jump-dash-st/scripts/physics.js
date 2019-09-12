@@ -51,7 +51,7 @@ function mulVectorNum(vector2D, number) {
  * @param {*} vector2D 
  */
 function normal(vector2D) {
-    return Math.sqrt(Math.pow(vector2D.x,2) + Math.pow(vector2D.y,2));
+    return Math.sqrt(Math.pow(vector2D.x, 2) + Math.pow(vector2D.y, 2));
 }
 
 /**
@@ -131,26 +131,44 @@ function blockGameObject(gameObject, blocker) {
     if (dy > dx) {
         if (gameObject.position.x > blocker.position.x) {
             if (gameObject.velocity.x < 0) {
-                gameObject.velocity.x = 0;
+                if (blocker.bouncy) {
+                    gameObject.velocity.x *= -1;
+                } else {
+                    gameObject.velocity.x = 0;
+                }
                 gameObject.position.x = blocker.position.x + blocker.scale.x;
             }
         } else {
             if (gameObject.velocity.x > 0) {
-                gameObject.velocity.x = 0;
+                if (blocker.bouncy) {
+                    gameObject.velocity.x *= -1;
+                } else {
+                    gameObject.velocity.x = 0;
+                }
                 gameObject.position.x = blocker.position.x - gameObject.scale.x;
             }
         }
     } else {
         if (gameObject.position.y > blocker.position.y) {
             if (gameObject.velocity.y < 0) {
-                gameObject.velocity.y = 0;
+                if (blocker.bouncy) {
+                    gameObject.velocity.y *= -1;
+                } else {
+                    gameObject.velocity.y = 0;
+                }
                 gameObject.position.y = blocker.position.y + blocker.scale.y;
             }
         } else {
             if (gameObject.velocity.y > 0) {
-                gameObject.velocity.y = 0;
+                if (blocker.bouncy) {
+                    gameObject.velocity.y *= -1;
+                } else {
+                    gameObject.velocity.y = 0;
+                }
                 gameObject.position.y = blocker.position.y - gameObject.scale.y;
-                gameObject.grounded = true;
+                if (!blocker.bouncy) {
+                    gameObject.grounded = true;
+                }
             }
         }
     }

@@ -3,8 +3,219 @@
 <body>
     <div class="container-fluid">
         <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content rounded container-fluid row-fluid" role="main">
-            <h1 class="primaryText">Making A Game With HTML</h1>
+            <h1 class="primaryText">Making A Platformer With HTML</h1>
+            <h4 class="primaryText">Introduction</h4>
+            <p class="lead">
+                In this tutorial we will be making a platformer.
+                The game will have basic 2D physics and will be drawn on a canvas element.
+                This tutorial is based on a game im developing called
+                <a href="/games/jump-dash">Jump Dash (link)</a>
+            </p>
+            <h4 class="primaryText">Setting Up The Files</h4>
+            <p class="lead">
+                First of all let's make a folder that will hold all the files of the game.
+                Name it whatever you want your game to be named. Next, make a file named index.html (not
+                index.html.txt).
+                In the html file create two canvas elements. One will be for the game itself, and the other for the ui:
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+    </head>
+    <body>
+        <canvas id = "game-canvas"></canvas>
+        <canvas id = "ui-canvas"></canvas>
+    </body>
+    </html></script></code></pre>
+            <p class="lead">
+                We need the canvases to be positioned properly and allso add a background color if you want.
+                For that we create a CSS file. CSS is a lenguage that deals with the style of elements in a web page.
+                So create a file named style.css:
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    body {
+        overflow: hidden;
+    }
+    
+    canvas {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+    }
+    
+    #game-canvas {
+        background-color: darkslateblue;
+    }</script></code></pre>
+            <p class="lead">
+                "overflow: hidden" is because I don't want to see any scrollbars in the game window.
+                Every canvas is going to be placed 0 pixels from the top of the page and 0 pixels from the left of the
+                page.
+                "#game-canvas" refers to the element which has an id of "game-canvas".
+            </p>
+            <p class="lead">
+                Next, create the first JavaScript file. Let's put all the JavaScript files in one folder,
+                that's easier to manage that way. So create a folder scripts and in it a file named main.js
+            </p>
+            <p class="lead">
+                Now add the CSS and the JavaScript files to index.html :
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <canvas id = "game-canvas"></canvas>
+        <canvas id = "ui-canvas"></canvas></script>
+        &lt;script src = "scripts/main.js"&gt;&lt;/script&gt;<script type="text" class="rounded">
+    </body>
+    </html></script></code></pre>
+            <p class="lead">
+                From now on, every time we create a new JavaScript file, add it to index.html
+                in the same way we just added main.js .
+            </p>
+            <h4 class="primaryText">Drawing Rectangles</h4>
+            <p class="lead">
+                To draw anything on the canvas we need to first get it in the code.
+                To do that, we use the id of the canvas. We will also get the context,
+                a property of the canvas. In main.js :
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const gameCanvas = document.getElementById("game-canvas");
+    const gameContext = gameCanvas.getContext("2d");</script></code></pre>
+            <p class="lead">
+                Let's set the width and height of the canvas to the width aand height of the window:
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const gameCanvas = document.getElementById("game-canvas");
+    const gameContext = gameCanvas.getContext("2d");
+    gameCanvas.width = window.innerWidth;
+    gameCanvas.height = window.innerHeight;</script></code></pre>
+            <p class="lead">
+                For start, let's simply draw a rectangle on the canvas.
+                Set the color to red and draw with the fillRect method:
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const gameCanvas = document.getElementById("game-canvas");
+    const gameContext = gameCanvas.getContext("2d");
+    gameCanvas.width = window.innerWidth;
+    gameCanvas.height = window.innerHeight;
 
+    gameContext.fillStyle = "red";
+    gameContext.fillRect(20,20,100,300);</script></code></pre>
+            <p class="lead">
+                The first two arguments are the position of the left top corner
+                of the rectangle (y coordinate goes from top to bottom).
+                The second two arguments are the width and height of the rectangle.
+            </p>
+            <p class="lead">
+                That's nice but we want to represent objects on the screen.
+                Not hard coded drawings like this one. So first define an object that's
+                going to make drawing and physics simpler in the future.
+                Vector2D will hold an x value and a y value.
+                Define it in a new JavaScript file named physics.js :
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    function Vector2D(x, y) {
+        let vector2D = {
+            x: x,
+            y: y
+        };
+        return vector2D;
+    }</script></code></pre>
+            <p class="lead">
+                Every time we'll call this function it will return a new vector.
+            </p>
+            <p class="lead">
+                Now it's time to define GameObject. The stuff that actually moves and interact, like walls and enemies.
+                For this create a new file gameobject.js :
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    var gameObjects = [];
+    var currentId = 0;
+    function GameObject(position, scale, color) {
+        let gameObject = {
+            id: currentId,
+            position: position,
+            scale: scale,
+            color: color
+        };
+        currentId++;
+        gameObjects.push(gameObject);
+        return gameObject;
+    }</script></code></pre>
+            <p class="lead">
+                gameObjects is a list of the gameObjects that were created, added by the push method.
+                Each gameobject gets a new id, I chose to just incrament.
+                The properties position and scale are vector2D and color is a string like "red".
+            </p>
+            <p class="lead">
+                Again, remember to add these two JavaScript files to index.html .
+            </p>
+            <p class="lead">
+                In main.js , make a function for drawing a gameObject.
+                Then, a function to draw everything.
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const gameCanvas = document.getElementById("game-canvas");
+    const gameContext = gameCanvas.getContext("2d");
+    gameCanvas.width = window.innerWidth;
+    gameCanvas.height = window.innerHeight;
+
+    function drawGameObject(gameObject) {
+        gameContext.fillStyle = gameObject.color;
+        gameContext.fillRect(gameObject.position.x, gameObject.position.y, 
+        gameObject.scale.x, gameObject.scale.y);
+    }
+
+    function drawGameScreen() {
+        gameContext.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+        gameObjects.forEach(drawGameObject);
+    }</script></code></pre>
+            <p class="lead">
+                The first line of drawGameScreen clears the canvas.
+                Now you can add gameObjects by calling the GameObject function.
+                After that call drawGameScreen to draw them.
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const gameCanvas = document.getElementById("game-canvas");
+    const gameContext = gameCanvas.getContext("2d");
+    gameCanvas.width = window.innerWidth;
+    gameCanvas.height = window.innerHeight;
+
+    function drawGameObject(gameObject) {
+        gameContext.fillStyle = gameObject.color;
+        gameContext.fillRect(gameObject.position.x, gameObject.position.y, 
+        gameObject.scale.x, gameObject.scale.y);
+    }
+
+    function drawGameScreen() {
+        gameContext.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+        gameObjects.forEach(drawGameObject);
+    }
+    
+    window.addEventListener('load',() => {
+        GameObject(Vector2D(40,40),Vector2D(60,200),"black");
+        GameObject(Vector2D(140,40),Vector2D(200,100),"white");
+        drawGameScreen();
+    });</script></code></pre>
+            <p class="lead">
+                We create the gameObjects in the event listener because we want to make sure
+                the scripts are loaded before the functions are called. If you didn't do that
+                and you added the main.js script before gameobject.js, the GameObject function
+                would not be definde.
+            </p>
+            <h4 class="primaryText">Frames And Movement</h4>
         </main>
     </div>
 

@@ -1,7 +1,7 @@
 const gameCanvas = document.getElementById("game-canvas");
 const gameContext = gameCanvas.getContext("2d");
 
-const version = "0.0.0.1";
+const version = "0.0.0.2";
 
 let originalWidth = 900;
 let originalHeight = 600;
@@ -44,11 +44,12 @@ function frame(timeStamp) {
     if (!paused) {
         window.requestAnimationFrame(frame);
     }
+    checkUnlocks();
 }
 
 function adjustScale() {
     gameCanvas.width = window.innerWidth;
-    gameCanvas.height = window.innerHeight
+    gameCanvas.height = window.innerHeight;
     scaleRatio = window.innerHeight / originalHeight;
     drawUiElements();
 }
@@ -80,6 +81,9 @@ function drawGameObject(gameObject) {
         gameContext.fillRect(positionOnScreen.x,
             positionOnScreen.y,
             scale.x, scale.y);
+    }
+    if (gameObject.image) {
+        gameContext.drawImage(gameObject.image,positionOnScreen.x,positionOnScreen.y,scale.x,scale.y);
     }
     gameObject.onDraw(positionOnScreen);
 }

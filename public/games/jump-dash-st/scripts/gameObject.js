@@ -38,6 +38,9 @@ function clearGameObjects() {
 
 function Player(position) {
     let player = GameObject(position, Vector2D(50, 50), "blue");
+    if (unlocks.currentSkin) {
+        player.image = images[unlocks.currentSkin];
+    } 
     player.walkSpeed = 7;
     player.jumpSpeed = 20;
     player.maxJumpTime = 1500;
@@ -160,6 +163,13 @@ function Block(position, scale) {
     let block = GameObject(position, scale, "black");
     block.g = 0;
     return block;
+}
+
+function Gummy(position, scale) {
+    let gummy = Block(position, scale);
+    gummy.bouncy = true;
+    gummy.color = "purple";
+    return gummy;
 }
 
 function Enemy(position, walkSpeed) {
