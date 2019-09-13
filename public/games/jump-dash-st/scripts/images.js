@@ -1,13 +1,17 @@
  
 var images = [];
-images.gentelCube = new Image();;
-images.gentelCube.src = "images/gentelCube.png";
 
-images.ninja = new Image();
-images.ninja.src = "images/ninja.png";
+var imagesNames = [
+    "gentelCube",
+    "ninja",
+    "dummy",
+    "nine",
+    "up",
+    "left",
+    "right"
+];
 
-images.dummy = new Image();
-images.dummy.src = "images/dummy.png";
-
-images.nine = new Image();
-images.nine.src = "images/nine.png";
+imagesNames.forEach(name => {
+    images[name] = new Image();
+    images[name].src = "images/" + name + ".png";
+});

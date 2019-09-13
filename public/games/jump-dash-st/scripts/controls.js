@@ -83,16 +83,16 @@ window.addEventListener('keyup', event => {
 function tapChange(event, changeTo) {
     for (let i = 0; i < event.changedTouches.length; i++) {
         let touch = event.changedTouches[i];
-        if (touch.pageX < gameCanvas.width / 2) {
+        if (checkOnUi(mobileButtons.left, touch.pageX, touch.pageY)) {
             keyChange({keyCode: controls.leftKey.keyCode, key: "LEFT"}, changeTo);
             if (changeTo)
                 keyChange({keyCode: controls.rightKey.keyCode, key: "RIGHT"}, false);
-        } else {
+        } else if (checkOnUi(mobileButtons.right, touch.pageX, touch.pageY)) {
             keyChange({keyCode: controls.rightKey.keyCode, key: "RIGHT"}, changeTo);
             if (changeTo)
                 keyChange({keyCode: controls.leftKey.keyCode, key: "LEFT"}, false);
         }
-        if (touch.pageY < gameCanvas.height / 2) {
+        if (checkOnUi(mobileButtons.up, touch.pageX, touch.pageY)) {
             keyChange({keyCode: controls.upKey.keyCode, key: "TOP"}, changeTo);
         } else {
             keyChange({keyCode: controls.upKey.keyCode, key: "TOP"}, false);

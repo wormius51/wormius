@@ -19,6 +19,7 @@ var setControlsText;
 
 var skinsText;
 var skinButtons = [];
+var mobileButtons = [];
 
 var unlockTextBox;
 
@@ -165,14 +166,18 @@ function drawUiElements() {
     uiElements.forEach(drawUiElement);
 }
 
+function checkOnUi(element, x, y) {
+    if (!element.visible) return false;
+    if (x < element.x * scaleRatio || x > (element.x + element.width) * scaleRatio) return false;
+    if (y < element.y * scaleRatio || y > (element.y + element.height) * scaleRatio) return false;
+    return true;
+}
+
 function uiClick(event) {
     let x = event.clientX;
     let y = event.clientY;
     let elementsSelected = uiElements.filter(element => {
-        if (!element.visible) return false;
-        if (x < element.x * scaleRatio || x > (element.x + element.width) * scaleRatio) return false;
-        if (y < element.y * scaleRatio || y > (element.y + element.height) * scaleRatio) return false;
-        return true;
+        return checkOnUi(element, x, y);
     });
     elementsSelected.forEach(element => {
         if (element.onClick) {
@@ -199,6 +204,9 @@ function setUpUi() {
     ];
     if (!isMobile) {
         optionsPannel.children.push(UiElement(400, 100, 200, 50, "Controls", { color: "white" }, setControls));
+        UiElement(20, 560, 100, 50, "Version: " + version, { color: "white" });
+    } else {
+        makeMobileButtons();
     }
     setControlsText = UiElement(350, 150, 100, 50, "press key for left", { color: "white" });
     optionsPannel.children.push(setControlsText);
@@ -218,12 +226,12 @@ function setUpUi() {
     deathText = UiElement(20, 40, 100, 50, "Deaths: 0");
     levelText = UiElement(20, 80, 100, 50, "Level: 1");
     scoreText = UiElement(20, 120, 100, 50, "Score: 0");
-    UiElement(20, 560, 100, 50, "Version: " + version);
 
-    unlockTextBox = UiElement(uiCanvas.width / scaleRatio, 20, 500, 80, "", { backgroundColor: "rgb(88, 78, 153)" ,color: "white", paddingX: 80, paddingY: 10 });
-    let itemBox = UiElement(uiCanvas.width / scaleRatio + 10, 30, 60, 60, "",{ backgroundColor: "blue" });
+
+    unlockTextBox = UiElement(uiCanvas.width / scaleRatio, 20, 500, 80, "", { backgroundColor: "rgb(88, 78, 153)", color: "white", paddingX: 80, paddingY: 10 });
+    let itemBox = UiElement(uiCanvas.width / scaleRatio + 10, 30, 60, 60, "", { backgroundColor: "blue" });
     unlockTextBox.children.push(itemBox);
-    setVisible(unlockTextBox,false);
+    setVisible(unlockTextBox, false);
 }
 
 window.addEventListener('click', uiClick);
@@ -265,6 +273,12 @@ function makeSkinButtons() {
     }
 }
 
+function makeMobileButtons() {
+    mobileButtons.left = UiElement(0, 400, 200, 200, "", { image: images.left });
+    mobileButtons.right = UiElement(200, 400, 200, 200, "", { image: images.right });
+    mobileButtons.up = UiElement(gameCanvas.width / scaleRatio - 200, 400, 200, 200, "", { image: images.up });
+}
+
 function unlockSkinButton(i, skin) {
     let skinButton = skinButtons[i];
     skinButton.text = "";
@@ -282,7 +296,7 @@ function unlockSkinButton(i, skin) {
 function showUnlock(skin) {
     unlockTextBox.text = skin.description;
     unlockTextBox.children[0].style.image = images[skin.name];
-    setVisible(unlockTextBox,true);
+    setVisible(unlockTextBox, true);
     moveunlockBox(0);
 }
 
@@ -299,7 +313,7 @@ function moveunlockBox(offset) {
         setTimeout(() => {
             unlockTextBox.x = uiCanvas.width / scaleRatio;
             unlockTextBox.children[0].x = uiCanvas.width / scaleRatio + 10;
-            setVisible(unlockTextBox,false);
+            setVisible(unlockTextBox, false);
             drawUiElements();
         }, 2000);
     }

@@ -51,6 +51,10 @@ function adjustScale() {
     gameCanvas.width = window.innerWidth;
     gameCanvas.height = window.innerHeight;
     scaleRatio = window.innerHeight / originalHeight;
+    if (unlockTextBox) {
+        unlockTextBox.x = uiCanvas.width / scaleRatio;
+        unlockTextBox.children[0].x = uiCanvas.width / scaleRatio + 10;
+    }
     drawUiElements();
 }
 
@@ -83,7 +87,7 @@ function drawGameObject(gameObject) {
             scale.x, scale.y);
     }
     if (gameObject.image) {
-        gameContext.drawImage(gameObject.image,positionOnScreen.x,positionOnScreen.y,scale.x,scale.y);
+        gameContext.drawImage(gameObject.image, positionOnScreen.x, positionOnScreen.y, scale.x, scale.y);
     }
     gameObject.onDraw(positionOnScreen);
 }
