@@ -11,7 +11,7 @@ var controls = {
 };
 
 if (isMobile) {
-    controls.upKey.key = "TOP";
+    controls.upKey.key = "UP";
     controls.leftKey.key = "LEFT";
     controls.rightKey.key = "RIGHT";
 }
@@ -93,9 +93,9 @@ function tapChange(event, changeTo) {
                 keyChange({ keyCode: controls.leftKey.keyCode, key: "LEFT" }, false);
         } else {
             if (checkOnUi(mobileButtons.up, touch.pageX, touch.pageY)) {
-                keyChange({ keyCode: controls.upKey.keyCode, key: "TOP" }, changeTo);
+                keyChange({ keyCode: controls.upKey.keyCode, key: "UP" }, changeTo);
             } else {
-                keyChange({ keyCode: controls.upKey.keyCode, key: "TOP" }, false);
+                keyChange({ keyCode: controls.upKey.keyCode, key: "UP" }, false);
             }
         }
     }
