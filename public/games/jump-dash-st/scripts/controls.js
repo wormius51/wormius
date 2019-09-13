@@ -16,14 +16,14 @@ if (isMobile) {
     controls.rightKey.key = "RIGHT";
 }
 
-function saveControls () {
+function saveControls() {
     if (isMobile) return;
     let controlsString = JSON.stringify(controls);
     let date = new Date(Date.now() + 99999999999999);
     document.cookie = "controls=" + controlsString + "; path=/; expires=" + date.toUTCString();
 }
 
-function loadControls () {
+function loadControls() {
     if (isMobile) return;
     let varRgx = /controls=({[^;]+})/
     let controlsString = varRgx.exec(document.cookie);
@@ -84,18 +84,19 @@ function tapChange(event, changeTo) {
     for (let i = 0; i < event.changedTouches.length; i++) {
         let touch = event.changedTouches[i];
         if (checkOnUi(mobileButtons.left, touch.pageX, touch.pageY)) {
-            keyChange({keyCode: controls.leftKey.keyCode, key: "LEFT"}, changeTo);
+            keyChange({ keyCode: controls.leftKey.keyCode, key: "LEFT" }, changeTo);
             if (changeTo)
-                keyChange({keyCode: controls.rightKey.keyCode, key: "RIGHT"}, false);
+                keyChange({ keyCode: controls.rightKey.keyCode, key: "RIGHT" }, false);
         } else if (checkOnUi(mobileButtons.right, touch.pageX, touch.pageY)) {
-            keyChange({keyCode: controls.rightKey.keyCode, key: "RIGHT"}, changeTo);
+            keyChange({ keyCode: controls.rightKey.keyCode, key: "RIGHT" }, changeTo);
             if (changeTo)
-                keyChange({keyCode: controls.leftKey.keyCode, key: "LEFT"}, false);
-        }
-        if (checkOnUi(mobileButtons.up, touch.pageX, touch.pageY)) {
-            keyChange({keyCode: controls.upKey.keyCode, key: "TOP"}, changeTo);
+                keyChange({ keyCode: controls.leftKey.keyCode, key: "LEFT" }, false);
         } else {
-            keyChange({keyCode: controls.upKey.keyCode, key: "TOP"}, false);
+            if (checkOnUi(mobileButtons.up, touch.pageX, touch.pageY)) {
+                keyChange({ keyCode: controls.upKey.keyCode, key: "TOP" }, changeTo);
+            } else {
+                keyChange({ keyCode: controls.upKey.keyCode, key: "TOP" }, false);
+            }
         }
     }
 }
