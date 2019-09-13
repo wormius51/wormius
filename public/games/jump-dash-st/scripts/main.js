@@ -55,6 +55,9 @@ function adjustScale() {
         unlockTextBox.x = uiCanvas.width / scaleRatio;
         unlockTextBox.children[0].x = uiCanvas.width / scaleRatio + 10;
     }
+    if (mobileButtons.up) {
+        mobileButtons.up.x = gameCanvas.width / scaleRatio - 200;
+    }
     drawUiElements();
 }
 
