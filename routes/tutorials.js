@@ -18,10 +18,10 @@ function Tutorial(name, imageSrc, description) {
 let tutorials = [
     Tutorial("Making A Game With HTML",
         "/images/tutorials/making-a-game-with-html/thumbnail.png",
-        "Starting with nothing, you will make a simple game in HTML.")/*,
+        "Starting with nothing, you will make a simple game in HTML."),
     Tutorial("Making A Platformer With HTML",
         "/images/gameLinks/jump-dash.png",
-        "In this tutorial you will make a platformer with basic physics using HTML.")*/
+        "In this tutorial you will make a platformer with basic physics using HTML.")
 ];
 
 router.get('/', (req, res) => {

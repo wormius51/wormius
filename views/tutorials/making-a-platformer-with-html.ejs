@@ -8,15 +8,20 @@
             <p class="lead">
                 In this tutorial we will be making a platformer.
                 The game will have basic 2D physics and will be drawn on a canvas element.
-                This tutorial is based on a game im developing called
-                <a href="/games/jump-dash">Jump Dash (link)</a>
+                The final result can be found here
+                <a href="/tutorial-games/html-platformer">HTML Platformer (link)</a>
+            </p>
+            <p class="lead">
+                If you are completely unfamiliar with programming or find this tutorial to be to complicated,
+                try my more basic tutorial here: <a href="/tutorials/making-a-game-with-html">Making A Game With HTML
+                    (link)</a>
             </p>
             <h4 class="primaryText">Setting Up The Files</h4>
             <p class="lead">
                 First of all let's make a folder that will hold all the files of the game.
                 Name it whatever you want your game to be named. Next, make a file named index.html (not
                 index.html.txt).
-                In the html file create two canvas elements. One will be for the game itself, and the other for the ui:
+                In the html file create a canvas element for the game screen:
             </p>
             <pre class="lead rounded"><code><script type="text" class="rounded">
     <!DOCTYPE html>
@@ -25,11 +30,11 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Document</title>
+        <title>HTML Platformer</title>
     </head>
     <body>
         <canvas id = "game-canvas"></canvas>
-        <canvas id = "ui-canvas"></canvas>
+        
     </body>
     </html></script></code></pre>
             <p class="lead">
@@ -42,20 +47,18 @@
         overflow: hidden;
     }
     
-    canvas {
+    #game-canvas {
         position: absolute;
         top: 0px;
         left: 0px;
-    }
-    
-    #game-canvas {
         background-color: darkslateblue;
     }</script></code></pre>
             <p class="lead">
                 "overflow: hidden" is because I don't want to see any scrollbars in the game window.
-                Every canvas is going to be placed 0 pixels from the top of the page and 0 pixels from the left of the
-                page.
                 "#game-canvas" refers to the element which has an id of "game-canvas".
+                The canvas is going to be placed 0 pixels from the top of the page and 0 pixels from the left of the
+                page.
+                
             </p>
             <p class="lead">
                 Next, create the first JavaScript file. Let's put all the JavaScript files in one folder,
@@ -76,7 +79,7 @@
     </head>
     <body>
         <canvas id = "game-canvas"></canvas>
-        <canvas id = "ui-canvas"></canvas></script>
+        </script>
         &lt;script src = "scripts/main.js"&gt;&lt;/script&gt;<script type="text" class="rounded">
     </body>
     </html></script></code></pre>
@@ -218,7 +221,1750 @@
             <h4 class="primaryText">Frames And Movement</h4>
             <p class="lead">
                 We are going to make a function that will be called every frame, let's name is "frame".
-                We do this by using window.requestAnimationFrame which also gives us the time at witch each frame was called.
+                We do this by using window.requestAnimationFrame which also gives us the time at witch each frame was
+                called.
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const gameCanvas = document.getElementById("game-canvas");
+    const gameContext = gameCanvas.getContext("2d");
+    gameCanvas.width = window.innerWidth;
+    gameCanvas.height = window.innerHeight;
+
+    function drawGameObject(gameObject) {
+        gameContext.fillStyle = gameObject.color;
+        gameContext.fillRect(gameObject.position.x, gameObject.position.y, 
+        gameObject.scale.x, gameObject.scale.y);
+    }
+
+    function drawGameScreen() {
+        gameContext.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+        gameObjects.forEach(drawGameObject);
+    }
+    
+    window.addEventListener('load', () => {
+        GameObject(Vector2D(40, 40), Vector2D(60, 200), "black");
+        GameObject(Vector2D(140, 40), Vector2D(200, 100), "white");
+        window.requestAnimationFrame(frame);
+    });
+    
+    function frame(timeStamp) {
+        drawGameScreen();
+        window.requestAnimationFrame(frame);
+    }</script></code></pre>
+            <p class="lead">
+                timeStamp is the number of miliseconds that has passed from the start of the game to the current frame.
+                I moved the call of drawGameScreen to the frame because we will want to redraw
+                the screen after we make changes to the gameObjects.
+            </p>
+            <p class="lead">
+                To be able to update the game state based on time we need the time that passes between a frame to the
+                next.
+                This is basically the timeStamp of the current frame minus the timeStamp of the previous one.
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const gameCanvas = document.getElementById("game-canvas");
+    const gameContext = gameCanvas.getContext("2d");
+    gameCanvas.width = window.innerWidth;
+    gameCanvas.height = window.innerHeight;
+
+    var previousTimeStamp = 0;
+    var maxDeltaTime = 20
+
+    function drawGameObject(gameObject) {
+        gameContext.fillStyle = gameObject.color;
+        gameContext.fillRect(gameObject.position.x, gameObject.position.y,
+            gameObject.scale.x, gameObject.scale.y);
+    }
+
+    function drawGameScreen() {
+        gameContext.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+        gameObjects.forEach(drawGameObject);
+    }
+
+    window.addEventListener('load', () => {
+        GameObject(Vector2D(40, 40), Vector2D(60, 200), "black");
+        GameObject(Vector2D(140, 40), Vector2D(200, 100), "white");
+        window.requestAnimationFrame(frame);
+    });
+
+    function frame(timeStamp) {
+        if (!previousTimeStamp) {
+            previousTimeStamp = timeStamp;
+        }
+        let deltaTime = timeStamp - previousTimeStamp;
+        if (deltaTime > maxDeltaTime) {
+            deltaTime = maxDeltaTime;
+        }
+        updateGameObjects(deltaTime)
+        drawGameScreen();
+        window.requestAnimationFrame(frame);
+    }</script></code></pre>
+            <p class="lead">
+                I put the maxDeltaTime there becouse when the framerate drops too much stuff can get messed up,
+                like missing collisions and such. updateGameObjects is a function that we will implament shortly.
+            </p>
+            <p class="lead">
+                For movement, add a new vector2D property to GameObject called velocity.
+                Basically it's how many units does the gameObject move each milisecond.
+                In gameObject.js :
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    var gameObjects = [];
+    var currentId = 0;
+    function GameObject(position, scale, color) {
+        let gameObject = {
+            id: currentId,
+            position: position,
+            velocity: Vector2D(0,0),
+            scale: scale,
+            color: color
+        };
+        currentId++;
+        gameObjects.push(gameObject);
+        return gameObject;
+    }</script></code></pre>
+            <p class="lead">
+                In physics.js , implament the updateGameObjects funcion.
+                It will be responsable for moving the gameObjects for now.
+                While we are at it let's implament vector copying, addition and multiplication:
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    function Vector2D(x, y) {
+        let vector2D = {
+            x: x,
+            y: y
+        };
+        return vector2D;
+    }
+
+    function copyVector(vector2D) {
+        return Vector2D(vector2D.x, vector2D.y);
+    }
+
+    function addVectors(a, b) {
+        a.x += b.x;
+        a.y += b.y;
+    }
+
+    function subVectors(a, b) {
+        a.x -= b.x;
+        a.y -= b.y;
+    }
+
+    function vectorMulNum(vector2D, number) {
+        vector2D.x *= number;
+        vector2D.y *= number;
+    }
+
+    function updateGameObject(gameObject, deltaTime) {
+        let velocity = copyVector(gameObject.velocity);
+        vectorMulNum(velocity, deltaTime);
+        addVectors(gameObject.position, velocity);
+    }
+
+    function updateGameObjects(deltaTime) {
+        gameObjects.forEach(gameObject => {
+            updateGameObject(gameObject, deltaTime);
+        });
+    }</script></code></pre>
+            <p class="lead">
+                Let's change one of the gameObjects velocity to see the movement.
+                In main.js :
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const gameCanvas = document.getElementById("game-canvas");
+    const gameContext = gameCanvas.getContext("2d");
+    gameCanvas.width = window.innerWidth;
+    gameCanvas.height = window.innerHeight;
+
+    var previousTimeStamp = 0;
+    var maxDeltaTime = 20
+
+    function drawGameObject(gameObject) {
+        gameContext.fillStyle = gameObject.color;
+        gameContext.fillRect(gameObject.position.x, gameObject.position.y,
+            gameObject.scale.x, gameObject.scale.y);
+    }
+
+    function drawGameScreen() {
+        gameContext.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+        gameObjects.forEach(drawGameObject);
+    }
+
+    window.addEventListener('load', () => {
+        GameObject(Vector2D(40, 40), Vector2D(60, 200), "black");
+        let movingThing = GameObject(Vector2D(140, 40), Vector2D(200, 100), "white");
+        movingThing.velocity.x = 0.1;
+        window.requestAnimationFrame(frame);
+    });
+
+    function frame(timeStamp) {
+        if (!previousTimeStamp) {
+            previousTimeStamp = timeStamp;
+        }
+        let deltaTime = timeStamp - previousTimeStamp;
+        if (deltaTime > maxDeltaTime) {
+            deltaTime = maxDeltaTime;
+        }
+        updateGameObjects(deltaTime)
+        drawGameScreen();
+        window.requestAnimationFrame(frame);
+    }</script></code></pre>
+            <h4 class="primaryText">Controls And Player GameObject</h4>
+            <p class="lead">
+                We are going to set up the controls in, you guessed it, a new JavaScript file.
+                In controls.js make an object that represents the state of the keys:
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    var controls = {
+        up: Key("W", 87),
+        down: Key("S", 83),
+        left: Key("A", 65),
+        right: Key("D", 68)
+    };
+
+    function Key(key, keyCode) {
+        return {
+            key: key,
+            keyCode: keyCode,
+            pressed: false
+        };
+    }</script></code></pre>
+            <p class="lead">
+                The property key of each Key is basically the name of the key and the keyCode
+                is a number that destinguishes between the different keys. The pressed property
+                is a boolean that tells us if the key is pressed or not.
+                Write a function to change the pressed value of the keys in responce to
+                keydown (press) and keyup (release) events:
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    var controls = {
+        up: Key("W", 87),
+        down: Key("S", 83),
+        left: Key("A", 65),
+        right: Key("D", 68)
+    };
+
+    function Key(key, keyCode) {
+        return {
+            key: key,
+            keyCode: keyCode,
+            pressed: false
+        };
+    }
+
+    function changeKeyPressed(event, pressed) {
+        switch (event.keyCode) {
+            case controls.up.keyCode:
+                controls.up.pressed = pressed;
+                break;
+            case controls.down.keyCode:
+                controls.down.pressed = pressed;
+                break;
+            case controls.left.keyCode:
+                controls.left.pressed = pressed;
+                break;
+            case controls.right.keyCode:
+                controls.right.pressed = pressed;
+                break;
+        }
+    }
+
+    window.addEventListener('keydown', event => {
+        changeKeyPressed(event, true);
+    });
+
+    window.addEventListener('keyup', event => {
+        changeKeyPressed(event, false);
+    });</script></code></pre>
+            <p class="lead">
+                Now that we have the controls we can use them to move the player.
+                To do that we will first define an onUpdate property in GameObject and call it on the updateGameObject
+                function.
+                So in gameObject.js :
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    var gameObjects = [];
+    var currentId = 0;
+    function GameObject(position, scale, color) {
+        let gameObject = {
+            id: currentId,
+            position: position,
+            velocity: Vector2D(0,0),
+            scale: scale,
+            color: color,
+            onUpdate: deltaTime => {}
+        };
+        currentId++;
+        gameObjects.push(gameObject);
+        return gameObject;
+    }</script></code></pre>
+            <p class="lead">
+                And in physics.js :
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    function Vector2D(x, y) {
+        let vector2D = {
+            x: x,
+            y: y
+        };
+        return vector2D;
+    }
+
+    function copyVector(vector2D) {
+        return Vector2D(vector2D.x, vector2D.y);
+    }
+
+    function addVectors(a, b) {
+        a.x += b.x;
+        a.y += b.y;
+    }
+
+    function subVectors(a, b) {
+        a.x -= b.x;
+        a.y -= b.y;
+    }
+
+    function vectorMulNum(vector2D, number) {
+        vector2D.x *= number;
+        vector2D.y *= number;
+    }
+
+    function updateGameObject(gameObject, deltaTime) {
+        gameObject.onUpdate(deltaTime);
+        let velocity = copyVector(gameObject.velocity);
+        vectorMulNum(velocity, deltaTime);
+        addVectors(gameObject.position, velocity);
+    }
+
+    function updateGameObjects(deltaTime) {
+        gameObjects.forEach(gameObject => {
+            updateGameObject(gameObject, deltaTime);
+        });
+    }</script></code></pre>
+            <p class="lead">
+                Back to gameObject.js , create a specific type of GameObject called Player.
+                This is done by calling the GameObject function and
+                modifing the resulting gameObject before returning it.
+                Let's start by just defininig the scale and the color,
+                and writing an empty onUpdate function for it:
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    var gameObjects = [];
+    var currentId = 0;
+    function GameObject(position, scale, color) {
+        let gameObject = {
+            id: currentId,
+            position: position,
+            velocity: Vector2D(0,0),
+            scale: scale,
+            color: color,
+            onUpdate: deltaTime => {}
+        };
+        currentId++;
+        gameObjects.push(gameObject);
+        return gameObject;
+    }
+
+    function Player(position) {
+        let player = GameObject(position, Vector2D(50,50), "blue");
+
+        player.onUpdate = deltaTime => {
+
+        };
+
+        return player;
+    }</script></code></pre>
+            <p class="lead">
+                Using the controls object, we can write if statements inside onUpdate
+                to change the velocity of the player:
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    var gameObjects = [];
+    var currentId = 0;
+    function GameObject(position, scale, color) {
+        let gameObject = {
+            id: currentId,
+            position: position,
+            velocity: Vector2D(0,0),
+            scale: scale,
+            color: color,
+            onUpdate: deltaTime => {}
+        };
+        currentId++;
+        gameObjects.push(gameObject);
+        return gameObject;
+    }
+
+    function Player(position) {
+        let player = GameObject(position, Vector2D(50,50), "blue");
+        player.walkSpeed = 0.5;
+        player.onUpdate = deltaTime => {
+            player.velocity.x = 0;
+            if (controls.left.pressed) {
+                player.velocity.x -= player.walkSpeed;
+            }
+            if (controls.right.pressed) {
+                player.velocity.x += player.walkSpeed;
+            }
+        };
+
+        return player;
+    }</script></code></pre>
+            <p class="lead">
+                Now let's spawn a player. In main.js call the Player function to spawn one:
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const gameCanvas = document.getElementById("game-canvas");
+    const gameContext = gameCanvas.getContext("2d");
+    gameCanvas.width = window.innerWidth;
+    gameCanvas.height = window.innerHeight;
+
+    var previousTimeStamp = 0;
+    var maxDeltaTime = 20
+
+    function drawGameObject(gameObject) {
+        gameContext.fillStyle = gameObject.color;
+        gameContext.fillRect(gameObject.position.x, gameObject.position.y,
+            gameObject.scale.x, gameObject.scale.y);
+    }
+
+    function drawGameScreen() {
+        gameContext.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+        gameObjects.forEach(drawGameObject);
+    }
+
+    window.addEventListener('load', () => {
+        GameObject(Vector2D(40, 40), Vector2D(60, 200), "black");
+        let movingThing = GameObject(Vector2D(140, 40), Vector2D(200, 100), "white");
+        movingThing.velocity.x = 0.1;
+        Player(Vector2D(140,200));
+        window.requestAnimationFrame(frame);
+    });
+
+    function frame(timeStamp) {
+        if (!previousTimeStamp) {
+            previousTimeStamp = timeStamp;
+        }
+        let deltaTime = timeStamp - previousTimeStamp;
+        if (deltaTime > maxDeltaTime) {
+            deltaTime = maxDeltaTime;
+        }
+        updateGameObjects(deltaTime)
+        drawGameScreen();
+        window.requestAnimationFrame(frame);
+    }</script></code></pre>
+            <p class="lead">
+                Now you can move the player by pressing A and D.
+            </p>
+            <h4 class="primaryText">Collision</h4>
+            <p class="lead">
+                In this game, collision means that two gameObjects share some area in the world.
+                In other words, they overlap. GameObject as we difinde it is a rectangle.
+                So, two rectangles A and B overlap if the right edge of A is more
+                right than the left edge of A, the left egde of A is more left
+                than the right edge of B, and the same goes for top and bottom.
+                In physics.js , start by writing a function that recives two gameObjects
+                and returns true if they are overlapping:
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    function Vector2D(x, y) {
+        let vector2D = {
+            x: x,
+            y: y
+        };
+        return vector2D;
+    }
+
+    function copyVector(vector2D) {
+        return Vector2D(vector2D.x, vector2D.y);
+    }
+
+    function addVectors(a, b) {
+        a.x += b.x;
+        a.y += b.y;
+    }
+
+    function subVectors(a, b) {
+        a.x -= b.x;
+        a.y -= b.y;
+    }
+
+    function vectorMulNum(vector2D, number) {
+        vector2D.x *= number;
+        vector2D.y *= number;
+    }
+
+    function checkCollision(a, b) {
+        if (a.id == b.id) return false;
+        return a.position.x <= b.position.x + b.scale.x &&
+            a.position.x + a.scale.x >= b.position.x &&
+            a.position.y <= b.position.y + b.scale.y &&
+            a.position.y + a.scale.y >= b.position.y;
+    }
+
+    function updateGameObject(gameObject, deltaTime) {
+        gameObject.onUpdate(deltaTime);
+        let velocity = copyVector(gameObject.velocity);
+        vectorMulNum(velocity, deltaTime);
+        addVectors(gameObject.position, velocity);
+    }
+
+    function updateGameObjects(deltaTime) {
+        gameObjects.forEach(gameObject => {
+            updateGameObject(gameObject, deltaTime);
+        });
+    }</script></code></pre>
+            <p class="lead">
+                The first line in checkCollision is so that gameObjects don't collide with themselves.
+            </p>
+            <p class="lead">
+                In gameObject.js , define onCollision, a function that will be called
+                on collision. Let's also give the player some collision effect just so that we can see it's working.
+                Let's go for changing the color to the other gameObjects color.
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    var gameObjects = [];
+    var currentId = 0;
+    function GameObject(position, scale, color) {
+        let gameObject = {
+            id: currentId,
+            position: position,
+            velocity: Vector2D(0,0),
+            scale: scale,
+            color: color,
+            onUpdate: deltaTime => {},
+            onCollision: other => {}
+        };
+        currentId++;
+        gameObjects.push(gameObject);
+        return gameObject;
+    }
+
+    function Player(position) {
+        let player = GameObject(position, Vector2D(50,50), "blue");
+        player.walkSpeed = 0.5;
+        player.onUpdate = deltaTime => {
+            player.velocity.x = 0;
+            if (controls.left.pressed) {
+                player.velocity.x -= player.walkSpeed;
+            }
+            if (controls.right.pressed) {
+                player.velocity.x += player.walkSpeed;
+            }
+        };
+
+        player.onCollision = other => {
+            player.color = other.color;
+        };
+
+        return player;
+    }</script></code></pre>
+            <p class="lead">
+                Back to physics.js , we call the onCollision function of the gameObject
+                for every collision and pass the other gameObject to that function:
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    function Vector2D(x, y) {
+        let vector2D = {
+            x: x,
+            y: y
+        };
+        return vector2D;
+    }
+
+    function copyVector(vector2D) {
+        return Vector2D(vector2D.x, vector2D.y);
+    }
+
+    function addVectors(a, b) {
+        a.x += b.x;
+        a.y += b.y;
+    }
+
+    function subVectors(a, b) {
+        a.x -= b.x;
+        a.y -= b.y;
+    }
+
+    function vectorMulNum(vector2D, number) {
+        vector2D.x *= number;
+        vector2D.y *= number;
+    }
+
+    function checkCollision(a, b) {
+        if (a.id == b.id) return false;
+        return a.position.x <= b.position.x + b.scale.x &&
+            a.position.x + a.scale.x >= b.position.x &&
+            a.position.y <= b.position.y + b.scale.y &&
+            a.position.y + a.scale.y >= b.position.y;
+    }
+
+    function collisions(gameObject) {
+        gameObjects.forEach(other => {
+            if (checkCollision(gameObject, other)) {
+                gameObject.onCollision(other);
+            }
+        });
+    }
+
+    function updateGameObject(gameObject, deltaTime) {
+        gameObject.onUpdate(deltaTime);
+        collisions(gameObject);
+        let velocity = copyVector(gameObject.velocity);
+        vectorMulNum(velocity, deltaTime);
+        addVectors(gameObject.position, velocity);
+    }
+
+    function updateGameObjects(deltaTime) {
+        gameObjects.forEach(gameObject => {
+            updateGameObject(gameObject, deltaTime);
+        });
+    }</script></code></pre>
+            <p class="lead">
+                In platformers, colliding with something solid usually means that you stop.
+                So, let's define a property in GameObject named solid (you may want to create objects that do not block
+                movement).
+                We will give the player up and down movement for now to test the collisions from different angles,
+                even though platformers usually don't have that kind of movement.
+                While we are at it let's also delete that silly color changing thing:
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    var gameObjects = [];
+    var currentId = 0;
+    function GameObject(position, scale, color) {
+        let gameObject = {
+            id: currentId,
+            position: position,
+            velocity: Vector2D(0,0),
+            scale: scale,
+            color: color,
+            solid: true,
+            onUpdate: deltaTime => {},
+            onCollision: other => {}
+        };
+        currentId++;
+        gameObjects.push(gameObject);
+        return gameObject;
+    }
+
+    function Player(position) {
+        let player = GameObject(position, Vector2D(50,50), "blue");
+        player.walkSpeed = 0.5;
+        player.onUpdate = deltaTime => {
+            player.velocity.x = 0;
+            player.velocity.y = 0;
+            if (controls.left.pressed) {
+                player.velocity.x -= player.walkSpeed;
+            }
+            if (controls.right.pressed) {
+                player.velocity.x += player.walkSpeed;
+            }
+            if (controls.up.pressed) {
+                player.velocity.y -= player.walkSpeed;
+            }
+            if (controls.down.pressed) {
+                player.velocity.y += player.walkSpeed;
+            }
+        };
+
+        player.onCollision = other => {
+            
+        };
+
+        return player;
+    }</script></code></pre>
+            <p class="lead">
+                Let's start with only sideways blocking. Just setting the x component of the velocity
+                to zero would stop the gameObject but than it would get stuck. What we need is the velocity to
+                zero out only if the gameobject is going towrads the gameobject that's blocking it.
+                Additionally, we set the position of the gameobject to be outside of the blocking one
+                so it doesn't stop inside it. In physics.js :
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    function Vector2D(x, y) {
+        let vector2D = {
+            x: x,
+            y: y
+        };
+        return vector2D;
+    }
+
+    function copyVector(vector2D) {
+        return Vector2D(vector2D.x, vector2D.y);
+    }
+
+    function addVectors(a, b) {
+        a.x += b.x;
+        a.y += b.y;
+    }
+
+    function subVectors(a, b) {
+        a.x -= b.x;
+        a.y -= b.y;
+    }
+
+    function vectorMulNum(vector2D, number) {
+        vector2D.x *= number;
+        vector2D.y *= number;
+    }
+
+    function checkCollision(a, b) {
+        if (a.id == b.id) return false;
+        return a.position.x <= b.position.x + b.scale.x &&
+            a.position.x + a.scale.x >= b.position.x &&
+            a.position.y <= b.position.y + b.scale.y &&
+            a.position.y + a.scale.y >= b.position.y;
+    }
+
+    function collisions(gameObject) {
+        gameObjects.forEach(other => {
+            if (checkCollision(gameObject, other)) {
+                gameObject.onCollision(other);
+                if (gameObject.solid && other.solid) {
+                    blockGameObject(gameObject, other);
+                }
+            }
+        });
+    }
+
+    function updateGameObject(gameObject, deltaTime) {
+        gameObject.onUpdate(deltaTime);
+        collisions(gameObject);
+        let velocity = copyVector(gameObject.velocity);
+        vectorMulNum(velocity, deltaTime);
+        addVectors(gameObject.position, velocity);
+    }
+
+    function updateGameObjects(deltaTime) {
+        gameObjects.forEach(gameObject => {
+            updateGameObject(gameObject, deltaTime);
+        });
+    }
+
+    function blockGameObject(gameObject, blocker) {
+        if (gameObject.position.x > blocker.position.x) {
+            if (gameObject.velocity.x < 0) {
+                gameObject.velocity.x = 0;
+                gameObject.position.x = blocker.position.x + blocker.scale.x;
+            }
+        }else {
+            if (gameObject.velocity.x > 0) {
+                gameObject.velocity.x = 0; 
+                gameObject.position.x = blocker.position.x - gameObject.scale.x;
+            }
+        }
+    }</script></code></pre>
+            <p class="lead">
+                Now the player stops when it hits the gameobject from the side.
+                Blocking from all directions is a bit trickier though. If we did
+                the same thing for top and bottom the player would teleport unexpectedly
+                when hitting something diagonally. Because of that, we need to determine
+                if the gameObject is colliding vertically or horizontally.
+                We will determine this by calculating the x component of the overlap, the y component of the overlap
+                and then which ever one is smaller, is the direction of collision:
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    function Vector2D(x, y) {
+        let vector2D = {
+            x: x,
+            y: y
+        };
+        return vector2D;
+    }
+
+    function copyVector(vector2D) {
+        return Vector2D(vector2D.x, vector2D.y);
+    }
+
+    function addVectors(a, b) {
+        a.x += b.x;
+        a.y += b.y;
+    }
+
+    function vectorMulNum(vector2D, number) {
+        vector2D.x *= number;
+        vector2D.y *= number;
+    }
+
+    function checkCollision(a, b) {
+        if (a.id == b.id) return false;
+        return a.position.x <= b.position.x + b.scale.x &&
+            a.position.x + a.scale.x >= b.position.x &&
+            a.position.y <= b.position.y + b.scale.y &&
+            a.position.y + a.scale.y >= b.position.y;
+    }
+
+    function collisions(gameObject) {
+        gameObjects.forEach(other => {
+            if (checkCollision(gameObject, other)) {
+                gameObject.onCollision(other);
+                if (gameObject.solid && other.solid) {
+                    blockGameObject(gameObject, other);
+                }
+            }
+        });
+    }
+
+    function updateGameObject(gameObject, deltaTime) {
+        gameObject.onUpdate(deltaTime);
+        collisions(gameObject);
+        let velocity = copyVector(gameObject.velocity);
+        vectorMulNum(velocity, deltaTime);
+        addVectors(gameObject.position, velocity);
+    }
+
+    function updateGameObjects(deltaTime) {
+        gameObjects.forEach(gameObject => {
+            updateGameObject(gameObject, deltaTime);
+        });
+    }
+
+    function blockGameObject(gameObject, blocker) {
+        let gameObjectLeft = gameObject.position.x;
+        let gameObjectRight = gameObjectLeft + gameObject.scale.x;
+        let blockerLeft = blocker.position.x;
+        let blockerRight = blockerLeft + blocker.scale.x;
+
+        let gameObjectTop = gameObject.position.y;
+        let gameObjectBottom = gameObjectTop + gameObject.scale.y;
+        let blockerTop = blocker.position.y;
+        let blockerBottom = blockerTop + blocker.scale.y;
+
+        let dx = Math.min(gameObjectRight - blockerLeft, blockerRight - gameObjectLeft);
+        let dy = Math.min(gameObjectBottom - blockerTop, blockerBottom - gameObjectTop);
+
+        if (dx < dy) {
+            if (gameObject.position.x > blocker.position.x) {
+                if (gameObject.velocity.x < 0) {
+                    gameObject.velocity.x = 0;
+                    gameObject.position.x = blocker.position.x + blocker.scale.x;
+                }
+
+            } else {
+                if (gameObject.velocity.x > 0) {
+                    gameObject.velocity.x = 0;
+                    gameObject.position.x = blocker.position.x - gameObject.scale.x;
+                }
+            }
+        } else {
+            if (gameObject.position.y > blocker.position.y) {
+                if (gameObject.velocity.y < 0) {
+                    gameObject.velocity.y = 0;
+                    gameObject.position.y = blocker.position.y + blocker.scale.y;
+                }
+
+            } else {
+                if (gameObject.velocity.y > 0) {
+                    gameObject.velocity.y = 0;
+                    gameObject.position.y = blocker.position.y - gameObject.scale.y;
+                }
+            }
+        }
+    }</script></code></pre>
+            <h4 class="primaryText">Gravity And Jumping</h4>
+            <p class="lead">
+                In real life, objects with mass eccelerate towards other objects with mass, this is gravity.
+                In this game gravity is simply going to point down. We will define g,
+                which is the falling ecceleration, for every gameObject (even though that's not how it works in the real
+                world).
+                A nother property is going to be a boolean named grounded, whether or not the object is touching the
+                ground.
+                It's a good idea to remove that up and down movement from the player now.
+                In gameObject.js :
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    var gameObjects = [];
+    var currentId = 0;
+    function GameObject(position, scale, color) {
+        let gameObject = {
+            id: currentId,
+            position: position,
+            velocity: Vector2D(0,0),
+            scale: scale,
+            color: color,
+            solid: true,
+            onUpdate: deltaTime => {},
+            onCollision: other => {},
+            g: 0.004,
+            grounded: false
+        };
+        currentId++;
+        gameObjects.push(gameObject);
+        return gameObject;
+    }
+
+    function Player(position) {
+        let player = GameObject(position, Vector2D(50,50), "blue");
+        player.walkSpeed = 0.5;
+        player.onUpdate = deltaTime => {
+            player.velocity.x = 0;
+            if (controls.left.pressed) {
+                player.velocity.x -= player.walkSpeed;
+            }
+            if (controls.right.pressed) {
+                player.velocity.x += player.walkSpeed;
+            }
+        };
+
+        player.onCollision = other => {
+            
+        };
+
+        return player;
+    }</script></code></pre>
+            <p class="lead">
+                Time to fall. In physics.js , on update, each gameObject that's not grounded
+                y velocity is going to increase by its g for each milisecond.
+                In the blockGameObject function we set grounded to true in the case of collision from above.
+                In physics.js :
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    var maxFallSpeed = 5;
+
+    function Vector2D(x, y) {
+        let vector2D = {
+            x: x,
+            y: y
+        };
+        return vector2D;
+    }
+
+    function copyVector(vector2D) {
+        return Vector2D(vector2D.x, vector2D.y);
+    }
+
+    function addVectors(a, b) {
+        a.x += b.x;
+        a.y += b.y;
+    }
+
+    function subVectors(a, b) {
+        a.x -= b.x;
+        a.y -= b.y;
+    }
+
+    function vectorMulNum(vector2D, number) {
+        vector2D.x *= number;
+        vector2D.y *= number;
+    }
+
+    function checkCollision(a, b) {
+        if (a.id == b.id) return false;
+        return a.position.x <= b.position.x + b.scale.x &&
+            a.position.x + a.scale.x >= b.position.x &&
+            a.position.y <= b.position.y + b.scale.y &&
+            a.position.y + a.scale.y >= b.position.y;
+    }
+
+    function collisions(gameObject) {
+        gameObjects.forEach(other => {
+            if (checkCollision(gameObject, other)) {
+                gameObject.onCollision(other);
+                if (gameObject.solid && other.solid) {
+                    blockGameObject(gameObject, other);
+                }
+            }
+        });
+    }
+
+    function updateGameObject(gameObject, deltaTime) {
+        if (!gameObject.grounded) {
+            gameObject.velocity.y += gameObject.g * deltaTime;
+            if (gameObject.velocity.y > maxFallSpeed) {
+                gameObject.velocity.y = maxFallSpeed;
+            }
+        }
+        gameObject.onUpdate(deltaTime);
+        gameObject.grounded = false;
+        collisions(gameObject);
+        
+        let velocity = copyVector(gameObject.velocity);
+        vectorMulNum(velocity, deltaTime);
+        addVectors(gameObject.position, velocity);
+    }
+
+    function updateGameObjects(deltaTime) {
+        gameObjects.forEach(gameObject => {
+            updateGameObject(gameObject, deltaTime);
+        });
+    }
+
+    function blockGameObject(gameObject, blocker) {
+        let gameObjectLeft = gameObject.position.x;
+        let gameObjectRight = gameObjectLeft + gameObject.scale.x;
+        let blockerLeft = blocker.position.x;
+        let blockerRight = blockerLeft + blocker.scale.x;
+
+        let gameObjectTop = gameObject.position.y;
+        let gameObjectBottom = gameObjectTop + gameObject.scale.y;
+        let blockerTop = blocker.position.y;
+        let blockerBottom = blockerTop + blocker.scale.y;
+
+        let dx = Math.min(gameObjectRight - blockerLeft, blockerRight - gameObjectLeft);
+        let dy = Math.min(gameObjectBottom - blockerTop, blockerBottom - gameObjectTop);
+
+        if (dx < dy) {
+            if (gameObject.position.x > blocker.position.x) {
+                if (gameObject.velocity.x < 0) {
+                    gameObject.velocity.x = 0;
+                    gameObject.position.x = blocker.position.x + blocker.scale.x;
+                }
+
+            } else {
+                if (gameObject.velocity.x > 0) {
+                    gameObject.velocity.x = 0;
+                    gameObject.position.x = blocker.position.x - gameObject.scale.x;
+                }
+            }
+        } else {
+            if (gameObject.position.y > blocker.position.y) {
+                if (gameObject.velocity.y < 0) {
+                    gameObject.velocity.y = 0;
+                    gameObject.position.y = blocker.position.y + blocker.scale.y;
+                }
+
+            } else {
+                if (gameObject.velocity.y > 0) {
+                    gameObject.velocity.y = 0;
+                    gameObject.position.y = blocker.position.y - gameObject.scale.y;
+                    gameObject.grounded = true;
+                }
+            }
+        }
+    }</script></code></pre>
+            <p class="lead">
+                maxFallSpeed is the maximum speed at which a gameObject can fall.
+                I find that to feel better when you don't fall in creazy speeds.
+                Also, this phenomenon does exist in real life because of air resistance.
+            </p>
+            <p class="lead">
+                If you refreshe the page now everything falls. Platforms that the player
+                is going to jump on should have a g of 0 so that they don't fall themselves.
+                Define a type of gameObject named Block in gameObject.js :
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    var gameObjects = [];
+    var currentId = 0;
+    function GameObject(position, scale, color) {
+        let gameObject = {
+            id: currentId,
+            position: position,
+            velocity: Vector2D(0,0),
+            scale: scale,
+            color: color,
+            solid: true,
+            onUpdate: deltaTime => {},
+            onCollision: other => {},
+            g: 0.004,
+            grounded: false
+        };
+        currentId++;
+        gameObjects.push(gameObject);
+        return gameObject;
+    }
+
+    function Player(position) {
+        let player = GameObject(position, Vector2D(50,50), "blue");
+        player.walkSpeed = 0.5;
+        player.onUpdate = deltaTime => {
+            player.velocity.x = 0;
+            if (controls.left.pressed) {
+                player.velocity.x -= player.walkSpeed;
+            }
+            if (controls.right.pressed) {
+                player.velocity.x += player.walkSpeed;
+            }
+        };
+
+        player.onCollision = other => {
+            
+        };
+
+        return player;
+    }
+
+    function Block(position, scale) {
+        let block = GameObject(position, scale, "black");
+        block.g = 0;
+        return block;
+    }</script></code></pre>
+            <p class="lead">
+                Let's set up a few blocks in main.js :
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const gameCanvas = document.getElementById("game-canvas");
+    const gameContext = gameCanvas.getContext("2d");
+    gameCanvas.width = window.innerWidth;
+    gameCanvas.height = window.innerHeight;
+
+    var previousTimeStamp = 0;
+    var maxDeltaTime = 20
+
+    function drawGameObject(gameObject) {
+        gameContext.fillStyle = gameObject.color;
+        gameContext.fillRect(gameObject.position.x, gameObject.position.y,
+            gameObject.scale.x, gameObject.scale.y);
+    }
+
+    function drawGameScreen() {
+        gameContext.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+        gameObjects.forEach(drawGameObject);
+    }
+
+    window.addEventListener('load', () => {
+        Player(Vector2D(140,200));
+        Block(Vector2D(10, 400), Vector2D(500, 60));
+        Block(Vector2D(410, 260), Vector2D(500, 60));
+        window.requestAnimationFrame(frame);
+    });
+
+    function frame(timeStamp) {
+        if (!previousTimeStamp) {
+            previousTimeStamp = timeStamp;
+        }
+        let deltaTime = timeStamp - previousTimeStamp;
+        if (deltaTime > maxDeltaTime) {
+            deltaTime = maxDeltaTime;
+        }
+        updateGameObjects(deltaTime)
+        drawGameScreen();
+        window.requestAnimationFrame(frame);
+    }</script></code></pre>
+            <p class="lead">
+                Now you land on a platform, and you can walk off the edge.
+            </p>
+            <p class="lead">
+                Next, we add jumping. To jump, the player gets upwards speed when the up key is pressed but only at the
+                start of the jump.
+                In other words, when it is grounded. In gameObject.js :
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    var gameObjects = [];
+    var currentId = 0;
+    function GameObject(position, scale, color) {
+        let gameObject = {
+            id: currentId,
+            position: position,
+            velocity: Vector2D(0,0),
+            scale: scale,
+            color: color,
+            solid: true,
+            onUpdate: deltaTime => {},
+            onCollision: other => {},
+            g: 0.004,
+            grounded: false
+        };
+        currentId++;
+        gameObjects.push(gameObject);
+        return gameObject;
+    }
+
+    function Player(position) {
+        let player = GameObject(position, Vector2D(50,50), "blue");
+        player.walkSpeed = 0.5;
+        player.jumpSpeed = 1.2;
+        player.onUpdate = deltaTime => {
+            player.velocity.x = 0;
+            if (controls.left.pressed) {
+                player.velocity.x -= player.walkSpeed;
+            }
+            if (controls.right.pressed) {
+                player.velocity.x += player.walkSpeed;
+            }
+
+            if (controls.up.pressed) {
+                if (player.grounded) {
+                    player.velocity.y = -player.jumpSpeed;
+                }
+            }
+        };
+
+        player.onCollision = other => {
+            
+        };
+
+        return player;
+    }
+
+    function Block(position, scale) {
+        let block = GameObject(position, scale, "black");
+        block.g = 0;
+        return block;
+    }</script></code></pre>
+            <p class="lead">
+                In platformers, usually holding the jump button for longer makes you jump heigher.
+                To achive this we can change the g of the player when the
+                up key is released. Let's limit the jump time so it doesn't look
+                like the player is parashooting down. In gameObject.js :
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    var gameObjects = [];
+    var currentId = 0;
+    function GameObject(position, scale, color) {
+        let gameObject = {
+            id: currentId,
+            position: position,
+            velocity: Vector2D(0, 0),
+            scale: scale,
+            color: color,
+            solid: true,
+            onUpdate: deltaTime => { },
+            onCollision: other => { },
+            g: 0.004,
+            grounded: false
+        };
+        currentId++;
+        gameObjects.push(gameObject);
+        return gameObject;
+    }
+
+    function Player(position) {
+        let player = GameObject(position, Vector2D(50, 50), "blue");
+        player.walkSpeed = 0.5;
+        player.jumpSpeed = 1.2;
+        player.maxJumpTime = 1000;
+        player.jumpTime = 0;
+        player.startJumpG = player.g;
+        player.endJumpG = player.g * 2;
+        player.onUpdate = deltaTime => {
+            if (player.grounded) {
+                player.jumpTime = 0;
+                player.g = player.startJumpG;
+            }
+            player.velocity.x = 0;
+            if (controls.left.pressed) {
+                player.velocity.x -= player.walkSpeed;
+            }
+            if (controls.right.pressed) {
+                player.velocity.x += player.walkSpeed;
+            }
+            if (controls.up.pressed && player.jumpTime < player.maxJumpTime) {
+                if (player.grounded) {
+                    player.velocity.y = -player.jumpSpeed;
+                }
+                player.jumpTime += deltaTime;
+            } else {
+                player.jumpTime = player.maxJumpTime;
+                player.g = player.endJumpG;
+            }
+        };
+
+        player.onCollision = other => {
+
+        };
+
+        return player;
+    }
+
+    function Block(position, scale) {
+        let block = GameObject(position, scale, "black");
+        block.g = 0;
+        return block;
+    }</script></code></pre>
+            <h4 class="primaryText">Camera</h4>
+            <p class="lead">
+                To show gameObjects relative to a camera we subtruct the cameras
+                position from the position of the gameObject. If the position of the
+                camera is the same as the position of the gameObject we want to show
+                it in the middle of the screen, not the top left corner. So, we add half of
+                the width of the gameCanvas to the x and half of the height to the y.
+                For start, set the player to be the camera. In main.js :
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const gameCanvas = document.getElementById("game-canvas");
+    const gameContext = gameCanvas.getContext("2d");
+    gameCanvas.width = window.innerWidth;
+    gameCanvas.height = window.innerHeight;
+
+    var previousTimeStamp = 0;
+    var maxDeltaTime = 20;
+
+    var player;
+    var camera;
+
+    function drawGameObject(gameObject) {
+        gameContext.fillStyle = gameObject.color;
+        let positionOnScreen = copyVector(gameObject.position);
+        subVectors(positionOnScreen, camera.position);
+        positionOnScreen.x += gameCanvas.width / 2;
+        positionOnScreen.y += gameCanvas.height / 2;
+        gameContext.fillRect(positionOnScreen.x, positionOnScreen.y,
+            gameObject.scale.x, gameObject.scale.y);
+    }
+
+    function drawGameScreen() {
+        gameContext.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+        gameObjects.forEach(drawGameObject);
+    }
+
+    window.addEventListener('load', () => {
+        player = Player(Vector2D(140,200));
+        camera = player;
+        Block(Vector2D(10, 400), Vector2D(500, 60));
+        Block(Vector2D(410, 260), Vector2D(500, 60));
+        window.requestAnimationFrame(frame);
+    });
+
+    function frame(timeStamp) {
+        if (!previousTimeStamp) {
+            previousTimeStamp = timeStamp;
+        }
+        let deltaTime = timeStamp - previousTimeStamp;
+        if (deltaTime > maxDeltaTime) {
+            deltaTime = maxDeltaTime;
+        }
+        updateGameObjects(deltaTime)
+        drawGameScreen();
+        window.requestAnimationFrame(frame);
+    }</script></code></pre>
+            <p class="lead">
+                Now the screen follows the player sharply. That's not very nice to look
+                at if you ask me. To make the screen follow smoothly create a type
+                of gameObject named camera. It's going to move to the player fast when it's far
+                and slow when it's close. In gameObject.js :
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    var gameObjects = [];
+    var currentId = 0;
+    function GameObject(position, scale, color) {
+        let gameObject = {
+            id: currentId,
+            position: position,
+            velocity: Vector2D(0, 0),
+            scale: scale,
+            color: color,
+            solid: true,
+            onUpdate: deltaTime => { },
+            onCollision: other => { },
+            g: 0.004,
+            grounded: false
+        };
+        currentId++;
+        gameObjects.push(gameObject);
+        return gameObject;
+    }
+
+    function Player(position) {
+        let player = GameObject(position, Vector2D(50, 50), "blue");
+        player.walkSpeed = 0.5;
+        player.jumpSpeed = 1.2;
+        player.maxJumpTime = 1000;
+        player.jumpTime = 0;
+        player.startJumpG = player.g;
+        player.endJumpG = player.g * 2;
+        player.onUpdate = deltaTime => {
+            if (player.grounded) {
+                player.jumpTime = 0;
+                player.g = player.startJumpG;
+            }
+            player.velocity.x = 0;
+            if (controls.left.pressed) {
+                player.velocity.x -= player.walkSpeed;
+            }
+            if (controls.right.pressed) {
+                player.velocity.x += player.walkSpeed;
+            }
+            if (controls.up.pressed && player.jumpTime < player.maxJumpTime) {
+                if (player.grounded) {
+                    player.velocity.y = -player.jumpSpeed;
+                }
+                player.jumpTime += deltaTime;
+            } else {
+                player.jumpTime = player.maxJumpTime;
+                player.g = player.endJumpG;
+            }
+        };
+
+        player.onCollision = other => {
+
+        };
+
+        return player;
+    }
+
+    function Block(position, scale) {
+        let block = GameObject(position, scale, "black");
+        block.g = 0;
+        return block;
+    }
+
+    function Camera() {
+        let camera = GameObject(copyVector(player.position), Vector2D(0, 0));
+        camera.g = 0;
+        camera.solid = false;
+        camera.followPresentage = 0.005;
+        camera.onUpdate = deltaTime => {
+            vectorMulNum(camera.velocity, 0);
+            addVectors(camera.velocity, player.position);
+            subVectors(camera.velocity, camera.position);
+            vectorMulNum(camera.velocity, camera.followPresentage);
+        };
+        return camera;
+    }</script></code></pre>
+            <p class="lead">
+                The heigher the followPresentage is the sharper the movement is going to be.
+                Now set the camera to be an instance of this gameObject.
+                if main.js :
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const gameCanvas = document.getElementById("game-canvas");
+    const gameContext = gameCanvas.getContext("2d");
+    gameCanvas.width = window.innerWidth;
+    gameCanvas.height = window.innerHeight;
+
+    var previousTimeStamp = 0;
+    var maxDeltaTime = 20;
+
+    var player;
+    var camera;
+
+    function drawGameObject(gameObject) {
+        gameContext.fillStyle = gameObject.color;
+        let positionOnScreen = copyVector(gameObject.position);
+        subVectors(positionOnScreen, camera.position);
+        positionOnScreen.x += gameCanvas.width / 2;
+        positionOnScreen.y += gameCanvas.height / 2;
+        gameContext.fillRect(positionOnScreen.x, positionOnScreen.y,
+            gameObject.scale.x, gameObject.scale.y);
+    }
+
+    function drawGameScreen() {
+        gameContext.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+        gameObjects.forEach(drawGameObject);
+    }
+
+    window.addEventListener('load', () => {
+        player = Player(Vector2D(140,200));
+        camera = Camera();
+        Block(Vector2D(10, 400), Vector2D(500, 60));
+        Block(Vector2D(410, 260), Vector2D(500, 60));
+        window.requestAnimationFrame(frame);
+    });
+
+    function frame(timeStamp) {
+        if (!previousTimeStamp) {
+            previousTimeStamp = timeStamp;
+        }
+        let deltaTime = timeStamp - previousTimeStamp;
+        if (deltaTime > maxDeltaTime) {
+            deltaTime = maxDeltaTime;
+        }
+        updateGameObjects(deltaTime)
+        drawGameScreen();
+        window.requestAnimationFrame(frame);
+    }</script></code></pre>
+            <h4 class="primaryText">Enemy And Destruction</h4>
+            <p class="lead">
+                It's not a good idea to destroy gameObjects in the middle of an update.
+                That can cause some unexpected results. So instad, we set a property named destroy
+                to be true when we want to destroy something. Only at the end of the frame we
+                filter the gameObjects by that property. In main.js :
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const gameCanvas = document.getElementById("game-canvas");
+    const gameContext = gameCanvas.getContext("2d");
+    gameCanvas.width = window.innerWidth;
+    gameCanvas.height = window.innerHeight;
+
+    var previousTimeStamp = 0;
+    var maxDeltaTime = 20;
+
+    var player;
+    var camera;
+
+    function drawGameObject(gameObject) {
+        gameContext.fillStyle = gameObject.color;
+        let positionOnScreen = copyVector(gameObject.position);
+        subVectors(positionOnScreen, camera.position);
+        positionOnScreen.x += gameCanvas.width / 2;
+        positionOnScreen.y += gameCanvas.height / 2;
+        gameContext.fillRect(positionOnScreen.x, positionOnScreen.y,
+            gameObject.scale.x, gameObject.scale.y);
+    }
+
+    function drawGameScreen() {
+        gameContext.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+        gameObjects.forEach(drawGameObject);
+    }
+
+    window.addEventListener('load', () => {
+        player = Player(Vector2D(140,200));
+        camera = Camera();
+        Block(Vector2D(10, 400), Vector2D(500, 60));
+        Block(Vector2D(410, 260), Vector2D(500, 60));
+        window.requestAnimationFrame(frame);
+    });
+
+    function frame(timeStamp) {
+        if (!previousTimeStamp) {
+            previousTimeStamp = timeStamp;
+        }
+        let deltaTime = timeStamp - previousTimeStamp;
+        if (deltaTime > maxDeltaTime) {
+            deltaTime = maxDeltaTime;
+        }
+        updateGameObjects(deltaTime);
+        gameObjects = gameObjects.filter(gameObject => {
+            return !gameObject.destroy;
+        });
+        drawGameScreen();
+        window.requestAnimationFrame(frame);
+    }</script></code></pre>
+            <p class="lead">
+                In onCollision of player we check if the gameObject it collided with
+                has the property damage. If it does, we set destroy to true. We also make
+                an enemy with that damage property. In gameObject.js :
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    var gameObjects = [];
+    var currentId = 0;
+    function GameObject(position, scale, color) {
+        let gameObject = {
+            id: currentId,
+            position: position,
+            velocity: Vector2D(0, 0),
+            scale: scale,
+            color: color,
+            solid: true,
+            onUpdate: deltaTime => { },
+            onCollision: other => { },
+            g: 0.004,
+            grounded: false
+        };
+        currentId++;
+        gameObjects.push(gameObject);
+        return gameObject;
+    }
+
+    function Player(position) {
+        let player = GameObject(position, Vector2D(50, 50), "blue");
+        player.walkSpeed = 0.5;
+        player.jumpSpeed = 1.2;
+        player.maxJumpTime = 1000;
+        player.jumpTime = 0;
+        player.startJumpG = player.g;
+        player.endJumpG = player.g * 2;
+        player.onUpdate = deltaTime => {
+            if (player.grounded) {
+                player.jumpTime = 0;
+                player.g = player.startJumpG;
+            }
+            player.velocity.x = 0;
+            if (controls.left.pressed) {
+                player.velocity.x -= player.walkSpeed;
+            }
+            if (controls.right.pressed) {
+                player.velocity.x += player.walkSpeed;
+            }
+            if (controls.up.pressed && player.jumpTime < player.maxJumpTime) {
+                if (player.grounded) {
+                    player.velocity.y = -player.jumpSpeed;
+                }
+                player.jumpTime += deltaTime;
+            } else {
+                player.jumpTime = player.maxJumpTime;
+                player.g = player.endJumpG;
+            }
+        };
+
+        player.onCollision = other => {
+            if (other.damage) {
+                player.destroy = true;
+            }
+        };
+
+        return player;
+    }
+
+    function Block(position, scale) {
+        let block = GameObject(position, scale, "black");
+        block.g = 0;
+        return block;
+    }
+
+    function Camera() {
+        let camera = GameObject(copyVector(player.position), Vector2D(0, 0));
+        camera.g = 0;
+        camera.solid = false;
+        camera.followPresentage = 0.005;
+        camera.onUpdate = deltaTime => {
+            vectorMulNum(camera.velocity, 0);
+            addVectors(camera.velocity, player.position);
+            subVectors(camera.velocity, camera.position);
+            vectorMulNum(camera.velocity, camera.followPresentage);
+        };
+        return camera;
+    }
+
+    function Enemy(position) {
+        let enemy = GameObject(position, Vector2D(50,50),"red");
+        enemy.damage = true;
+        return enemy;
+    }</script></code></pre>
+            <p class="lead">
+                Now, add an instance of that enemy in main.js :
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const gameCanvas = document.getElementById("game-canvas");
+    const gameContext = gameCanvas.getContext("2d");
+    gameCanvas.width = window.innerWidth;
+    gameCanvas.height = window.innerHeight;
+
+    var previousTimeStamp = 0;
+    var maxDeltaTime = 20;
+
+    var player;
+    var camera;
+
+    function drawGameObject(gameObject) {
+        gameContext.fillStyle = gameObject.color;
+        let positionOnScreen = copyVector(gameObject.position);
+        subVectors(positionOnScreen, camera.position);
+        positionOnScreen.x += gameCanvas.width / 2;
+        positionOnScreen.y += gameCanvas.height / 2;
+        gameContext.fillRect(positionOnScreen.x, positionOnScreen.y,
+            gameObject.scale.x, gameObject.scale.y);
+    }
+
+    function drawGameScreen() {
+        gameContext.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+        gameObjects.forEach(drawGameObject);
+    }
+
+    window.addEventListener('load', () => {
+        player = Player(Vector2D(140,200));
+        camera = Camera();
+        Block(Vector2D(10, 400), Vector2D(500, 60));
+        Block(Vector2D(410, 260), Vector2D(500, 60));
+        Enemy(Vector2D(460,-100));
+        window.requestAnimationFrame(frame);
+    });
+
+    function frame(timeStamp) {
+        if (!previousTimeStamp) {
+            previousTimeStamp = timeStamp;
+        }
+        let deltaTime = timeStamp - previousTimeStamp;
+        if (deltaTime > maxDeltaTime) {
+            deltaTime = maxDeltaTime;
+        }
+        updateGameObjects(deltaTime);
+        gameObjects = gameObjects.filter(gameObject => {
+            return !gameObject.destroy;
+        });
+        drawGameScreen();
+        window.requestAnimationFrame(frame);
+    }</script></code></pre>
+            <p class="lead">
+                When the player touches the enemy it is destroyed.
+            </p>
+            <p class="lead">
+                One last thing, moving the enemy. This is going to be
+                done in it's onUpdate function. Let's simply have it
+                walk one way and switch direction after a set time.
+                In gameObject.js :
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    var gameObjects = [];
+    var currentId = 0;
+    function GameObject(position, scale, color) {
+        let gameObject = {
+            id: currentId,
+            position: position,
+            velocity: Vector2D(0, 0),
+            scale: scale,
+            color: color,
+            solid: true,
+            onUpdate: deltaTime => { },
+            onCollision: other => { },
+            g: 0.004,
+            grounded: false
+        };
+        currentId++;
+        gameObjects.push(gameObject);
+        return gameObject;
+    }
+
+    function Player(position) {
+        let player = GameObject(position, Vector2D(50, 50), "blue");
+        player.walkSpeed = 0.5;
+        player.jumpSpeed = 1.2;
+        player.maxJumpTime = 1000;
+        player.jumpTime = 0;
+        player.startJumpG = player.g;
+        player.endJumpG = player.g * 2;
+        player.onUpdate = deltaTime => {
+            if (player.grounded) {
+                player.jumpTime = 0;
+                player.g = player.startJumpG;
+            }
+            player.velocity.x = 0;
+            if (controls.left.pressed) {
+                player.velocity.x -= player.walkSpeed;
+            }
+            if (controls.right.pressed) {
+                player.velocity.x += player.walkSpeed;
+            }
+            if (controls.up.pressed && player.jumpTime < player.maxJumpTime) {
+                if (player.grounded) {
+                    player.velocity.y = -player.jumpSpeed;
+                }
+                player.jumpTime += deltaTime;
+            } else {
+                player.jumpTime = player.maxJumpTime;
+                player.g = player.endJumpG;
+            }
+        };
+
+        player.onCollision = other => {
+            if (other.damage) {
+                player.destroy = true;
+            }
+        };
+
+        return player;
+    }
+
+    function Block(position, scale) {
+        let block = GameObject(position, scale, "black");
+        block.g = 0;
+        return block;
+    }
+
+    function Camera() {
+        let camera = GameObject(copyVector(player.position), Vector2D(0, 0));
+        camera.g = 0;
+        camera.solid = false;
+        camera.followPresentage = 0.005;
+        camera.onUpdate = deltaTime => {
+            vectorMulNum(camera.velocity, 0);
+            addVectors(camera.velocity, player.position);
+            subVectors(camera.velocity, camera.position);
+            vectorMulNum(camera.velocity, camera.followPresentage);
+        };
+        return camera;
+    }
+
+    function Enemy(position) {
+        let enemy = GameObject(position, Vector2D(50,50),"red");
+        enemy.damage = true;
+        enemy.walkSpeed = 0.3;
+        enemy.maxWalkTime = 1000;
+        enemy.time = 0;
+
+        enemy.onUpdate = deltaTime => {
+            enemy.velocity.x = enemy.walkSpeed;
+            enemy.time += deltaTime;
+            if (enemy.time >= enemy.maxWalkTime) {
+                enemy.time = 0;
+                enemy.walkSpeed *= -1;
+            }
+        }
+        return enemy;
+    }</script></code></pre>
+            <p class="lead">
+                And that's it. Hope you had fun. Thanks for reading.
             </p>
         </main>
     </div>
