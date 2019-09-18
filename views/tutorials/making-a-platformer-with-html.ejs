@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content rounded container-fluid row-fluid" role="main">
             <h1 class="primaryText">Making A Platformer With HTML</h1>
-            <h4 class="primaryText">Introduction</h4>
+            <h4 class="primaryText" id = "introduction">Introduction</h4>
             <p class="lead">
                 In this tutorial we will be making a platformer.
                 The game will have basic 2D physics and will be drawn on a canvas element.
@@ -16,7 +16,7 @@
                 try my more basic tutorial here: <a href="/tutorials/making-a-game-with-html">Making A Game With HTML
                     (link)</a>
             </p>
-            <h4 class="primaryText">Setting Up The Files</h4>
+            <h4 class="primaryText" id = "setup">Setting Up The Files</h4>
             <p class="lead">
                 First of all let's make a folder that will hold all the files of the game.
                 Name it whatever you want your game to be named. Next, make a file named index.html (not
@@ -38,8 +38,8 @@
     </body>
     </html></script></code></pre>
             <p class="lead">
-                We need the canvases to be positioned properly and allso add a background color if you want.
-                For that we create a CSS file. CSS is a lenguage that deals with the style of elements in a web page.
+                We need the canvases to be positioned properly and also add a background color if you want.
+                For that we create a CSS file. CSS is a language that deals with the style of elements in a web page.
                 So create a file named style.css:
             </p>
             <pre class="lead rounded"><code><script type="text" class="rounded">
@@ -61,7 +61,7 @@
                 
             </p>
             <p class="lead">
-                Next, create the first JavaScript file. Let's put all the JavaScript files in one folder,
+                Next, create the first JavaScript file. let's put all the JavaScript files in one folder,
                 that's easier to manage that way. So create a folder scripts and in it a file named main.js
             </p>
             <p class="lead">
@@ -87,7 +87,7 @@
                 From now on, every time we create a new JavaScript file, add it to index.html
                 in the same way we just added main.js .
             </p>
-            <h4 class="primaryText">Drawing Rectangles</h4>
+            <h4 class="primaryText" id = "drawing">Drawing Rectangles</h4>
             <p class="lead">
                 To draw anything on the canvas we need to first get it in the code.
                 To do that, we use the id of the canvas. We will also get the context,
@@ -97,7 +97,7 @@
     const gameCanvas = document.getElementById("game-canvas");
     const gameContext = gameCanvas.getContext("2d");</script></code></pre>
             <p class="lead">
-                Let's set the width and height of the canvas to the width aand height of the window:
+                let's set the width and height of the canvas to the width aand height of the window:
             </p>
             <pre class="lead rounded"><code><script type="text" class="rounded">
     const gameCanvas = document.getElementById("game-canvas");
@@ -216,12 +216,12 @@
                 We create the gameObjects in the event listener because we want to make sure
                 the scripts are loaded before the functions are called. If you didn't do that
                 and you added the main.js script before gameobject.js, the GameObject function
-                would not be definde.
+                would not be defined.
             </p>
-            <h4 class="primaryText">Frames And Movement</h4>
+            <h4 class="primaryText" id = "frames">Frames And Movement</h4>
             <p class="lead">
                 We are going to make a function that will be called every frame, let's name is "frame".
-                We do this by using window.requestAnimationFrame which also gives us the time at witch each frame was
+                We do this by using window.requestAnimationFrame which also gives us the time at which each frame was
                 called.
             </p>
             <pre class="lead rounded"><code><script type="text" class="rounded">
@@ -252,7 +252,7 @@
         window.requestAnimationFrame(frame);
     }</script></code></pre>
             <p class="lead">
-                timeStamp is the number of miliseconds that has passed from the start of the game to the current frame.
+                timeStamp is the number of milliseconds that has passed from the start of the game to the current frame.
                 I moved the call of drawGameScreen to the frame because we will want to redraw
                 the screen after we make changes to the gameObjects.
             </p>
@@ -300,7 +300,7 @@
         window.requestAnimationFrame(frame);
     }</script></code></pre>
             <p class="lead">
-                I put the maxDeltaTime there becouse when the framerate drops too much stuff can get messed up,
+                I put the maxDeltaTime there because when the framerate drops too much stuff can get messed up,
                 like missing collisions and such. updateGameObjects is a function that we will implament shortly.
             </p>
             <p class="lead">
@@ -325,7 +325,7 @@
     }</script></code></pre>
             <p class="lead">
                 In physics.js , implament the updateGameObjects funcion.
-                It will be responsable for moving the gameObjects for now.
+                It will be responsible for moving the gameObjects for now.
                 While we are at it let's implament vector copying, addition and multiplication:
             </p>
             <pre class="lead rounded"><code><script type="text" class="rounded">
@@ -368,7 +368,7 @@
         });
     }</script></code></pre>
             <p class="lead">
-                Let's change one of the gameObjects velocity to see the movement.
+                let's change one of the gameObjects velocity to see the movement.
                 In main.js :
             </p>
             <pre class="lead rounded"><code><script type="text" class="rounded">
@@ -410,7 +410,7 @@
         drawGameScreen();
         window.requestAnimationFrame(frame);
     }</script></code></pre>
-            <h4 class="primaryText">Controls And Player GameObject</h4>
+            <h4 class="primaryText" id = "controls">Controls And Player GameObject</h4>
             <p class="lead">
                 We are going to set up the controls in, you guessed it, a new JavaScript file.
                 In controls.js make an object that represents the state of the keys:
@@ -432,7 +432,7 @@
     }</script></code></pre>
             <p class="lead">
                 The property key of each Key is basically the name of the key and the keyCode
-                is a number that destinguishes between the different keys. The pressed property
+                is a number that distinguishes between the different keys. The pressed property
                 is a boolean that tells us if the key is pressed or not.
                 Write a function to change the pressed value of the keys in responce to
                 keydown (press) and keyup (release) events:
@@ -454,7 +454,7 @@
     }
 
     function changeKeyPressed(event, pressed) {
-        switch (event.keyCode) {
+        swhich (event.keyCode) {
             case controls.up.keyCode:
                 controls.up.pressed = pressed;
                 break;
@@ -545,8 +545,8 @@
             <p class="lead">
                 Back to gameObject.js , create a specific type of GameObject called Player.
                 This is done by calling the GameObject function and
-                modifing the resulting gameObject before returning it.
-                Let's start by just defininig the scale and the color,
+                modifying the resulting gameObject before returning it.
+                let's start by just defining the scale and the color,
                 and writing an empty onUpdate function for it:
             </p>
             <pre class="lead rounded"><code><script type="text" class="rounded">
@@ -657,14 +657,14 @@
             <p class="lead">
                 Now you can move the player by pressing A and D.
             </p>
-            <h4 class="primaryText">Collision</h4>
+            <h4 class="primaryText" id = "collision">Collision</h4>
             <p class="lead">
                 In this game, collision means that two gameObjects share some area in the world.
                 In other words, they overlap. GameObject as we difinde it is a rectangle.
                 So, two rectangles A and B overlap if the right edge of A is more
                 right than the left edge of A, the left egde of A is more left
                 than the right edge of B, and the same goes for top and bottom.
-                In physics.js , start by writing a function that recives two gameObjects
+                In physics.js , start by writing a function that receives two gameObjects
                 and returns true if they are overlapping:
             </p>
             <pre class="lead rounded"><code><script type="text" class="rounded">
@@ -720,8 +720,8 @@
             </p>
             <p class="lead">
                 In gameObject.js , define onCollision, a function that will be called
-                on collision. Let's also give the player some collision effect just so that we can see it's working.
-                Let's go for changing the color to the other gameObjects color.
+                on collision. let's also give the player some collision effect just so that we can see it's working.
+                let's go for changing the color to the other gameObjects color.
             </p>
             <pre class="lead rounded"><code><script type="text" class="rounded">
     var gameObjects = [];
@@ -875,7 +875,7 @@
         return player;
     }</script></code></pre>
             <p class="lead">
-                Let's start with only sideways blocking. Just setting the x component of the velocity
+                let's start with only sideways blocking. Just setting the x component of the velocity
                 to zero would stop the gameObject but than it would get stuck. What we need is the velocity to
                 zero out only if the gameobject is going towrads the gameobject that's blocking it.
                 Additionally, we set the position of the gameobject to be outside of the blocking one
@@ -1062,11 +1062,11 @@
             }
         }
     }</script></code></pre>
-            <h4 class="primaryText">Gravity And Jumping</h4>
+            <h4 class="primaryText" id = "gravity">Gravity And Jumping</h4>
             <p class="lead">
-                In real life, objects with mass eccelerate towards other objects with mass, this is gravity.
+                In real life, objects with mass accelerate towards other objects with mass, this is gravity.
                 In this game gravity is simply going to point down. We will define g,
-                which is the falling ecceleration, for every gameObject (even though that's not how it works in the real
+                which is the falling acceleration, for every gameObject (even though that's not how it works in the real
                 world).
                 A nother property is going to be a boolean named grounded, whether or not the object is touching the
                 ground.
@@ -1290,7 +1290,7 @@
         return block;
     }</script></code></pre>
             <p class="lead">
-                Let's set up a few blocks in main.js :
+                let's set up a few blocks in main.js :
             </p>
             <pre class="lead rounded"><code><script type="text" class="rounded">
     const gameCanvas = document.getElementById("game-canvas");
@@ -1393,9 +1393,9 @@
         return block;
     }</script></code></pre>
             <p class="lead">
-                In platformers, usually holding the jump button for longer makes you jump heigher.
+                In platformers, usually holding the jump button for longer makes you jump higher.
                 To achive this we can change the g of the player when the
-                up key is released. Let's limit the jump time so it doesn't look
+                up key is released. let's limit the jump time so it doesn't look
                 like the player is parashooting down. In gameObject.js :
             </p>
             <pre class="lead rounded"><code><script type="text" class="rounded">
@@ -1462,7 +1462,7 @@
         block.g = 0;
         return block;
     }</script></code></pre>
-            <h4 class="primaryText">Camera</h4>
+            <h4 class="primaryText" id = "camera">Camera</h4>
             <p class="lead">
                 To show gameObjects relative to a camera we subtruct the cameras
                 position from the position of the gameObject. If the position of the
@@ -1603,7 +1603,7 @@
         return camera;
     }</script></code></pre>
             <p class="lead">
-                The heigher the followPresentage is the sharper the movement is going to be.
+                The higher the followPresentage is the sharper the movement is going to be.
                 Now set the camera to be an instance of this gameObject.
                 if main.js :
             </p>
@@ -1654,10 +1654,10 @@
         drawGameScreen();
         window.requestAnimationFrame(frame);
     }</script></code></pre>
-            <h4 class="primaryText">Enemy And Destruction</h4>
+            <h4 class="primaryText" id = "enemy">Enemy And Destruction</h4>
             <p class="lead">
                 It's not a good idea to destroy gameObjects in the middle of an update.
-                That can cause some unexpected results. So instad, we set a property named destroy
+                That can cause some unexpected results. So instead, we set a property named destroy
                 to be true when we want to destroy something. Only at the end of the frame we
                 filter the gameObjects by that property. In main.js :
             </p>
@@ -1861,8 +1861,8 @@
             </p>
             <p class="lead">
                 One last thing, moving the enemy. This is going to be
-                done in it's onUpdate function. Let's simply have it
-                walk one way and switch direction after a set time.
+                done in it's onUpdate function. let's simply have it
+                walk one way and swhich direction after a set time.
                 In gameObject.js :
             </p>
             <pre class="lead rounded"><code><script type="text" class="rounded">
