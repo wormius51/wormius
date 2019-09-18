@@ -20,7 +20,7 @@ let tutorials = [
         "/images/tutorials/making-a-game-with-html/thumbnail.png",
         "Starting with nothing, you will make a simple game in HTML."),
     Tutorial("Making A Platformer With HTML",
-        "/images/gameLinks/jump-dash.png",
+        "/images/tutorials/making-a-platformer-with-html/thumbnail.png",
         "In this tutorial you will make a platformer with basic physics using HTML.")
 ];
 
