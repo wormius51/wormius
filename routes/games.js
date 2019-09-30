@@ -18,7 +18,7 @@ router.get("/", (req, res, next) => {
                     "/images/gameLinks/creatures-of-energy.png",
                     "A strategy multiplayer game where you grow creatures to destroy the enemy."),
                     GameLink("Tactical Tactics",
-                    "https://chrome.google.com/webstore/detail/tactical-tactics-free/keiookbkgfkglpbooppdhoainanmpcmj",
+                    "/games/tactical-tactics",
                     "/images/gameLinks/tactical-tactics.png",
                     "A chrome extension that helps you train your chess tactics skills."),
                 GameLink("Morsing Around",
@@ -31,6 +31,23 @@ router.get("/", (req, res, next) => {
                     "A 1 dimensional multiplayer game where you hit enemies or each other to gain upgrade points and unlock skills.")
             ]
         });
+});
+
+router.get("/tactical-tactics", (req, res, next) => {
+    res.render('games', {
+        description: "A chrome extension that helps you improve your chess tactics skills.",
+        title: "Tactical Tactics",
+        gameLinks: [
+            GameLink("Tactical Tactics Free",
+                    "https://chrome.google.com/webstore/detail/tactical-tactics-free/keiookbkgfkglpbooppdhoainanmpcmj",
+                    "/images/gameLinks/tactical-tactics.png",
+                    "A free version with two game modes."),
+            GameLink("Tactical Tactics",
+                    "https://chrome.google.com/webstore/detail/tactical-tactics/imoijdpipccgjlimefkhkggooecpidpp",
+                    "/images/gameLinks/tactical-tactics.png",
+                    "A paid version with five game modes."),
+        ]
+    });
 });
 
 function GameLink(name, url, imageSrc, description) {
