@@ -15,7 +15,8 @@ var brushColor = "rgb(" + getRandom() + "," + getRandom() + "," + getRandom() + 
 
 var previousMouseX = 0;
 var previousMouseY = 0;
-window.addEventListener('load', () => {
+
+function setup () {
     gameCanvas.width = window.innerWidth;
     gameCanvas.height = window.innerHeight;
     mouseX = gameCanvas.width / 2;
@@ -32,12 +33,11 @@ window.addEventListener('load', () => {
     };
     xhttp.open("GET", "/canvas-land/getLines", true);
     xhttp.send();
-});
+}
 
-window.addEventListener('resize', () => {
-    gameCanvas.width = window.innerWidth;
-    gameCanvas.height = window.innerHeight;
-});
+window.addEventListener('load', setup);
+
+window.addEventListener('resize', setup);
 
 function frame(timeStamp) {
     if (!previousTimeStamp) previousTimeStamp = timeStamp;
@@ -93,5 +93,23 @@ window.addEventListener('mousedown', () => {
 });
 
 window.addEventListener('mouseup', () => {
+    isMouseDown = false;
+});
+
+window.addEventListener('touchmove', event => {
+    mouseX = event.touches[0].pageX;
+    mouseY = event.touches[0].pageY;
+});
+
+window.addEventListener('touchstart', event => {
+    mouseX = event.touches[0].pageX;
+    mouseY = event.touches[0].pageY;
+    previousMouseX = mouseX;
+    previousMouseY = mouseY;
+    isMouseDown = true;
+    
+});
+
+window.addEventListener('touchend', () => {
     isMouseDown = false;
 });
