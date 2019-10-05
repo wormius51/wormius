@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({extended : false}));
 
 app.use("/",require('./routes/index'));
 
-const routes = ["games", "tutorials", "oneDheros", "food-chain-game", "button-button-button"];
+const routes = ["games", "tutorials", "oneDheros", "food-chain-game", "button-button-button","canvas-land"];
 
 routes.forEach((element) => {
     app.use("/" + element,require("./routes/" + element));
@@ -30,6 +30,7 @@ const server = http.createServer(app);
 require('./games/oneDheros').start();
 require('./games/food-chain-game').start();
 require('./games/button-button-button').start();
+require('./games/canvas-land').start();
 
 require('./scripts/socketer').listen(server);
 

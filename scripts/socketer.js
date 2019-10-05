@@ -13,7 +13,7 @@ function listen(server) {
         let nsp = io.of(namespace.name);
         nsp.on('connection', socket => {
             namespace.listeners.forEach(listener => {
-                socket.on(listener.evenName, data => {
+                socket.on(listener.eventName, data => {
                     listener.callback(data, socket, nsp);
                 });
             });
@@ -21,9 +21,9 @@ function listen(server) {
     });
 }
 
-function Listener(evenName, callback) {
+function Listener(eventName, callback) {
     return {
-        evenName : evenName,
+        eventName : eventName,
         callback : callback
     };
 }
@@ -31,10 +31,10 @@ function Listener(evenName, callback) {
 /**
  * Sets a listener at a speciphic namespace.
  * @param {String} namespace 
- * @param {String} evenName 
+ * @param {String} eventName 
  * @param {Function} callback (data from user, socket, namespace)
  */
-function addListener(namespace, evenName, callback) {
+function addListener(namespace, eventName, callback) {
     var nsp = namespaces.find(element => {
         return element.name == namespace;
     });;
@@ -45,7 +45,7 @@ function addListener(namespace, evenName, callback) {
         };
         namespaces.push(nsp);
     }
-    nsp.listeners.push(Listener(evenName,callback));
+    nsp.listeners.push(Listener(eventName,callback));
 }
 
 function getSocketById(id) {
