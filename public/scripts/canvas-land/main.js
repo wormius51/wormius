@@ -22,16 +22,26 @@ function setup () {
     mouseX = gameCanvas.width / 2;
     mouseY = gameCanvas.height / 2;
     window.requestAnimationFrame(frame);
+    drawLinesFromServer(0);
+}
+
+
+var maxNumber = 100;
+function drawLinesFromServer(startIndex) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             var lines = JSON.parse(this.response);
-            for (let i = 0; i < lines.length; i++) {
+            let i = 0
+            for (i = 0; i < lines.length; i++) {
                 drawLine(lines[i]);
             }
+            if (i >= maxNumber) {
+                drawLinesFromServer(startIndex + i);
+            } 
         }
     };
-    xhttp.open("GET", "/canvas-land/getLines", true);
+    xhttp.open("GET", "/canvas-land/getLimitedLines?startIndex=" + startIndex + "&maxNumber=" + maxNumber, true);
     xhttp.send();
 }
 

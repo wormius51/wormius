@@ -35,3 +35,11 @@ module.exports.start = start;
 module.exports.getLines = () => {
     return lines;
 };
+
+module.exports.getLimitedLines = (startIndex, maxNumber) => {
+    let retLines = [];
+    for (let i = startIndex; i - startIndex < maxNumber && i < lines.length; i++) {
+        retLines.push(lines[i]);
+    }
+    return retLines;
+};

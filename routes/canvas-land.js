@@ -11,6 +11,10 @@ router.get("/", (req, res, next) => {
 
 router.get("/getLines", (req, res, next) => {
     res.send(canvasLand.getLines());
-})
+});
+
+router.get("/getLimitedLines", (req, res, next) => {
+    res.send(canvasLand.getLimitedLines(req.query.startIndex,req.query.maxNumber));
+});
 
 module.exports = router;
