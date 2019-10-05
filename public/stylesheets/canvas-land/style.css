@@ -1,5 +1,11 @@
+body {
+    overflow: hidden;
+}
+
 canvas {
     position: absolute;
     top: 0px;
     left: 0px;
+    border-style: groove;
+    border-color: brown;
 }

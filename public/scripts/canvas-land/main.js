@@ -3,6 +3,15 @@ const gameContext = gameCanvas.getContext("2d");
 
 const socket = io('/canvas-land');
 
+var myX = -5000;
+var myY = -5000;
+var moveSpeed = 5;
+
+var upKey = false;
+var downKey = false;
+var leftKey = false;
+var rightKey = false;
+
 var previousTimeStamp = 0;
 var isMouseDown = false;
 var mouseX = 0;
@@ -16,9 +25,9 @@ var brushColor = "rgb(" + getRandom() + "," + getRandom() + "," + getRandom() + 
 var previousMouseX = 0;
 var previousMouseY = 0;
 
-function setup () {
-    gameCanvas.width = window.innerWidth;
-    gameCanvas.height = window.innerHeight;
+function setup() {
+    gameCanvas.width = 10000;
+    gameCanvas.height = 10000;
     mouseX = gameCanvas.width / 2;
     mouseY = gameCanvas.height / 2;
     window.requestAnimationFrame(frame);
@@ -38,7 +47,7 @@ function drawLinesFromServer(startIndex) {
             }
             if (i >= maxNumber) {
                 drawLinesFromServer(startIndex + i);
-            } 
+            }
         }
     };
     xhttp.open("GET", "/canvas-land/getLimitedLines?startIndex=" + startIndex + "&maxNumber=" + maxNumber, true);
@@ -52,6 +61,20 @@ window.addEventListener('resize', setup);
 function frame(timeStamp) {
     if (!previousTimeStamp) previousTimeStamp = timeStamp;
     let deltaTime = timeStamp - previousTimeStamp;
+    if (upKey) {
+        myY += moveSpeed * deltaTime;
+    }
+    if (downKey) {
+        myY -= moveSpeed * deltaTime;
+    }
+    if (leftKey) {
+        myX += moveSpeed * deltaTime;
+    }
+    if (rightKey) {
+        myX -= moveSpeed * deltaTime;
+    }
+    gameCanvas.style.left = myX + "px";
+    gameCanvas.style.top = myY + "px";
     if (isMouseDown) {
         makeLine(previousMouseX, previousMouseY, mouseX, mouseY, brushSize, brushColor);
     } else {
@@ -94,8 +117,8 @@ function drawLine(line) {
 socket.on("line-added", drawLine);
 
 window.addEventListener('mousemove', event => {
-    mouseX = event.clientX;
-    mouseY = event.clientY;
+    mouseX = event.clientX - myX;
+    mouseY = event.clientY - myY;
 });
 
 window.addEventListener('mousedown', () => {
@@ -107,19 +130,44 @@ window.addEventListener('mouseup', () => {
 });
 
 window.addEventListener('touchmove', event => {
-    mouseX = event.touches[0].pageX;
-    mouseY = event.touches[0].pageY;
+    mouseX = event.touches[0].pageX - myX;
+    mouseY = event.touches[0].pageY - myY;
 });
 
 window.addEventListener('touchstart', event => {
-    mouseX = event.touches[0].pageX;
-    mouseY = event.touches[0].pageY;
+    mouseX = event.touches[0].pageX - myX;
+    mouseY = event.touches[0].pageY - myY;
     previousMouseX = mouseX;
     previousMouseY = mouseY;
     isMouseDown = true;
-    
+
 });
 
 window.addEventListener('touchend', () => {
     isMouseDown = false;
+});
+
+function changeKeyState(event, changeTo) {
+    switch (event.keyCode) {
+        case 87:
+            upKey = changeTo;
+            break;
+        case 83:
+            downKey = changeTo;
+            break;
+        case 65:
+            leftKey = changeTo;
+            break;
+        case 68:
+            rightKey = changeTo;
+            break;
+    }
+}
+
+window.addEventListener('keydown', event => {
+    changeKeyState(event, true);
+});
+
+window.addEventListener('keyup', event => {
+    changeKeyState(event, false);
 });
