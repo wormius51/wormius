@@ -27,7 +27,6 @@ var previousMouseX = 0;
 var previousMouseY = 0;
 
 function setup() {
-
     mouseX = gameCanvas.width / 2;
     mouseY = gameCanvas.height / 2;
     window.requestAnimationFrame(frame);
@@ -104,14 +103,16 @@ function makeLine(x0, y0, x1, y1, width, color) {
     if (!y0) y0 = y1;
     previousMouseX = mouseX;
     previousMouseY = mouseY;
-    socket.emit("add-line", {
+    let line = {
         x0: x0,
         y0: y0,
         x1: x1,
         y1: y1,
         width: width,
         color: color
-    });
+    };
+    drawLine(line);
+    socket.emit("add-line", line);
 }
 
 function drawLine(line) {
@@ -169,6 +170,18 @@ function changeKeyState(event, changeTo) {
             break;
         case 68:
             rightKey = changeTo;
+            break;
+        case 187:
+        case 107:
+            if (brushSize < 20) {
+                brushSize++;
+            }
+            break;
+        case 189:
+        case 109:
+            if (brushSize > 1) {
+                brushSize--;
+            }
             break;
     }
 }
