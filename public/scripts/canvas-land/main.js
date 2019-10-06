@@ -1,5 +1,6 @@
 const gameCanvas = document.getElementById("gameCanvas");
 const gameContext = gameCanvas.getContext("2d");
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 const socket = io('/canvas-land');
 
@@ -26,12 +27,20 @@ var previousMouseX = 0;
 var previousMouseY = 0;
 
 function setup() {
-    gameCanvas.width = 10000;
-    gameCanvas.height = 10000;
+
     mouseX = gameCanvas.width / 2;
     mouseY = gameCanvas.height / 2;
     window.requestAnimationFrame(frame);
-    drawLinesFromServer(0);
+    if (!isMobile) {
+        drawLinesFromServer(0);
+        gameCanvas.width = 10000;
+        gameCanvas.height = 10000;
+    } else {
+        gameCanvas.width = window.innerWidth;
+        gameCanvas.height = window.innerHeight;
+        myX = 0;
+        myY = 0;
+    }
 }
 
 
