@@ -84,7 +84,9 @@ function frame(timeStamp) {
     gameCanvas.style.left = myX + "px";
     gameCanvas.style.top = myY + "px";
     if (isMouseDown) {
-        makeLine(previousMouseX, previousMouseY, mouseX, mouseY, brushSize, brushColor);
+        if (Math.sqrt(Math.pow(mouseX - previousMouseX, 2) + Math.pow(mouseY - previousMouseY, 2)) > brushSize) {
+            makeLine(previousMouseX, previousMouseY, mouseX, mouseY, brushSize, brushColor);
+        }
     } else {
         previousMouseX = mouseX;
         previousMouseY = mouseY;
