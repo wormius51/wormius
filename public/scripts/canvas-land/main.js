@@ -64,8 +64,6 @@ function drawLinesFromServer(startIndex) {
 
 window.addEventListener('load', setup);
 
-window.addEventListener('resize', setup);
-
 function frame(timeStamp) {
     if (!previousTimeStamp) previousTimeStamp = timeStamp;
     let deltaTime = timeStamp - previousTimeStamp;
@@ -84,7 +82,7 @@ function frame(timeStamp) {
     gameCanvas.style.left = myX + "px";
     gameCanvas.style.top = myY + "px";
     if (isMouseDown) {
-        if (Math.sqrt(Math.pow(mouseX - previousMouseX, 2) + Math.pow(mouseY - previousMouseY, 2)) > brushSize) {
+        if (Math.sqrt(Math.pow(mouseX - previousMouseX, 2) + Math.pow(mouseY - previousMouseY, 2)) >= brushSize) {
             makeLine(previousMouseX, previousMouseY, mouseX, mouseY, brushSize, brushColor);
         }
     } else {

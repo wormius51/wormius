@@ -6,8 +6,11 @@ router.get("/", (req, res, next) => {
             description: "Play games made by me, the great wormius!",
             title: "Games",
             gameLinks: [
+                GameLink("Canvas Land",
+                    "/canvas-land", "/images/gameLinks/canvas-land.png",
+                    "A multiplayer canvas where you can draw with your friends."),
                 GameLink("Jump Dash",
-                    "/games/jump-dash","/images/gameLinks/jump-dash.png",
+                    "/games/jump-dash", "/images/gameLinks/jump-dash.png",
                     "A game where you jump, and then you dash. Try it."),
                 GameLink("Burn Your Brain",
                     "https://wormius51.itch.io/burn-your-brain",
@@ -17,7 +20,7 @@ router.get("/", (req, res, next) => {
                     "https://wormius51.itch.io/creatures-of-energy",
                     "/images/gameLinks/creatures-of-energy.png",
                     "A strategy multiplayer game where you grow creatures to destroy the enemy."),
-                    GameLink("Tactical Tactics",
+                GameLink("Tactical Tactics",
                     "/games/tactical-tactics",
                     "/images/gameLinks/tactical-tactics.png",
                     "A chrome extension that helps you train your chess tactics skills."),
@@ -39,13 +42,13 @@ router.get("/tactical-tactics", (req, res, next) => {
         title: "Tactical Tactics",
         gameLinks: [
             GameLink("Tactical Tactics Free",
-                    "https://chrome.google.com/webstore/detail/tactical-tactics-free/keiookbkgfkglpbooppdhoainanmpcmj",
-                    "/images/gameLinks/tactical-tactics.png",
-                    "A free version with two game modes."),
+                "https://chrome.google.com/webstore/detail/tactical-tactics-free/keiookbkgfkglpbooppdhoainanmpcmj",
+                "/images/gameLinks/tactical-tactics.png",
+                "A free version with two game modes."),
             GameLink("Tactical Tactics",
-                    "https://chrome.google.com/webstore/detail/tactical-tactics/imoijdpipccgjlimefkhkggooecpidpp",
-                    "/images/gameLinks/tactical-tactics.png",
-                    "A paid version with five game modes."),
+                "https://chrome.google.com/webstore/detail/tactical-tactics/imoijdpipccgjlimefkhkggooecpidpp",
+                "/images/gameLinks/tactical-tactics.png",
+                "A paid version with five game modes."),
         ]
     });
 });
@@ -62,18 +65,22 @@ function GameLink(name, url, imageSrc, description) {
 
 router.get("/jump-dash", (req, res, next) => {
     res.render('jump-dash',
-    {title: "Jump Dash",
-    description: "A game where you jump, and then you dash.",
-    keywords: ["game","platformer","webgame"],
-    image: "/images/gameLinks/jump-dash.png"});
+        {
+            title: "Jump Dash",
+            description: "A game where you jump, and then you dash.",
+            keywords: ["game", "platformer", "webgame"],
+            image: "/images/gameLinks/jump-dash.png"
+        });
 });
 
 router.get("/jump-dash-fullscreen", (req, res, next) => {
     res.render('jump-dash-fullscreen',
-    {title: "Jump Dash Fullscreen",
-    description: "A game where you jump, and then you dash.",
-    keywords: ["game","platformer","webgame"],
-    image: "/images/gameLinks/jump-dash.png"});
+        {
+            title: "Jump Dash Fullscreen",
+            description: "A game where you jump, and then you dash.",
+            keywords: ["game", "platformer", "webgame"],
+            image: "/images/gameLinks/jump-dash.png"
+        });
 });
 
 module.exports = router;

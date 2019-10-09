@@ -4,11 +4,11 @@ const path = require('path');
 
 function Tutorial(name, imageSrc, description) {
     let fileName = name.toLowerCase();;
-    fileName = fileName.replace(/\s/g,"-");
+    fileName = fileName.replace(/\s/g, "-");
     let tutorial = {
         name: name,
         fileName: fileName,
-        url: "/tutorials/" +  fileName,
+        url: "/tutorials/" + fileName,
         imageSrc: imageSrc,
         description: description
     };
@@ -21,7 +21,11 @@ let tutorials = [
         "Starting with nothing, you will make a simple game in HTML."),
     Tutorial("Making A Platformer With HTML",
         "/images/tutorials/making-a-platformer-with-html/thumbnail.png",
-        "In this tutorial you will make a platformer with basic physics using HTML.")
+        "In this tutorial you will make a platformer with basic physics using HTML.")/*,
+    Tutorial("Making A Multiplayer Canvas With Node",
+        "/images/gameLinks/canvas-land.png",
+        "In this tutorial you will make a real time multiplayer canvas. " +
+        "You will use Node.js for the server.")*/
 ];
 
 router.get('/', (req, res) => {
@@ -42,7 +46,7 @@ router.get('/:tutname', (req, res) => {
         return tut.fileName.match(req.params.tutname);
     });
     if (tutorial) {
-        res.render("tutorials/" +  tutorial.fileName, {title: tutorial.name, description: tutorial.description, image: tutorial.imageSrc});
+        res.render("tutorials/" + tutorial.fileName, { title: tutorial.name, description: tutorial.description, image: tutorial.imageSrc });
     } else {
         res.status(404).send({ error: "Not found." });
     }
