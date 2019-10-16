@@ -21,11 +21,11 @@ let tutorials = [
         "Starting with nothing, you will make a simple game in HTML."),
     Tutorial("Making A Platformer With HTML",
         "/images/tutorials/making-a-platformer-with-html/thumbnail.png",
-        "In this tutorial you will make a platformer with basic physics using HTML.")/*,
+        "In this tutorial you will make a platformer with basic physics using HTML."),
     Tutorial("Making A Multiplayer Canvas With Node",
         "/images/gameLinks/canvas-land.png",
         "In this tutorial you will make a real time multiplayer canvas. " +
-        "You will use Node.js for the server.")*/
+        "You will use Node.js for the server.")
 ];
 
 router.get('/', (req, res) => {

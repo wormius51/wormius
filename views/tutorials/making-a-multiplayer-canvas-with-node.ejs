@@ -10,11 +10,511 @@
                 on which you can draw. After that we will setup server with Node.js
                 in order to let players communicate. To see this in action visit <a href="/canvas-land">Canvas Land</a>.
             </p>
-            <h4 class="primaryText">Setting Up The Project</h4>
+            <h4 class="primaryText">Setting Up The Singleplayer Project</h4>
+            <p class="lead">
+                Create a folder for the project. In it, make 2 files:
+                The first is called index.html (full name with the extension. Don't make index.html.txt).
+                This will be the page that will be displayed to the user.
+                The second file is main.js (not main.js.txt). It is the JavaScript
+                file that will do the logic of drawing.
+            </p>
+            <h4 class="primaryText">The HTML File</h4>
+            <p class="lead">
+                First, start with the most basic html file. You can copy
+                from below or, if you are on vs code, type "!" and it will
+                auto complete:
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+    </head>
+    <body>
+        
+    </body>
+    </html></script></code></pre>
+            <p class="lead">
+                You can change the title from "Document" to whatever you like.
+                Next thing is to create a canvas element in the body of the page.
+                This element will display the drawing. Give it an id so we could
+                use it later in the code:
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Canvas</title>
+    </head>
+    <body>
+        <canvas id = "gameCanvas"></canvas>       
+    </body>
+    </html></script></code></pre>
+            <p class="lead">
+                After that activate the main.js script using a script element"
+            </p>
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Canvas</title>
+    </head>
+    <body>
+        <canvas id = "gameCanvas"></canvas></script>
+        &lt;script src = "main.js"&gt;&lt;/script&gt;<script type="text" class="rounded">       
+    </body>
+    </html></script></code></pre>
+
+            <h4 class="primaryText">Set Up The Canvas In Code</h4>
+            <p class="lead">
+                To get a reference to the canvas element use the getElementById function.
+                In main.js :
+            </p>
+
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const gameCanvas = document.getElementById("gameCanvas");</script></code></pre>
+
+            <p class="lead">
+                There is a type of object we need from the canvas called a context.
+                It has the drawing functions. For this project we need the 2d context:
+            </p>
+
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const gameContext = gameCanvas.getContext("2d");</script></code></pre>
+
+            <p class="lead">
+                Let's make the canvas fit the window. Set it's position
+                to 0 0 and it's size to the size of the window:
+            </p>
+
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    gameCanvas.style.position = "absolute";
+    gameCanvas.style.top = "0px";
+    gameCanvas.style.left = "0px";
+    gameCanvas.height = window.innerHeight;
+    gameCanvas.width = window.innerWidth;</script></code></pre>
+            <h4 class="primaryText">Drawing A Line</h4>
+            <p class="lead">
+                Make a function in this JavaScript file called makeLine.
+                For it accepts starting and ending x and y positions, width
+                and color. For now, it would just draw a line (we will change it for multiplayer later).
+                Just to see how it works call it once:
+            </p>
+
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    function makeLine(x0,y0,x1,y1,width,color) {
+        gameContext.beginPath();
+        gameContext.lineWidth = width;
+        gameContext.strokeStyle = color;
+        gameContext.moveTo(x0, y0);
+        gameContext.lineTo(x1, y1);
+        gameContext.stroke();
+    }
+
+    makeLine(20,20,300,500,30,"blue");</script></code></pre>
+            <h4 class="primaryText">Variables</h4>
+            <p class="lead">
+                We need some variables that we would be able to pass to this function:
+                mouseX and mouseY (The end point of the line).
+                previousMouseX and previousMouseY (The start point of the line).
+                isMouseDown (A boolean that tells us if the user is holding the mouse button down).
+                brushSize (The width of the line).
+                brushColor (The color of the line).
+                It's comon practice to define the variables at the top of the file:
+            </p>
+
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    var isMouseDown = false;
+    var mouseX = 0;
+    var mouseY = 0;
+    var previousMouseX = 0;
+    var previousMouseY = 0;
+    var brushSize = 5;
+    function getRandom() {
+        return Math.random() * 255;
+    }
+    var brushColor = "rgb(" + getRandom() + "," + getRandom() + "," + getRandom() + ")";</script></code></pre>
+
+            <p class="lead">
+                I decided to generate a random rgb for the color. Each of the values
+                red, green and blue can get a value between 0 and 255.
+            </p>
+
+            <h4 class="primaryText">Responding To Mouse Input</h4>
+
+            <p class="lead">
+                We will set up event listeners to change the variables
+                concerning the mouse. First up, mousedown:
+            </p>
+
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    window.addEventListener('mousedown', () => {
+        isMouseDown = true;
+    });</script></code></pre>
+
+            <p class="lead">
+                addEventListener means adding a function that will be called
+                every time the event is triggered. In this case, when the mouse
+                button is held down, isMouseDown turns true.
+                Next, you might be able to guess, we do the opposite for mouseup:
+            </p>
+
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    window.addEventListener('mouseup', () => {
+        isMouseDown = false;
+    });</script></code></pre>
+
+            <p class="lead">
+                Next up, mousemove. When the event is triggered the listener is
+                called with an argument that has the information about the
+                position of the mouse. clientX is the x position and clientY is
+                the y position. We set the mouseX and mouseY accordingly but before
+                that we set previousMouseX to mouseX so it's actually the value from
+                before. The same goes for y:
+            </p>
+
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    window.addEventListener('mousemove', event => {
+        previousMouseX = mouseX;
+        previousMouseY = mouseY;
+        mouseX = event.clientX;
+        mouseY = event.clientY;
+    });</script></code></pre>
+
+            <p class="lead">
+                Javaspript has this convenient function requestAnimationFrame
+                which calls a function in some delay. We are not using
+                it here for an animation but to draw if the mouse button
+                is held down. Make it call the first frame when the page has
+                finished loading:
+            </p>
+
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    function frame() {
+        window.requestAnimationFrame(frame);
+    }
+
+    window.addEventListener('load', () => {
+        window.requestAnimationFrame(frame);
+    });</script></code></pre>
+
+            <p class="lead">
+                Now add an if statement so that every frame, if the
+                mouse button is held down, draw with the variables that
+                we defined earlier (Don't forget to delete that test call of makeLine):
+            </p>
+
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    function frame() {
+        if (isMouseDown) {
+            makeLine(previousMouseX,previousMouseY,mouseX,mouseY,brushSize,brushColor);
+        }
+        window.requestAnimationFrame(frame);
+    }</script></code></pre>
+
+            <h4 class="primaryText">Setting Up The Node Project</h4>
             <p class="lead">
                 First thing, if you don't have npm (node package manager) you need
-                to download it.
+                to download it. Create a folder with the name you would like for the game.
+                Don't put spaces in the forlders name though. Open the terminal in that folder
+                and type npm init. Fill in the ditails in the terminal (package name, description and such).
+                Entry point is the JavaScript file that starts the app.
+                I'm naming my entry point app.js . A package.json file is created.
             </p>
+
+            <h4 class="primaryText">Adding Dependencies</h4>
+            <p class="lead">
+                The node package manager (npm) allows you to add dependencies
+                to your project. Those are libraries that include functions
+                you may need. To add a dependency the syntax is:
+                <br><b>npm i --save [dependency name here]</b><br>
+                You write this in the terminal.
+                The first dependency we need is called express.
+                Type this in the terminal:<br><b>npm i --save express</b><br>
+            </p>
+
+            <h4 class="primaryText">App.js</h4>
+            <p class="lead">
+                Create a file for the entry point. I call mine app.js
+                but you should use the name you chose when setting up.
+                In node, to use a module you call a function called require.
+                So to use express write in app.js:
+            </p>
+
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const express = require('express');
+    const app = express();</script></code></pre>
+
+            <p class="lead">
+                When the node app servers a web page, the page can access
+                resources from the server, like javascript files and images.
+                To allow this, we define a specific folder to be publicly accessible.
+                We will use the path module for that:
+            </p>
+
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const path = require('path');
+    app
+    .use(express.static(path.join(__dirname, 'public')))</script></code></pre>
+
+            <p class="lead">
+                To server web pages we need to choose a view engine.
+                There are a few options but my preferred choice is ejs.
+                To add ejs as a dependency:
+                <br><b>npm i --save ejs</b><br>
+                Next, we define the folder for the views and the view engine:
+            </p>
+
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    app
+    .use(express.static(path.join(__dirname, 'public')))
+    .set('views', path.join(__dirname, 'views'))
+    .set('view engine', 'ejs');</script></code></pre>
+
+            <p class="lead">
+                Let's make it so the root url serves the game page:
+            </p>
+
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    app.get("/", (req,res) => {
+        res.render('index');
+    });</script></code></pre>
+
+            <p class="lead">
+                To set up the server, a port needs to be selected.
+                When running this app locally you can set the port to
+                pretty much anything between 5000 and 8000. When this
+                is hosted on some cloud service (like heroku in the case of the
+                site you are looking at) a port is going to be supplied
+                as an environment variable. So we say, if that variable is
+                defined use it, else, use 8000:
+            </p>
+
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const PORT = process.env.PORT || '8000';
+    app.set('port',PORT);</script></code></pre>
+
+            <p class="lead">
+                Next, create a server and have it listen at the port:
+            </p>
+
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const http = require('http');
+    const server = http.createServer(app);
+
+    server.listen(PORT);
+
+    server.on('listening', () => {
+        console.log(`Listening at port ${PORT}`);
+    });</script></code></pre>
+
+            <p class="lead">
+                The last three lines are to show in the terminal when the
+                server starts running.
+            </p>
+
+            <h4 class="primaryText">View And JavaScript Files</h4>
+
+            <p class="lead">
+                Remember when we defined the views folder? Now it's
+                time to actually make that folder. Create a new folder
+                in the project folder and name it "views".
+                Inside that folder make a new file and name it index.ejs .
+                Index is the name that we chose for the file above and ejs
+                is the view engine. Copy the contents of index.html from
+                the single player version you made earlier and paste it
+                in index.ejs. There is one modification for this file
+                that needs to be added, the src of the script main.js should
+                now be "/main.js" rather than "main.js". The "/" points
+                at the public folder we defined earlier.
+            </p>
+
+            <p class="lead">
+                Create a new folder in the project folder and name it "public".
+                Copy main.js and paste it in that folder.
+            </p>
+
+            <h4 class="primaryText">Start the server</h4>
+
+            <p class="lead">
+                In the project folder there is a file named "package.json".
+                Most of what we need is already there but the start script isn't.
+                So inside the scripts section add the start script. I'll just
+                Show you my package.json here:
+            </p>
+
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    {
+        "name": "multiplayer-canvas-tutorial",
+        "version": "1.0.0",
+        "description": "multiplayer tutorial",
+        "main": "app.js",
+        "scripts": {
+            "start": "node app.js",
+            "test": "echo \"Error: no test specified\" && exit 1"
+        },
+        "author": "Eyal Hazor",
+        "license": "ISC",
+        "dependencies": {
+            "ejs": "^2.7.1",
+            "express": "^4.17.1"
+        }
+    }</script></code></pre>
+
+            <p class="lead">
+                To start the server type in the terminal:
+                <br><b>npm start</b><br>
+                To visit the page you just created go to
+                <a href="http://localhost:8000">http://localhost:8000</a>.
+                The game is now served by the node app but still single player.
+                Close the server by pressing ctrl + c on in the terminal.
+            </p>
+
+            <h4 class="primaryText">Adding Multiplayer</h4>
+
+            <p class="lead">
+                To create real time multiplayer we will use a module
+                called socket.io . To add it type:
+                <br><b>npm i --save socket.io</b><br>
+                Set socket.io to listen to the server:
+            </p>
+
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const io = require('socket.io').listen(server);</script></code></pre>
+
+            <p class="lead">
+                Each client is represented by a socket. The client
+                can send an even to the server with any name, with any data.
+                In this case the client is going to send an event named "add-line".
+                When the server accepts the the event it sends event "line-added" to
+                the other sockets so the lines would be drawn on their pages:
+            </p>
+
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    io.sockets.on('connection', socket => {
+        socket.on('add-line',line => {
+            io.emit("line-added",line);
+        });
+    });</script></code></pre>
+
+            <p class="lead">
+                In order to use the client side of socket.io you need
+                to add it to the page itself, index.ejs:
+            </p>
+
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Canvas</title></script>
+        &lt;script src = "/socket.io/socket.io.js"&gt;&lt;/script&gt;<script type="text" class="rounded"> 
+    </head>
+    <body>
+        <canvas id = "gameCanvas"></canvas></script>
+        &lt;script src = "main.js"&gt;&lt;/script&gt;<script type="text" class="rounded">       
+    </body>
+    </html></script></code></pre>
+
+            <p class="lead">
+                In main.js define the socket (at the top of the file):
+            </p>
+
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    const socket = io();</script></code></pre>
+
+            <p class="lead">
+                Change the makeLine function to send the add-line even and
+                move the drawing code to a new function, drawLine:
+            </p>
+
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    function makeLine(x0,y0,x1,y1,width,color) {
+        let line = {
+            width: width,
+            color: color,
+            x0: x0,
+            y0: y0,
+            x1: x1,
+            y1: y1
+        };
+        socket.emit("add-line",line);
+        drawLine(line);
+    }
+
+    function drawLine(line) {
+        gameContext.beginPath();
+        gameContext.lineWidth = line.width;
+        gameContext.strokeStyle = line.color;
+        gameContext.moveTo(line.x0, line.y0);
+        gameContext.lineTo(line.x1, line.y1);
+        gameContext.stroke();
+    }</script></code></pre>
+
+            <p class="lead">
+                On the line-added call the drawLine function:
+            </p>
+
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    socket.on("line-added",drawLine);</script></code></pre>
+
+            <p class="lead">
+                npm start again and open multiple tabs on <a href="http://localhost:8000">localhost:8000</a>
+                and draw to see the multiplayer functionality.
+            </p>
+
+            <p class="lead">
+                Right now when a new player joins they do not see the 
+                lines that were drawn before. To fix this, make a list
+                to which new lines will be added. When a new socket connects
+                the list of lines will be sent to it. in app.js:
+            </p>
+
+            <pre class="lead rounded"><code><script type="text" class="rounded">
+    var lines = [];
+
+    io.sockets.on('connection', socket => {
+        socket.emit("lines-added",lines);
+        socket.on('add-line',line => {
+            lines.push(line);
+            io.sockets.emit("line-added",line);
+        });
+    });</script></code></pre>
+
+            <p class="lead">
+                In main.js, add a listener for the "lines-added" (Not the same as "line added").
+                On that event, each line will be drawn:
+            </p>
+
+    <pre class="lead rounded"><code><script type="text" class="rounded">
+    socket.on("lines-added", lines => {
+        lines.forEach(drawLine);
+    });</script></code></pre>
+
+            <p class="lead">
+                The app now runs locally on your computer.
+                Other people can't access the port because it's not
+                open to the internet. It's possible to open it but
+                I really don't suggest you do that. Instead, you can
+                use a hosting service to run the app on a remote machine.
+                My app is hosted on heroku where you can go for a free plan.
+            </p>
+
+            <p class="lead">
+                Thanks for reading. Happy drawing ❤️
+            </p>
+
         </main>
     </div>
 
