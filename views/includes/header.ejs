@@ -8,7 +8,8 @@
     <meta name="author" content="Eyal Hazor">
     <meta name="description"
         content="<%if (locals.description) { %><%= description %><% } else { %>Online games and gamedev tutorials<% } %>">
-    <meta name="keywords" content="<%if (locals.keywords) { %><% keywords.forEach( keyword => { %><%= keyword %>,<% }); %><% } else { %>HTML,JavaScript,Game Development,Tutorial<% } %>">
+    <meta name="keywords"
+        content="<%if (locals.keywords) { %><% keywords.forEach( keyword => { %><%= keyword %>,<% }); %><% } else { %>HTML,JavaScript,Game Development,Tutorial<% } %>">
     <meta name="og:image" content="<%if (locals.image) { %><%= image %><% } else { %>/images/worm.png<% } %>">
     <title><%if (title == "Home") { %>
         Wormius Games
@@ -29,6 +30,13 @@
 
         gtag('config', 'UA-145688783-1');
     </script>
+
+
+    <script type="text/javascript">
+        var _iub = _iub || [];
+        _iub.csConfiguration = { "lang": "en", "siteId": 1686319, "cookiePolicyId": 58096393, "banner": { "acceptButtonDisplay": true, "customizeButtonDisplay": true, "position": "float-top-center" } };
+    </script>
+    <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" async></script>
 </head>
 
 <body>
@@ -38,7 +46,7 @@
             <img src="/images/worm.png" alt="wormius" id="icon">
         </a>
         <div class="navbar-nav-scroll">
-            <ul class="navbar-nav bd-navbar-nav flex-row" id = "nav-list">
+            <ul class="navbar-nav bd-navbar-nav flex-row" id="nav-list">
                 <li class="nav-item <%if (title == 'Home') { %>active<% } %> bg-light rounded border ml-1">
                     <a class="nav-link" href="/">Home</a>
                 </li>
