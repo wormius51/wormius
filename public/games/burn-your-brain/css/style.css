@@ -1,0 +1,16 @@
+body {
+    overflow: hidden;
+}
+
+#game-view {
+    background-color: rgb(58, 32, 13);
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+#ui {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
