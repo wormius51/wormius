@@ -25,7 +25,7 @@ router.post("/authenticate", (req, res) => {
 });
 
 router.get("/getUser", (req,res) => {
-    res({userid: req.session.userid, username: req.session.username});
+    res.send({userid: req.session.userid, username: req.session.username});
 });
 
 module.exports = router;
