@@ -10,8 +10,8 @@ router.post("/authenticate", (req, res) => {
             response => {
                 response.on('data', data => {
                     res.send(data);
-                    if (data.userid) {
-                        req.session.userid = data.userid;
+                    if (data['user_id']) {
+                        req.session.userid = data['user_id'];
                         req.session.username = data.username;
                     } else {
                         req.session.userid = 0;
