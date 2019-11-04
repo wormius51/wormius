@@ -6,7 +6,10 @@ const cors = require('cors');
 const session = require('express-session');
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: "https://game313569.konggames.com",
+    optionsSuccessStatus: 200
+}));
 
 app
 .use(express.static(path.join(__dirname, 'public')))
@@ -37,10 +40,7 @@ routes.forEach((element) => {
     app.use("/" + element,require("./routes/" + element));
 });
 
-app.use("/kongregate-test", cors({
-    origin: "https://game313569.konggames.com",
-    optionsSuccessStatus: 200
-}),require('./routes/kongregate-test'));
+app.use("/kongregate-test",require('./routes/kongregate-test'));
 
 const http = require('http');
 app.set('port',PORT);
