@@ -37,7 +37,10 @@ routes.forEach((element) => {
     app.use("/" + element,require("./routes/" + element));
 });
 
-app.use("/kongregate-test",require('./routes/kongregate-test'));
+app.use("/kongregate-test", cors({
+    origin: "https://game313569.konggames.com",
+    optionsSuccessStatus: 200
+}),require('./routes/kongregate-test'));
 
 const http = require('http');
 app.set('port',PORT);
