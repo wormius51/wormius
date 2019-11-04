@@ -1,11 +1,11 @@
 const router = require('express').Router();
-const http = require('http');
+const https = require('https');
 
 const apiKey = "a18df946-621d-4be2-9109-615783e9aca0";
 
 router.use("/getUser", (req, res) => {
     try {
-        http.get("https://api.kongregate.com/api/authenticate.json?user_id=" + req.headers.userid +
+        https.get("https://api.kongregate.com/api/authenticate.json?user_id=" + req.headers.userid +
             "&game_auth_token=" + req.headers.gameauthtoken + "&api_key=" + apiKey,
             response => {
                 res.send(response);
