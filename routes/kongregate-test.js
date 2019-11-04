@@ -10,6 +10,7 @@ router.post("/authenticate", (req, res) => {
             response => {
                 response.on('data', data => {
                     res.send(data);
+                    req.session.isItSet = true;
                     if (data['user_id']) {
                         req.session.userid = data['user_id'];
                         req.session.username = data.username;
@@ -25,7 +26,7 @@ router.post("/authenticate", (req, res) => {
 });
 
 router.get("/getUser", (req,res) => {
-    res.send({userid: req.session.userid, username: req.session.username});
+    res.send(req.session);
 });
 
 module.exports = router;
