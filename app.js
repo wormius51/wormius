@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const PORT = process.env.PORT || '8000';
 const cors = require('cors');
+const session = require('express-session');
 
 const app = express();
 app.use(cors());
@@ -14,6 +15,19 @@ app
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : false}));
+
+
+function makeSecret(length) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+       result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+ }
+
+ app.use(session({secret: makeSecret(20), resave: false, saveUninitialized: true, cookie: {secure: true}}));
 
 app.use("/",require('./routes/index'));
 
