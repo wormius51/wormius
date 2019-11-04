@@ -23,6 +23,8 @@ routes.forEach((element) => {
     app.use("/" + element,require("./routes/" + element));
 });
 
+app.use("/kongregate-test",require('./routes/kongregate-test'));
+
 const http = require('http');
 app.set('port',PORT);
 const server = http.createServer(app);
