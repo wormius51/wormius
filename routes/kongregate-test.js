@@ -8,7 +8,7 @@ router.use("/getUser", (req, res) => {
         https.get("https://api.kongregate.com/api/authenticate.json?user_id=" + req.headers.userid +
             "&game_auth_token=" + req.headers.gameauthtoken + "&api_key=" + apiKey,
             response => {
-                res.send(response);
+                res.send(response.username);
             });
     } catch (e) {
         res.send(e);
