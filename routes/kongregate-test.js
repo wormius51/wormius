@@ -9,7 +9,6 @@ router.post("/authenticate", (req, res) => {
             "&game_auth_token=" + req.headers.gameauthtoken + "&api_key=" + apiKey,
             response => {
                 response.on('data', data => {
-                    res.setHeader('Access-Control-Allow-Credentials', "true");
                     res.send(data);
                     if (data.userid) {
                         req.session.userid = data.userid;
@@ -26,7 +25,6 @@ router.post("/authenticate", (req, res) => {
 });
 
 router.get("/getUser", (req,res) => {
-    res.setHeader('Access-Control-Allow-Credentials', "true");
     res.send({userid: req.session.userid, username: req.session.username});
 });
 

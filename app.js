@@ -8,7 +8,8 @@ const session = require('express-session');
 const app = express();
 app.use(cors({
     origin: "https://game313569.konggames.com",
-    optionsSuccessStatus: 200
+    optionsSuccessStatus: 200,
+    credentials: true
 }));
 
 app
