@@ -9,8 +9,6 @@ router.post("/authenticate", (req, res) => {
             "&game_auth_token=" + req.headers.gameauthtoken + "&api_key=" + apiKey,
             response => {
                 response.on('data', data => {
-                    data.sessionId = req.sessionID;
-                    res.send(data);
                     if (data['user_id']) {
                         req.session.userid = data['user_id'];
                         req.session.username = data.username;
@@ -18,6 +16,8 @@ router.post("/authenticate", (req, res) => {
                         req.session.userid = 0;
                         req.session.username = "guest";
                     }
+                    data.sessionId = req.sessionID;
+                    res.send(data);
                 });
             });
     } catch (e) {
