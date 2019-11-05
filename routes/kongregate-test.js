@@ -16,7 +16,7 @@ router.post("/authenticate", (req, res) => {
                         req.session.userid = 0;
                         req.session.username = "guest";
                     }
-                    res.send({userid: req.session.userid, username: req.session.username, sessionId: req.sessionID});
+                    res.send(data);
                 });
             });
     } catch (e) {
