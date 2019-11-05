@@ -9,8 +9,8 @@ router.post("/authenticate", (req, res) => {
             "&game_auth_token=" + req.headers.gameauthtoken + "&api_key=" + apiKey,
             response => {
                 response.on('data', data => {
+                    data.sessionId = req.sessionID;
                     res.send(data);
-                    req.session.isItSet = true;
                     if (data['user_id']) {
                         req.session.userid = data['user_id'];
                         req.session.username = data.username;
@@ -26,7 +26,7 @@ router.post("/authenticate", (req, res) => {
 });
 
 router.get("/getUser", (req,res) => {
-    res.send(req.session);
+    res.send({userid: req.session.userid, username: req.session.username, sessionId: req.sessionID});
 });
 
 module.exports = router;
