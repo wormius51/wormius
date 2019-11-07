@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const https = require('https');
+const session = require('express-session');
 
 const apiKey = "a18df946-621d-4be2-9109-615783e9aca0";
 
@@ -16,7 +17,9 @@ router.post("/authenticate", (req, res) => {
                         req.session.userid = 0;
                         req.session.username = "guest";
                     }
-                    res.send(data);
+                    req.session.save(err => {
+                        res.send(data);
+                    });
                 });
             });
     } catch (e) {
@@ -25,7 +28,9 @@ router.post("/authenticate", (req, res) => {
 });
 
 router.get("/getUser", (req,res) => {
-    res.send({userid: req.session.userid, username: req.session.username, sessionId: req.sessionID});
+    req.session.reload(err => {
+        res.send({userid: req.session.userid, username: req.session.username, sessionId: req.sessionID});
+    });
 });
 
 module.exports = router;
