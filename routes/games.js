@@ -17,7 +17,7 @@ router.get("/", (req, res, next) => {
                     "/images/gameLinks/burn-your-brain.png",
                     "A puzzle game from hell. Rotate the pentagons to light the candles on the pentagram."),
                 GameLink("Creatures Of Energy",
-                    "https://www.kartridge.com/games/wormius51/creatures-of-energy",
+                    "https://wormius51.itch.io/creatures-of-energy",
                     "/images/gameLinks/creatures-of-energy.png",
                     "A strategy multiplayer game where you grow creatures to destroy the enemy."),
                 GameLink("Tactical Tactics",
