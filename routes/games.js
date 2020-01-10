@@ -13,7 +13,7 @@ router.get("/", (req, res, next) => {
                     "/games/jump-dash", "/images/gameLinks/jump-dash.png",
                     "A game where you jump, and then you dash. Try it."),
                 GameLink("Burn Your Brain",
-                    "/games/burn-your-brain",
+                    "https://wormius51.itch.io/burn-your-brain",
                     "/images/gameLinks/burn-your-brain.png",
                     "A puzzle game from hell. Rotate the pentagons to light the candles on the pentagram."),
                 GameLink("Creatures Of Energy",
