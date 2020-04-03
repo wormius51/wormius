@@ -1,0 +1,19 @@
+body {
+    background-color: midnightblue;
+}
+
+#board {
+    background-color: burlywood;
+    border-radius: 10px;
+}
+
+#board tr th {
+    width: 50px;
+    height: 50px;
+}
+
+#board tr td {
+    border-color: chocolate;
+    border-style: solid;
+    border-radius: 5px;
+}

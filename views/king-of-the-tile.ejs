@@ -1,0 +1,41 @@
+<html>
+<head>
+    <title>King of The Tile</title>
+    <link rel="stylesheet" href="/stylesheets/king-of-the-tile/style.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-145688783-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-145688783-1');
+    </script>
+</head>
+<body>
+    <table id = "board">
+        <tr>
+            <% for (var j = 0; j <= board.lengthX; j++) { %>
+                <th>  </th>
+            <% } %>
+        </tr>
+        <% for (var i = 0; i < board.lengthY; i++) { %>
+            <tr>
+                <th></th>
+            <% for (var j = 0; j < board.lengthX; j++) { %>
+                <td>
+                    
+                </td>
+            <% } %>
+                <th></th>
+            </tr>
+        <% } %>
+        <tr>
+            <% for (var j = 0; j <= board.lengthX; j++) { %>
+                <th>  </th>
+            <% } %>
+        </tr>
+    </table>
+</body>
+</html>
