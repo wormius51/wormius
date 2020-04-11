@@ -35,7 +35,7 @@ app.use(session({secret: makeSecret(20), resave: false, saveUninitialized: true,
 
 app.use("/",require('./routes/index'));
 
-const routes = ["games", "tutorials", "oneDheros", 
+const routes = ["games", "tutorials", "devlog", "oneDheros", 
 "food-chain-game", "button-button-button","canvas-land", 
 "king-of-the-tile"];
 

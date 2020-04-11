@@ -1,0 +1,45 @@
+<% include includes/header.ejs %>
+
+<body>
+    <div class="container-fluid">
+        <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content rounded container-fluid" role="main">
+            <h1 class="primaryText"><%= title %></h1>
+            <h4 class="primaryText">Ludum Dare Prototype</h1>
+            <p class="lead">
+                In December 1st 2018, a game jam (an event where people make games of a particular theme, 
+                in a short limited time) on <a href="https://ldjam.com/">Ludum Dare</a> started.
+                The theme of the jam was "Sacrifices must be made".
+                I got the idea of having the player sacrefice the ability to move to a certain direction.
+                So, I started making a prototype in unity. Submitted my game to the jam.
+                <a href="https://ldjam.com/events/ludum-dare/43/really-bad-flying-machine">
+                    <img src="/images/showoffs/rbfm_ld.png" alt="Really Bad Flying Machine">
+                </a>
+                Got some nice feedback. Thought about making a more full game out of it.
+                But left it be for the time being.
+            </p>
+            <h4 class="primaryText">Starting the new project</h1>
+            <p class="lead">
+                ‎February 1st 2020, I created a new project in unity.
+                The idea is to create a 3D version of the game this time.
+                I started by making the object that were in the game using primitve mashes (cubes and spheres).
+                I wanted to make the experience of the game consistant. 
+                So, a little bit of collider adjuting was necessary.
+                <a href="https://www.youtube.com/watch?v=CFkjlyHDayw">
+                    <img src="/images/showoffs/rbfm_1.png" alt="Really Bad Flying Machine">
+                </a>
+            </p>
+            <h4 class="primaryText">Pickups</h1>
+            <p class="lead">
+                March 25th 2020, added pickable propellers.
+                These are bubbles with a propeller inside. If you touch the bubble while missing at least one propeller,
+                you get the propeller and the bubble disappears. There could be different kinds of propellers in the pickup bubble.
+                So far I made a propeller that keeps going after hitting boxes, 
+                and a propeller that make you fly up instead of to the side.
+                <img src="/images/showoffs/rbfm_2.gif" alt="Really Bad Flying Machine">
+            </p>
+    </div>
+
+    <% include includes/footer.ejs %>
+</body>
+
+</html>
