@@ -23,10 +23,11 @@ var timeSinceFlower = 0;
 var timeSinceHornet = 0;
 var flowerSpawnPadding = 10;
 
+loadHighScore();
+
 window.onload = () => {
     context.fillStyle = "#000000";
     context.fillRect(0, 0, screenCanvas.width, screenCanvas.height);
-    loadHighScore();
 }
 
 window.addEventListener('keydown', event => {
