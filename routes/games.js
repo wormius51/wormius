@@ -6,6 +6,9 @@ router.get("/", (req, res, next) => {
             description: "Play games made by me, the great wormius!",
             title: "Games",
             gameLinks: [
+                GameLink("Bee Defence",
+                "/games/bee-defence", "/images/gameLinks/bee-defence.png",
+                "An arcade game where you collect flowers for the bee race."),
                 GameLink("Canvas Land",
                     "/canvas-land", "/images/gameLinks/canvas-land.png",
                     "A multiplayer canvas where you can draw with your friends."),
@@ -80,6 +83,16 @@ router.get("/jump-dash-fullscreen", (req, res, next) => {
             description: "A game where you jump, and then you dash.",
             keywords: ["game", "platformer", "webgame"],
             image: "/images/gameLinks/jump-dash.png"
+        });
+});
+
+router.get("/bee-defence", (req, res, next) => {
+    res.render('bee-defence',
+        {
+            title: "Bee Defence",
+            description: "An arcade game where you collect flowers for the bee race.",
+            keywords: ["game", "arcade", "highscore", "webgame"],
+            image: "/images/gameLinks/bee-defence.png"
         });
 });
 
