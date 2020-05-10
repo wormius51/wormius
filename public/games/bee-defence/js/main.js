@@ -18,8 +18,10 @@ var currentPixelsMatrix = [];
 
 var flowerInterval = 5000;
 var honetInterval = 6000;
+var currentHornetInterval = 0;
 var timeSinceFlower = 0;
 var timeSinceHornet = 0;
+var flowerSpawnPadding = 10;
 
 window.onload = () => {
     context.fillStyle = "#000000";
@@ -46,6 +48,7 @@ function setup() {
     }
     timeSinceFlower = 0;
     timeSinceHornet = 0;
+    currentHornetInterval = honetInterval;
     energy = 0;
     spawnBee(16,16);
     changeScore(-score);
@@ -61,12 +64,13 @@ function frame(timeStamp) {
     }
     if (timeStamp - timeSinceFlower >= flowerInterval) {
         timeSinceFlower = timeStamp;
-        spawnFlower(Math.floor(Math.random() * (columns - 2)) + 2, Math.floor(Math.random() * (rows - 2)) + 2)
+        spawnFlower(Math.floor(Math.random() * (columns - flowerSpawnPadding * 2)) + flowerSpawnPadding, Math.floor(Math.random() * (rows - flowerSpawnPadding * 2)) + flowerSpawnPadding)
     }
 
-    if (timeStamp - timeSinceHornet >= honetInterval) {
+    if (timeStamp - timeSinceHornet >= currentHornetInterval) {
+        currentHornetInterval *= 0.98;
         timeSinceHornet = timeStamp;
-        spawnHornet(Math.floor(Math.random() * (columns - hornetAvoidRange)) + hornetAvoidRange, Math.floor(Math.random() * (rows - hornetAvoidRange)) + hornetAvoidRange, Math.floor(Math.random() * 8))
+        spawnHornet(Math.floor(Math.random() * (columns - hornetAvoidRange * 2)) + hornetAvoidRange, Math.floor(Math.random() * (rows - hornetAvoidRange * 2)) + hornetAvoidRange, Math.floor(Math.random() * 8))
     }
 
     if (timeStamp - timeSinceRuleExecution >= ruleExecutionInterval) {
