@@ -1,14 +1,25 @@
 
-
+#machine {
+    background-color: rgb(84, 158, 10);
+    width: 500px;
+    height: 600px;
+    text-align: center;
+    border-radius: 5%;
+}
 
 #joystick {
     position: absolute;
     background-color: brown;
     border-radius: 100%;
+    border-color: black;
+    border-radius: 100%;
+    border-style: solid;
 }
 
 #knob {
     position: absolute;
-    background-color: chocolate;
+    background-color: rgb(235, 231, 11);
+    border-color: black;
     border-radius: 100%;
+    border-style: solid;
 }

@@ -96,8 +96,8 @@ function rule() {
         newPixelsMatrix.push(row);
     }
     if (!isAlvie) {
-        changeScore(0);
-        scoreText.innerHTML += "  <span style = 'color:red'>No More Bees Left (R to restart)</span>";
+        //changeScore(0);
+        scoreText.innerHTML = "  <span style = 'color:red'>No More Bees Left (R to restart)</span>";
         isGameOn = false;
     }
     return newPixelsMatrix;

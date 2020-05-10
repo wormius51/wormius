@@ -1,4 +1,4 @@
-const hornetColor = "FFA0";
+const hornetColor = "FF70";
 const hornetAvoidRange = 3;
 
 function spawnHornet(x, y, direction) {
