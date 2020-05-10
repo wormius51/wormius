@@ -29,6 +29,8 @@
 
 #joystick {
     position: absolute;
+    top: 530px;
+    left: 100px;
     background-color: brown;
     border-radius: 100%;
     border-color: black;
