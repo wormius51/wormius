@@ -27,8 +27,11 @@ function moveBee(i, j, defaultPixel) {
     if (dx == 0 && dy == 0) {
         return defaultPixel;
     } else if (currentPixelsMatrix[i][j].match("#" + beeColor)) {
-        return "#000000";
+        let y = i - dy;
+        let x = j - dx;
+        if (y >= 0 && y < rows && x >= 0 && x < columns)
+            return "#000000";
     }
 
-    return currentPixelsMatrix[i][j];
+    return defaultPixel;
 }
