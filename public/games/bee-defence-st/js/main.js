@@ -26,8 +26,8 @@ var flowerSpawnPadding = 10;
 loadHighScore();
 
 window.onload = () => {
-    context.fillStyle = "#000000";
-    context.fillRect(0, 0, screenCanvas.width, screenCanvas.height);
+    context.imageSmoothingEnabled = false;
+    context.drawImage(titleScreen, 0, 0, screenCanvas.width, screenCanvas.height);
 }
 
 window.addEventListener('keydown', event => {

@@ -11,7 +11,7 @@ function changeScore(change) {
         highscore = score;
         highScoreText.innerHTML = "HighScore: " + highscore;
         let date = new Date(Date.now() + 99999999999999);
-        document.cookie = "highScore=" + highscore + "; path=/; expires=" + date.toUTCString();
+        document.cookie = "high Score=" + highscore + "; path=/; expires=" + date.toUTCString();
     }
 }
 
@@ -22,5 +22,5 @@ function loadHighScore() {
         return;
     }
     highscore = cookieHighScore[1] * 1;
-    highScoreText.innerHTML = "HighScore: " + highscore;
+    highScoreText.innerHTML = "High Score: " + highscore;
 }
