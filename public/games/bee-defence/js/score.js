@@ -18,10 +18,9 @@ function changeScore(change) {
 function loadHighScore() {
     let varRgx = /highScore=(\d+)/;
     let cookieHighScore = varRgx.exec(document.cookie);
-    console.log(cookieHighScore);
     if (!cookieHighScore) {
         return;
     }
-    highscore = cookieHighScore * 1;
+    highscore = cookieHighScore[1] * 1;
     highScoreText.innerHTML = "HighScore: " + highscore;
 }
