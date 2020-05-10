@@ -1,0 +1,14 @@
+
+
+
+#joystick {
+    position: absolute;
+    background-color: brown;
+    border-radius: 100%;
+}
+
+#knob {
+    position: absolute;
+    background-color: chocolate;
+    border-radius: 100%;
+}
