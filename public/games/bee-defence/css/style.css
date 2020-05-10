@@ -46,6 +46,7 @@
 
 #screenCanvas {
     border-radius: 5%;
+    background-color: black;
 }
 
 #coinSlot {
