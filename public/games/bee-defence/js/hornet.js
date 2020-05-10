@@ -4,6 +4,8 @@ const hornetAvoidRange = 3;
 function spawnHornet(x, y, direction) {
     for (let dy = -1; dy < 2; dy++) {
         for (let dx = -1; dx < 2; dx++) {
+            if (y + dy > rows -1 || y + dy < 0 || x + dx > columns - 1 || x + dx < 0)
+                return;
             if (!currentPixelsMatrix[y + dy][x + dx].match("#000000")) {
                 return;
             }
