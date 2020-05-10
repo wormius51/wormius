@@ -12,7 +12,7 @@ var ruleExecutionInterval = 100;
 var maxDeltaTime = 20;
 var previousTimeStamp = 0;
 var timeSinceRuleExecution = 0;
-var isGameOn = true;
+var isGameOn = false;
 
 var currentPixelsMatrix = [];
 
@@ -26,8 +26,7 @@ var flowerSpawnPadding = 10;
 window.onload = () => {
     context.fillStyle = "#000000";
     context.fillRect(0, 0, screenCanvas.width, screenCanvas.height);
-    setup();
-    frame();
+    loadHighScore();
 }
 
 window.addEventListener('keydown', event => {
@@ -35,6 +34,17 @@ window.addEventListener('keydown', event => {
         setup();
     }
 });
+
+document.getElementById("coinSlot").addEventListener('click', startGame);
+document.getElementById("insertCoinText").addEventListener('click', startGame);
+
+function startGame() {
+    if (!isGameOn) {
+        setup();
+        frame();
+    }
+    document.getElementById("insertCoinText").style.visibility = "hidden";
+}
 
 function setup() {
     isGameOn = true;
@@ -67,8 +77,7 @@ function frame(timeStamp) {
         spawnFlower(Math.floor(Math.random() * (columns - flowerSpawnPadding * 2)) + flowerSpawnPadding, Math.floor(Math.random() * (rows - flowerSpawnPadding * 2)) + flowerSpawnPadding)
     }
 
-    if (timeStamp - timeSinceHornet >= currentHornetInterval) {
-        currentHornetInterval *= 0.98;
+    if (timeStamp - timeSinceHornet >= currentHornetInterval /(10 / (Math.exp(-score) + 3))) {
         timeSinceHornet = timeStamp;
         spawnHornet(Math.floor(Math.random() * (columns - hornetAvoidRange * 2)) + hornetAvoidRange, Math.floor(Math.random() * (rows - hornetAvoidRange * 2)) + hornetAvoidRange, Math.floor(Math.random() * 8))
     }
@@ -77,8 +86,9 @@ function frame(timeStamp) {
         timeSinceRuleExecution = timeStamp;
         currentPixelsMatrix = rule();
         drawScreen();
-    }  
-    window.requestAnimationFrame(frame);
+    }
+    if (isGameOn)
+        window.requestAnimationFrame(frame);
 }
 
 function rule() {
@@ -96,9 +106,9 @@ function rule() {
         newPixelsMatrix.push(row);
     }
     if (!isAlvie) {
-        //changeScore(0);
-        scoreText.innerHTML = "  <span style = 'color:red'>No More Bees Left (R to restart)</span>";
+        scoreText.innerHTML = " <span style = 'color:red'>No More Bees Left</span>";
         isGameOn = false;
+        document.getElementById("insertCoinText").style.visibility = "visible";
     }
     return newPixelsMatrix;
 }

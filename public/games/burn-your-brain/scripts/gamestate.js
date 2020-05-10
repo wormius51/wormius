@@ -12,7 +12,7 @@ function saveGameState () {
 }
 
 function loadGameState () {
-    let varRgx = /gameState=({[^;]+})/
+    let varRgx = /gameState=({[^;]+})/;
     let gameStateString = varRgx.exec(document.cookie);
     if (!gameStateString) {
         return;
