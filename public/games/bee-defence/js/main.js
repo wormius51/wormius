@@ -46,6 +46,7 @@ function setup() {
     }
     timeSinceFlower = 0;
     timeSinceHornet = 0;
+    energy = 0;
     spawnBee(16,16);
     changeScore(-score);
 }
