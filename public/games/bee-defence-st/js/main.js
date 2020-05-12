@@ -43,8 +43,9 @@ function startGame() {
     if (!isGameOn) {
         setup();
         frame();
+        themeMusic.play();
+        document.getElementById("insertCoinText").style.visibility = "hidden";
     }
-    document.getElementById("insertCoinText").style.visibility = "hidden";
 }
 
 function setup() {

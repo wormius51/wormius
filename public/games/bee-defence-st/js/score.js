@@ -11,7 +11,7 @@ function changeScore(change) {
         highscore = score;
         highScoreText.innerHTML = "HighScore: " + highscore;
         let date = new Date(Date.now() + 99999999999999);
-        document.cookie = "high Score=" + highscore + "; path=/; expires=" + date.toUTCString();
+        document.cookie = "highScore=" + highscore + "; path=/; SameSite=None; expires=" + date.toUTCString();
     }
 }
 
