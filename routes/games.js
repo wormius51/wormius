@@ -7,7 +7,7 @@ router.get("/", (req, res, next) => {
             title: "Games",
             gameLinks: [
                 GameLink("Bee Defence",
-                "/games/bee-defence", "/images/gameLinks/bee-defence.png",
+                "https://wormius51.itch.io/bee-defence", "/images/gameLinks/bee-defence.png",
                 "An arcade game where you collect flowers for the bee race."),
                 GameLink("Canvas Land",
                     "/canvas-land", "/images/gameLinks/canvas-land.png",
