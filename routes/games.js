@@ -6,6 +6,9 @@ router.get("/", (req, res, next) => {
             description: "Play games made by me, the great wormius!",
             title: "Games",
             gameLinks: [
+                GameLink("Really Bad Flying Machine",
+                    "/games/really-bad-flying-machine", "/images/gameLinks/really-bad-flying-machine.png",
+                    "A puzzle game where you play as a flying machine. You can shoot your propellers off but lose the ability to move."),
                 GameLink("Photinos",
                 "https://wormius51.itch.io/photinos", "/images/gameLinks/photinos.png",
                 "A puzzle game were you move as lasers and split to different colors."),
@@ -96,6 +99,16 @@ router.get("/bee-defence", (req, res, next) => {
             description: "An arcade game where you collect flowers for the bee race.",
             keywords: ["game", "arcade", "highscore", "webgame"],
             image: "/images/gameLinks/bee-defence.png"
+        });
+});
+
+router.get("/really-bad-flying-machine", (req, res, next) => {
+    res.render('really-bad-flying-machine',
+        {
+            title: "Really Bad Flying Machine",
+            description: "A game where you shoot off your own propellers",
+            keywords: ["game", "puzzle", "webgame"],
+            image: "/images/gameLinks/really-bad-flying-machine.png"
         });
 });
 
