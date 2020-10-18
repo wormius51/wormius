@@ -28,7 +28,6 @@ function getRateOfNote(note) {
         noteOnly = note;
     }
     noteOnly = noteOnly.toLowerCase();
-    console.log(sampleIndexString);
     let rate = 1;
     let noteIndex = noteOnly.charCodeAt(0) - 'c'.charCodeAt(0);
     if (noteIndex < 0) {
@@ -93,7 +92,6 @@ function playNote(note) {
 }
 
 function playMusic(musicScript) {
-    console.log(musicScript);
     let musicObject = makeMusicObject(musicScript);
     periodicMusicPlay(musicObject);
 }
