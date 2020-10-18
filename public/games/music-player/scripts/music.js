@@ -33,6 +33,9 @@ function getRateOfNote(note) {
     if (noteIndex < 0) {
         noteIndex = 7 + noteIndex;
     }
+    if (noteOnly.charCodeAt(0) == '?'.charCodeAt(0)) {
+        noteIndex = Math.floor(Math.random() * 7);
+    }
     let semitone = 1.05946;
     for (let i = 0; i < noteIndex; i++) {
         let factor = semitone;
@@ -58,7 +61,10 @@ function getRateOfNote(note) {
         if (!isNaN(subNote) && isFinite(subNote)) {  
             let octave = parseFloat(subNote) - 4;
             rate *= Math.pow(2, octave);
-        } 
+        } else if (subNote == "?") {
+            let octave = Math.floor(Math.random() * 8) + 1;
+            rate *= Math.pow(2, octave);
+        }
     }
     return rate;
 }
@@ -83,12 +89,31 @@ function playNote(note) {
         return;
     let notes = note.split(',');
     notes.forEach(n => {
+        if (n == "?") {
+            n = getRandomNote();
+        }
         let rate = getRateOfNote(n);
         let sampleIndex = getSampleIndex(n);
         loadSample(soundsDirectory + sampleIndex + ".wav")
         .then(sample => playSample(sample, rate));
     });
     
+}
+
+function getRandomNote() {
+    let sampleIndex = Math.floor(Math.random() * 11);
+    let randomLetter = String.fromCharCode("a".charCodeAt(0) + Math.floor(Math.random() * 8));
+    let addon = "";
+    switch (Math.floor(Math.random() * 3)) {
+        case 0:
+            addon = "b";
+            break;
+        case 2:
+            addon = "#";
+            break;
+    }
+    let octave = Math.floor(Math.random() * 8) + 1;
+    return sampleIndex + randomLetter + addon + octave;
 }
 
 function playMusic(musicScript) {
