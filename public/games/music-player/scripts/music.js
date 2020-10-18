@@ -23,7 +23,7 @@ function getRateOfNote(note) {
     let sampleIndexString = note.match(/^\d*/)[0];
     let noteOnly = "";
     if (sampleIndexString) {
-        noteOnly = note.substr(sampleIndexString, note.length - sampleIndexString.length);
+        noteOnly = note.substr(sampleIndexString.length, note.length - sampleIndexString.length);
     } else {
         noteOnly = note;
     }
@@ -120,4 +120,3 @@ function makeMusicObject(musicScript) {
 
     return musicObject;
 }
-
