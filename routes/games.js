@@ -15,9 +15,9 @@ router.get("/", (req, res, next) => {
                 GameLink("Bee Defence",
                 "https://wormius51.itch.io/bee-defence", "/images/gameLinks/bee-defence.png",
                 "An arcade game where you collect flowers for the bee race."),
-                GameLink("Canvas Land",
+                /*GameLink("Canvas Land", // Posted to newgrounds and people drew nudes. So have to not link it here.
                     "/canvas-land", "/images/gameLinks/canvas-land.png",
-                    "A multiplayer canvas where you can draw with your friends."),
+                    "A multiplayer canvas where you can draw with your friends."),*/
                 GameLink("Jump Dash",
                     "/games/jump-dash", "/images/gameLinks/jump-dash.png",
                     "A game where you jump, and then you dash. Try it."),
