@@ -112,7 +112,7 @@ function makeLine(x0, y0, x1, y1, width, color) {
         color: color
     };
     drawLine(line);
-    socket.emit("add-line", line);
+    setTimeout(() => {socket.emit("add-line", line);},0);
 }
 
 function drawLine(line) {
