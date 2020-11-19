@@ -1,3 +1,5 @@
+const colorPicker = document.getElementById("colorPicker");
+const sizePicker = document.getElementById("sizePicker");
 const gameCanvas = document.getElementById("gameCanvas");
 const gameContext = gameCanvas.getContext("2d");
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -18,13 +20,25 @@ var isMouseDown = false;
 var mouseX = 0;
 var mouseY = 0;
 var brushSize = 5;
+const minLineLength = 5;
 function getRandom() {
     return Math.random() * 255;
 }
 var brushColor = "rgb(" + getRandom() + "," + getRandom() + "," + getRandom() + ")";
-
 var previousMouseX = 0;
 var previousMouseY = 0;
+
+colorPicker.addEventListener('input', () => {
+    brushColor = colorPicker.value;
+});
+
+sizePicker.addEventListener('input', () => {
+    brushSize = sizePicker.value;
+});
+
+sizePicker.addEventListener('load', () => {
+    sizePicker.value = brushSize + "";
+});
 
 function setup() {
     mouseX = gameCanvas.width / 2;
@@ -82,7 +96,7 @@ function frame(timeStamp) {
     gameCanvas.style.left = myX + "px";
     gameCanvas.style.top = myY + "px";
     if (isMouseDown) {
-        if (Math.sqrt(Math.pow(mouseX - previousMouseX, 2) + Math.pow(mouseY - previousMouseY, 2)) >= brushSize) {
+        if (Math.sqrt(Math.pow(mouseX - previousMouseX, 2) + Math.pow(mouseY - previousMouseY, 2)) >= minLineLength) {
             makeLine(previousMouseX, previousMouseY, mouseX, mouseY, brushSize, brushColor);
         }
     } else {
@@ -126,25 +140,25 @@ function drawLine(line) {
 
 socket.on("line-added", drawLine);
 
-window.addEventListener('mousemove', event => {
+gameCanvas.addEventListener('mousemove', event => {
     mouseX = event.clientX - myX;
     mouseY = event.clientY - myY;
 });
 
-window.addEventListener('mousedown', () => {
+gameCanvas.addEventListener('mousedown', () => {
     isMouseDown = true;
 });
 
-window.addEventListener('mouseup', () => {
+gameCanvas.addEventListener('mouseup', () => {
     isMouseDown = false;
 });
 
-window.addEventListener('touchmove', event => {
+gameCanvas.addEventListener('touchmove', event => {
     mouseX = event.touches[0].pageX - myX;
     mouseY = event.touches[0].pageY - myY;
 });
 
-window.addEventListener('touchstart', event => {
+gameCanvas.addEventListener('touchstart', event => {
     mouseX = event.touches[0].pageX - myX;
     mouseY = event.touches[0].pageY - myY;
     previousMouseX = mouseX;
@@ -153,7 +167,7 @@ window.addEventListener('touchstart', event => {
 
 });
 
-window.addEventListener('touchend', () => {
+gameCanvas.addEventListener('touchend', () => {
     isMouseDown = false;
 });
 

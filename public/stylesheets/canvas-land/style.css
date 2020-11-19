@@ -9,3 +9,7 @@ canvas {
     border-style: groove;
     border-color: brown;
 }
+
+#ui {
+    position: fixed;
+}
