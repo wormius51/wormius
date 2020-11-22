@@ -36,10 +36,6 @@ sizePicker.addEventListener('input', () => {
     brushSize = sizePicker.value;
 });
 
-sizePicker.addEventListener('load', () => {
-    sizePicker.value = brushSize + "";
-});
-
 function setup() {
     mouseX = gameCanvas.width / 2;
     mouseY = gameCanvas.height / 2;
