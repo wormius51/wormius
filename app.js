@@ -6,11 +6,18 @@ const cors = require('cors');
 const session = require('express-session');
 
 const app = express();
-app.use(cors({
-    origin: ["https://game313569.konggames.com","https://game313569.konggames.com"],
-    optionsSuccessStatus: 200,
-    credentials: true
-}));
+
+var whitelist = ['https://game313569.konggames.com', 'https://game313569.konggames.com']
+var corsOptions = {
+    origin: function (origin, callback) {
+      if (whitelist.indexOf(origin) !== -1) {
+        callback(null, true)
+      } else {
+        callback(new Error('Not allowed by CORS'))
+      }
+    }
+  }
+app.use(cors(corsOptions));
 
 app
 .use(express.static(path.join(__dirname, 'public')))
