@@ -7,7 +7,7 @@ const session = require('express-session');
 
 const app = express();
 
-var whitelist = ['https://game313569.konggames.com', 'https://game313569.konggames.com']
+var whitelist = ['https://game313569.konggames.com', 'https://game313569.konggames.com','https://v6p9d9t4.ssl.hwcdn.net']
 var corsOptions = {
     origin: function (origin, callback) {
       if (whitelist.indexOf(origin) !== -1) {
