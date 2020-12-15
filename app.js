@@ -37,7 +37,7 @@ app.use("/",require('./routes/index'));
 
 const routes = ["games", "tutorials", "devlog", "oneDheros", 
 "food-chain-game", "button-button-button","canvas-land", 
-"king-of-the-tile"];
+"king-of-the-tile", "tribute-chess"];
 
 routes.forEach((element) => {
     app.use("/" + element,require("./routes/" + element));

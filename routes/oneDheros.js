@@ -7,6 +7,6 @@ router.get("/", (req, res, next) => {
 
 router.get("/getAllObjects", (req, res, next) => {
     res.send(GameObject.getGameObjects());
-})
+});
 
 module.exports = router;
