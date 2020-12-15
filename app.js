@@ -10,7 +10,7 @@ const app = express();
 var whitelist = ['https://game313569.konggames.com', 'https://game313569.konggames.com','https://v6p9d9t4.ssl.hwcdn.net']
 var corsOptions = {
     origin: function (origin, callback) {
-      if (whitelist.indexOf(origin) !== -1) {
+      if (!origin || whitelist.indexOf(origin) !== -1) {
         callback(null, true)
       } else {
         callback(new Error('Not allowed by CORS'))
