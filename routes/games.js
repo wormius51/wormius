@@ -6,6 +6,9 @@ router.get("/", (req, res, next) => {
             description: "Play games made by me, the great wormius!",
             title: "Games",
             gameLinks: [
+                GameLink("Tribute Chess",
+                "/games/tribute-chess", "/images/gameLinks/tribute-chess.png",
+                "I made chess pieces out of poeple."),
                 GameLink("Really Bad Flying Machine",
                     "/games/really-bad-flying-machine", "/images/gameLinks/really-bad-flying-machine.png",
                     "A puzzle game where you play as a flying machine. You can shoot your propellers off but lose the ability to move."),
