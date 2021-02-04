@@ -2,9 +2,12 @@ const socket = io("/wheel");
 const title = document.getElementById('title');
 const nameField = document.getElementById('nameField');
 const messageField = document.getElementById('messageField');
+const colorInput = document.getElementById('colorInput');
+const colorDiv = document.getElementById('colorDiv');
 const questionText = document.getElementById('question');
 const answerText = document.getElementById('answer');
 const youSelectedText = document.getElementById('youSelected');
+
 let me = null;
 let owner = null;
 let selectedPlayer = null;
@@ -16,7 +19,6 @@ window.addEventListener('load', () => {
 
 socket.on("you-joined", start);
 socket.on("owner-updated", o => {
-    console.log(o);
     owner.name = o.name;
     owner.message = o.message;
     update();
@@ -38,8 +40,9 @@ function start(data) {
         drawWheel();
     } else {
         messageField.value = "Answer";
-        spinButton.style.visibility = 'hidden';
         canvas.style.visibility = 'hidden';
+        colorDiv.style.visibility = 'visible';
+        colorInput.value = me.color;
     }
 }
 
@@ -80,10 +83,12 @@ function belongsNameVaiation(name) {
 
 nameField.addEventListener('input', updateMe);
 messageField.addEventListener('input', updateMe);
+colorInput.addEventListener('input', updateMe);
 
 function updateMe() {
     me.name = nameField.value;
     me.message = messageField.value;
+    me.color = colorInput.value;
     socket.emit("update-player", me);
     update();
 }

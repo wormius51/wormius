@@ -15,7 +15,7 @@ function Player (socketId ,name, wheelOwnerId) {
             id: shortid.generate(),
             name: name,
             message: "?",
-            color: "RGB(" + (Math.floor(Math.random() * 256)) + "," + (Math.floor(Math.random() * 256)) + "," + (Math.floor(Math.random() * 256)) + ")",
+            color: "#" + Math.floor(Math.random()*16777215).toString(16),
             connected: true,
             isOwner: isOwner
         },

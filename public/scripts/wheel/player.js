@@ -17,6 +17,7 @@ function updatePlayer(player) {
     if (currentPlayer) {
         currentPlayer.name = player.name;
         currentPlayer.message = player.message;
+        currentPlayer.color = player.color;
     }
     update();
 }

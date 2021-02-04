@@ -18,7 +18,7 @@ function start() {
     });
 
     socketer.addListener(namespace, "update-player", (data, socket, nsp) => {
-        let player = update(socket.id, data.name, data.message);
+        let player = update(socket.id, data.name, data.message, data.color);
         socket.emit("you-updated", player.avatar);
     });
 
@@ -57,12 +57,13 @@ function leave(socketId) {
     owner.socket.emit('player-left', player.avatar);
 }
 
-function update(socketId, name, message) {
+function update(socketId, name, message, color) {
     let player = Player.getPlayerById(socketId);
     if (!player)
         return;
     player.avatar.name = name;
     player.avatar.message = message;
+    player.avatar.color = color;
     let owner = null;
     if (player.wheelOwnerId)
         owner = Player.getPlayerByAvartarId(player.wheelOwnerId);

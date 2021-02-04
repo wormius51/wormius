@@ -1,6 +1,7 @@
 body {
     background-color: #00b140;
     color: rgb(18, 45, 167);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 h2 {
@@ -13,5 +14,9 @@ h2 {
 }
 
 #youSelected {
+    visibility: hidden;
+}
+
+#colorDiv {
     visibility: hidden;
 }
