@@ -1,0 +1,17 @@
+body {
+    background-color: #00b140;
+    color: rgb(18, 45, 167);
+}
+
+h2 {
+    font-size: 25px;
+}
+
+#wheelOwnerId {
+    visibility: hidden;
+    position: absolute;
+}
+
+#youSelected {
+    visibility: hidden;
+}

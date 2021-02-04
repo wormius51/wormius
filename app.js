@@ -44,7 +44,7 @@ app.use("/",require('./routes/index'));
 
 const routes = ["games", "tutorials", "devlog", "oneDheros", 
 "food-chain-game", "button-button-button","canvas-land", 
-"king-of-the-tile", "tribute-chess"];
+"king-of-the-tile", "tribute-chess", "wheel"];
 
 routes.forEach((element) => {
     app.use("/" + element,require("./routes/" + element));
@@ -61,6 +61,7 @@ require('./games/food-chain-game').start();
 require('./games/button-button-button').start();
 require('./games/canvas-land').start();
 require('./games/king-of-the-tile').start();
+require('./games/wheel').start();
 
 require('./scripts/socketer').listen(server);
 

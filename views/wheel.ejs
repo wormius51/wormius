@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tha Wheel</title>
+    <link rel="stylesheet" href="/stylesheets/wheel/style.css">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <div id = 'wheelOwnerId'><%= wheelOwnerId %></div>
+    <h2 id = 'title'></h2>
+    <h1 id = 'question'></h1>
+    <h1 id = 'answer'></h1>
+    <h1 id = 'youSelected'>You got selected.</h1>
+    <br>
+    <input type="text" id="nameField">
+    <br>
+    <input type="text" id="messageField">
+    <br>
+    <input type="button" id = 'spinButton' value="Spin">
+    <br>
+    <canvas id = "wheelCanvas"></canvas>
+
+    <script src="/scripts/wheel/main.js"></script>
+    <script src="/scripts/wheel/player.js"></script>
+    <script src="/scripts/wheel/wheel.js"></script>
+</body>
+</html>

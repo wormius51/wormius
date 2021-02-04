@@ -49,9 +49,11 @@ function addListener(namespace, eventName, callback) {
 }
 
 function getSocketById(id) {
-    return io.sockets.find(socket => {
-        return socket.id == id;
-    });
+    return io.sockets.connected[id];
+}
+
+function emitTo(namespace, socketId, eventName, data) {
+    io.to(namespace + "/" + socketId).emit(eventName, data);
 }
 
 function getNamespace(name) {
@@ -62,3 +64,4 @@ module.exports.listen = listen;
 module.exports.addListener = addListener;
 module.exports.getSocketById = getSocketById;
 module.exports.getNamespace = getNamespace;
+module.exports.emitTo = emitTo;

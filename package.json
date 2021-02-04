@@ -20,6 +20,7 @@
     "express": "^4.16.4",
     "express-session": "^1.17.0",
     "faker": "^4.1.0",
+    "shortid": "^2.2.16",
     "socket.io": "^2.2.0",
     "uuid": "^3.3.2"
   }
