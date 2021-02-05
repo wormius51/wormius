@@ -38,6 +38,8 @@ function selectRandomPlayer() {
     let selection = filteredPlayers[index];
     if (selection && players.length > 1)
         updateCooldowns(selection);
+    else
+        resetCooldowns();
     return selection;
 }
 
@@ -62,6 +64,12 @@ function updateCooldowns(selection) {
                 player.cooldown = 0;
             }
         }
+    });
+}
+
+function resetCooldowns() {
+    players.forEach(player => {
+        player.cooldown = 0;
     });
 }
 
