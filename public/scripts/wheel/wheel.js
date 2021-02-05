@@ -10,6 +10,15 @@ let indicatorWidth = 30;
 let indicatorOverlap = 20;
 let indicatorColor = 'red';
 let isSpinning = false;
+let spinAnimation = {
+    spinTimes: 5,
+    startingAngle: 0,
+    targetAngle: 0,
+    progress: 0,
+    startSpeed: 0.0000005,
+    speed: 0.0000005,
+    accelerationRatio: 0.1
+};
 function spin() {
     if (isSpinning)
         return;
@@ -65,9 +74,24 @@ function showSelectedPlayer(selection) {
 }
 
 function playAnimation(selection) {
-    setTimeout(() => {
+    spinAnimation.startingAngle = wheelAngleOffset;
+    spinAnimation.targetAngle = targetAngleOffset(selection) + Math.PI * 2 * spinAnimation.spinTimes;
+    spinAnimation.progress = 0;
+    spinAnimation.speed = spinAnimation.startSpeed;
+    window.requestAnimationFrame(timeStamp => {spinAnimationStep(timeStamp, selection);});
+}
+
+let lastTimeStamp = 0;
+function spinAnimationStep(timeStamp, selection) {
+    let deltaTime = timeStamp - lastTimeStamp;
+    wheelAngleOffset = spinAnimation.targetAngle * spinAnimation.progress + spinAnimation.startingAngle * (1 - spinAnimation.progress);
+    spinAnimation.progress += spinAnimation.speed * deltaTime;
+    spinAnimation.speed *= Math.pow(spinAnimation.accelerationRatio, 1 / deltaTime);
+    drawWheel();
+    if (spinAnimation.progress > 1)
         showSelectedPlayer(selection);
-    }, 2000);
+    else
+        window.requestAnimationFrame(timeStamp => {spinAnimationStep(timeStamp, selection);});
 }
 
 function targetAngleOffset(selection) {
