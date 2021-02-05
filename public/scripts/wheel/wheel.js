@@ -15,9 +15,8 @@ let spinAnimation = {
     startingAngle: 0,
     targetAngle: 0,
     progress: 0,
-    startSpeed: 0.0000005,
-    speed: 0.0000005,
-    accelerationRatio: 0.1
+    startSpeed: 0.0005,
+    speed: 0
 };
 function spin() {
     if (isSpinning)
@@ -37,7 +36,7 @@ function selectRandomPlayer() {
     let filteredPlayers = players.filter(selectionFilter);
     let index = Math.floor(Math.random() * filteredPlayers.length);
     let selection = filteredPlayers[index];
-    if (selection)
+    if (selection && players.length > 1)
         updateCooldowns(selection);
     return selection;
 }
@@ -72,8 +71,9 @@ function showSelectedPlayer(selection) {
     update();
     isSpinning = false;
 }
-
+let lastTimeStamp = 0;
 function playAnimation(selection) {
+    wheelAngleOffset = wheelAngleOffset % (Math.PI * 2);
     spinAnimation.startingAngle = wheelAngleOffset;
     spinAnimation.targetAngle = targetAngleOffset(selection) + Math.PI * 2 * spinAnimation.spinTimes;
     spinAnimation.progress = 0;
@@ -81,15 +81,20 @@ function playAnimation(selection) {
     window.requestAnimationFrame(timeStamp => {spinAnimationStep(timeStamp, selection);});
 }
 
-let lastTimeStamp = 0;
+
 function spinAnimationStep(timeStamp, selection) {
     let deltaTime = timeStamp - lastTimeStamp;
+    lastTimeStamp = timeStamp;
+    if (deltaTime > 20)
+        deltaTime = 20;
     wheelAngleOffset = spinAnimation.targetAngle * spinAnimation.progress + spinAnimation.startingAngle * (1 - spinAnimation.progress);
     spinAnimation.progress += spinAnimation.speed * deltaTime;
-    spinAnimation.speed *= Math.pow(spinAnimation.accelerationRatio, 1 / deltaTime);
     drawWheel();
-    if (spinAnimation.progress > 1)
+    if (spinAnimation.progress > 1) {
+        wheelAngleOffset = spinAnimation.targetAngle;
+        drawWheel();
         showSelectedPlayer(selection);
+    }
     else
         window.requestAnimationFrame(timeStamp => {spinAnimationStep(timeStamp, selection);});
 }

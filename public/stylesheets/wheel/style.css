@@ -23,3 +23,9 @@ h2 {
     top: 10px;
     right: 10px;
 }
+
+#wheelCanvas {
+    position: absolute;
+    top: 250px;
+    left: 300px;
+}

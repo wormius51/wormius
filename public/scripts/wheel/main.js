@@ -37,7 +37,6 @@ function start(data) {
     update();
     if (me.isOwner) {
         messageField.value = "Question";
-        drawWheel();
     } else {
         messageField.value = "Answer";
         canvas.style.visibility = 'hidden';
