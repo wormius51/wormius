@@ -21,12 +21,12 @@ let spinAnimation = {
 function spin() {
     if (isSpinning)
         return;
-    isSpinning = true;
     socket.emit("spin");
     let selection = selectRandomPlayer();
-    if (!selection)
-        return;
-    playAnimation(selection);
+    if (selection) {
+        isSpinning = true;
+        playAnimation(selection);
+    }
 }
 
 canvas.addEventListener('click', spin);
