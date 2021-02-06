@@ -4,6 +4,8 @@ const nameField = document.getElementById('nameField');
 const messageField = document.getElementById('messageField');
 const colorInput = document.getElementById('colorInput');
 const colorDiv = document.getElementById('colorDiv');
+const cooldownDiv = document.getElementById('cooldownDiv');
+const cooldownInput = document.getElementById('cooldownInput');
 const questionText = document.getElementById('question');
 const answerText = document.getElementById('answer');
 const youSelectedText = document.getElementById('youSelected');
@@ -34,23 +36,27 @@ function start(data) {
     me = data.player;
     owner = data.owner;
     nameField.value = "Name";
-    update();
     if (me.isOwner) {
         messageField.value = "Question";
+        cooldownInput.value = cooldownAddition * 2;
     } else {
         messageField.value = "Answer";
         canvas.style.visibility = 'hidden';
         colorDiv.style.visibility = 'visible';
         colorInput.value = me.color;
+        cooldownDiv.style.visibility = 'hidden';
     }
+    update();
 }
 
 function update() {
     updateTitle();
     updateQuestion();
     updateAnswer();
-    if (me.isOwner)
+    if (me.isOwner) {
+        cooldownAddition = cooldownInput.value * 0.5;
         drawWheel();
+    }
 }
 
 function updateTitle() {
@@ -83,6 +89,7 @@ function belongsNameVaiation(name) {
 nameField.addEventListener('input', updateMe);
 messageField.addEventListener('input', updateMe);
 colorInput.addEventListener('input', updateMe);
+cooldownInput.addEventListener('input', update);
 
 function updateMe() {
     me.name = nameField.value;

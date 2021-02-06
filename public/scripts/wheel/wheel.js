@@ -120,15 +120,20 @@ function setAndClearWheel() {
 }
 
 function drawWheel() {
-    if (players.length == 0)
-        drawSlice(wheelRadius + wheelLineWidth, wheelRadius + wheelLineWidth, wheelRadius,  0, Math.PI * 2, "white");
+    let center = wheelRadius + wheelLineWidth;
     setAndClearWheel();
-    let sliceAngle = Math.PI * 2 / players.length;
-    for (let i = 0; i < players.length; i++) {
-        let center = wheelRadius + wheelLineWidth;
-        let startingAngle = sliceAngle * i + wheelAngleOffset;
-        drawSlice(center, center, wheelRadius, startingAngle, sliceAngle, players[i].color);
-        drawName(center, center, wheelRadius, startingAngle, sliceAngle, players[i].name);
+    if (players.length == 0) {
+        drawSlice(center, center, wheelRadius,  0, Math.PI * 2, "white");
+        context.font = "50px" + " Verdana";
+        context.fillStyle = wheelTextColor;
+        context.fillText("Invite Players", center - wheelRadius * 0.7, center + 12, wheelRadius * 1.5);
+    } else {
+        let sliceAngle = Math.PI * 2 / players.length;
+        for (let i = 0; i < players.length; i++) {
+            let startingAngle = sliceAngle * i + wheelAngleOffset;
+            drawSlice(center, center, wheelRadius, startingAngle, sliceAngle, players[i].color);
+            drawName(center, center, wheelRadius, startingAngle, sliceAngle, players[i].name);
+        }
     }
     drawIndicator();
 }
