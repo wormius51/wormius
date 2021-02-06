@@ -26,6 +26,7 @@ socket.on("owner-updated", o => {
     update();
 });
 socket.on("you-got-selected", () => {
+    notificationAudio.play();
     youSelectedText.style.visibility = 'visible';
 });
 socket.on("spin", () => {

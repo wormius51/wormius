@@ -79,7 +79,6 @@ function showSelectedPlayer(selection) {
     socket.emit("select-player", selection);
     update();
     isSpinning = false;
-    notificationAudio.play();
 }
 let lastTimeStamp = 0;
 function playAnimation(selection) {
