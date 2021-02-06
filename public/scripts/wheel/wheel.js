@@ -1,5 +1,6 @@
 const canvas = document.getElementById('wheelCanvas');
 const context = canvas.getContext('2d');
+const notificationAudio = new Audio("/sounds/notification.wav");
 let cooldownAddition = 0.5;
 let wheelRadius = 150;
 let wheelLineWidth = 3;
@@ -78,6 +79,7 @@ function showSelectedPlayer(selection) {
     socket.emit("select-player", selection);
     update();
     isSpinning = false;
+    notificationAudio.play();
 }
 let lastTimeStamp = 0;
 function playAnimation(selection) {
@@ -95,6 +97,7 @@ function spinAnimationStep(timeStamp, selection) {
     lastTimeStamp = timeStamp;
     if (deltaTime > 20)
         deltaTime = 20;
+    spinAnimation.targetAngle = targetAngleOffset(selection) + Math.PI * 2 * spinAnimation.spinTimes;
     wheelAngleOffset = spinAnimation.targetAngle * spinAnimation.progress + spinAnimation.startingAngle * (1 - spinAnimation.progress);
     spinAnimation.progress += spinAnimation.speed * deltaTime;
     drawWheel();
