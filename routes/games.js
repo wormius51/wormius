@@ -28,7 +28,7 @@ router.get("/", (req, res, next) => {
                     "A puzzle game from hell. Rotate the pentagons to light the candles on the pentagram."),
                 GameLink("Tha Wheel", 
                 "/wheel", "/images/gameLinks/tha-wheel.png",
-                "A wheel which you can invite people to join to. You then spin it to get a random player."),
+                "A wheel to which you can invite people to join to. You then spin it to get a random player."),
                 /*GameLink("Canvas Land", // Posted to newgrounds and people drew nudes. So have to not link it here.
                     "/canvas-land", "/images/gameLinks/canvas-land.png",
                     "A multiplayer canvas where you can draw with your friends."),*/
