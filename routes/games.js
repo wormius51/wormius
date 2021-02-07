@@ -6,21 +6,19 @@ router.get("/", (req, res, next) => {
             description: "Play games made by me, the great wormius!",
             title: "Games",
             gameLinks: [
+                GameLink("Creatures Of Energy",
+                    "https://wormius51.itch.io/creatures-of-energy",
+                    "/images/gameLinks/creatures-of-energy.png",
+                    "A strategy multiplayer game where you grow creatures to destroy the enemy."),
                 GameLink("Tribute Chess",
-                "/games/tribute-chess", "/images/gameLinks/tribute-chess.png",
-                "I made chess pieces out of poeple."),
+                    "/games/tribute-chess", "/images/gameLinks/tribute-chess.png",
+                    "I made chess pieces out of poeple."),
                 GameLink("Really Bad Flying Machine",
                     "/games/really-bad-flying-machine", "/images/gameLinks/really-bad-flying-machine.png",
                     "A puzzle game where you play as a flying machine. You can shoot your propellers off but lose the ability to move."),
                 GameLink("Photinos",
-                "https://wormius51.itch.io/photinos", "/images/gameLinks/photinos.png",
-                "A puzzle game were you move as lasers and split to different colors."),
-                GameLink("Bee Defence",
-                "https://wormius51.itch.io/bee-defence", "/images/gameLinks/bee-defence.png",
-                "An arcade game where you collect flowers for the bee race."),
-                /*GameLink("Canvas Land", // Posted to newgrounds and people drew nudes. So have to not link it here.
-                    "/canvas-land", "/images/gameLinks/canvas-land.png",
-                    "A multiplayer canvas where you can draw with your friends."),*/
+                    "https://wormius51.itch.io/photinos", "/images/gameLinks/photinos.png",
+                    "A puzzle game were you move as lasers and split to different colors."),
                 GameLink("Jump Dash",
                     "/games/jump-dash", "/images/gameLinks/jump-dash.png",
                     "A game where you jump, and then you dash. Try it."),
@@ -28,10 +26,12 @@ router.get("/", (req, res, next) => {
                     "https://wormius51.itch.io/burn-your-brain",
                     "/images/gameLinks/burn-your-brain.png",
                     "A puzzle game from hell. Rotate the pentagons to light the candles on the pentagram."),
-                GameLink("Creatures Of Energy",
-                    "https://wormius51.itch.io/creatures-of-energy",
-                    "/images/gameLinks/creatures-of-energy.png",
-                    "A strategy multiplayer game where you grow creatures to destroy the enemy."),
+                GameLink("Tha Wheel", 
+                "/wheel", "/images/gameLinks/tha-wheel.png",
+                "A wheel which you can invite people to join to. You then spin it to get a random player."),
+                /*GameLink("Canvas Land", // Posted to newgrounds and people drew nudes. So have to not link it here.
+                    "/canvas-land", "/images/gameLinks/canvas-land.png",
+                    "A multiplayer canvas where you can draw with your friends."),*/
                 GameLink("Tactical Tactics",
                     "/games/tactical-tactics",
                     "/images/gameLinks/tactical-tactics.png",
@@ -43,7 +43,10 @@ router.get("/", (req, res, next) => {
                 GameLink("oneDheros",
                     "/oneDheros",
                     "/images/gameLinks/oneDheros.png",
-                    "A 1 dimensional multiplayer game where you hit enemies or each other to gain upgrade points and unlock skills.")
+                    "A 1 dimensional multiplayer game where you hit enemies or each other to gain upgrade points and unlock skills."),
+                GameLink("Bee Defence",
+                    "https://wormius51.itch.io/bee-defence", "/images/gameLinks/bee-defence.png",
+                    "An arcade game where you collect flowers for the bee race.")
             ]
         });
 });
