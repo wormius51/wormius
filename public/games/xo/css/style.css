@@ -1,0 +1,36 @@
+
+#board {
+    position: absolute;
+    left: 30%;
+    top: 20%;
+}
+
+#board tr td {
+    height: 100px;
+    width: 100px;
+    text-align: center;
+    font-size: 100px;
+    border-radius: 10px;
+}
+
+.move {
+    background-color: darkgreen;
+}
+
+.losing-move {
+    background-color: darkred;
+}
+
+#state-text {
+    position: absolute;
+    left: 37%;
+    top: 4%;
+    font-size: 60px;
+}
+
+#restart-button {
+    position: absolute;
+    left: 37%;
+    bottom: 10%;
+    font-size: 60px;
+}
