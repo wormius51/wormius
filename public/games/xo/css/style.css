@@ -34,3 +34,12 @@
     bottom: 10%;
     font-size: 60px;
 }
+
+#past-positions {
+    overflow-y: scroll;
+    width: 200px;
+    height: 550px;
+    background-color: burlywood;
+    font-size: 40px;
+    text-align: center;
+}

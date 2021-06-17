@@ -1,12 +1,14 @@
 const boardElement = document.getElementById("board").children[0];
 const stateText = document.getElementById("state-text");
 const restartButton = document.getElementById("restart-button");
+const pastPositionsText = document.getElementById("past-positions");
 var positions = [];
 var board = [];
 
 var playing = false;
 
 function setup () {
+    pastPositionsText.innerHTML = "";
     positions = [];
     board = [];
     for (let i = 0; i < boardElement.children.length; i++) {
@@ -31,7 +33,7 @@ function select (i, j) {
     if (!playing)
         return;
     let cell = board[i] [j];
-    if (!cell.className) return;
+    if (cell.className != "move") return;
     cell.innerHTML = cell.innerHTML == "X" ? "O" : "X";
     clearMoves();
     markMoves(i, j);
@@ -66,7 +68,7 @@ function markMoves (i, j) {
 
 function markMove(i, j) {
     let position = getPositionString(i, j);
-    board[i][j].className = isRepete(position) ? "losing-move" : "move";
+    board[i][j].className = isRepeat(position) ? "losing-move" : "move";
 }
 
 function getPositionString (y, x) {
@@ -91,17 +93,21 @@ function addPosition () {
         for (let j = 0; j < row.length; j++) {
             let cell = row[j];
             position += cell.innerHTML;
+            pastPositionsText.innerHTML = cell.innerHTML + pastPositionsText.innerHTML;
         }
+        pastPositionsText.innerHTML = "<br>" + pastPositionsText.innerHTML;
     }
-    if (isRepete(position)) {
-        console.log("repete after " + positions.length + " moves");
+    pastPositionsText.innerHTML = "<br>" + pastPositionsText.innerHTML;
+    if (isRepeat(position)) {
+        console.log("Repeat after " + positions.length + " moves");
         playing = false;
+        clearMoves();
     }
     positions.push(position);
     updateStateText();
 }
 
-function isRepete (position) {
+function isRepeat (position) {
     return positions.indexOf(position) != -1;
 }
 
