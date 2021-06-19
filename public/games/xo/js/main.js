@@ -88,16 +88,17 @@ function getPositionString (y, x) {
 
 function addPosition () {
     let position = "";
+    let posText = "";
     for (let i = 0; i < board.length; i++) {
         let row = board[i];
         for (let j = 0; j < row.length; j++) {
             let cell = row[j];
             position += cell.innerHTML;
-            pastPositionsText.innerHTML = cell.innerHTML + pastPositionsText.innerHTML;
+            posText += cell.innerHTML;
         }
-        pastPositionsText.innerHTML = "<br>" + pastPositionsText.innerHTML;
+        posText += "<br>";
     }
-    pastPositionsText.innerHTML = "<br>" + pastPositionsText.innerHTML;
+    pastPositionsText.innerHTML = "<br>" + posText + pastPositionsText.innerHTML;
     if (isRepeat(position)) {
         console.log("Repeat after " + positions.length + " moves");
         playing = false;
