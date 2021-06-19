@@ -7,33 +7,53 @@
     <title>XO</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-    <h2 id = "rules-text">Try to make as many moves as your can without repeating the position.
-        <br>
-        After X you can select next to it diagonally and after O orthogonally.
-        <br>
-        For 9 tiles there are 512 possible positions.
-    </h2>
-    <h1 id = "state-text"></h1>
-    <div id = "past-positions"></div>
-    <table id = "board">
+<body>   
+    <table id = "body-table">
         <tr>
-            <td>O</td>
-            <td>O</td>
-            <td>O</td>
+            <td>
+                <h1 id = "state-text"></h1>
+            </td>
+            <td>
+                <h2 id = "rules-text">Try to make as many moves as your can without repeating the position.
+                    <br>
+                    After X you can select next to it diagonally and after O orthogonally.
+                    <br>
+                    For 9 tiles there are 512 possible positions.
+                </h2>
+            </td>
         </tr>
         <tr>
-            <td>O</td>
-            <td>O</td>
-            <td>O</td>
+            <td>
+                <div id = "past-positions"></div>
+            </td>
+            <td>
+                <table id = "board">
+                    <tr>
+                        <td>O</td>
+                        <td>O</td>
+                        <td>O</td>
+                    </tr>
+                    <tr>
+                        <td>O</td>
+                        <td>O</td>
+                        <td>O</td>
+                    </tr>
+                    <tr>
+                        <td>O</td>
+                        <td>O</td>
+                        <td>O</td>
+                    </tr>
+                </table>
+            </td>
         </tr>
         <tr>
-            <td>O</td>
-            <td>O</td>
-            <td>O</td>
+            <td></td>
+            <td>
+                <button id = "restart-button">Restart</button>
+            </td>
         </tr>
     </table>
-    <button id = "restart-button">Restart</button>
+    
     <script src="js/main.js"></script>
 </body>
 </html>

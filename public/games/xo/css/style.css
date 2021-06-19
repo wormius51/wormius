@@ -1,16 +1,19 @@
+#body-table {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
 
 #board {
-    position: absolute;
-    left: 30%;
-    top: 20%;
+    height: 50vh;
+    aspect-ratio: 1;
 }
 
 #board tr td {
-    height: 100px;
-    width: 100px;
     text-align: center;
-    font-size: 100px;
-    border-radius: 10px;
+    font-size: 10vh;
+    border-radius: 1vh;
 }
 
 .move {
@@ -22,24 +25,22 @@
 }
 
 #state-text {
-    position: absolute;
-    left: 37%;
-    top: 4%;
-    font-size: 60px;
+    font-size: 6vh;
+}
+
+#rules-text {
+    font-size: 3vh;
 }
 
 #restart-button {
-    position: absolute;
-    left: 37%;
-    bottom: 10%;
-    font-size: 60px;
+    font-size: 6vh;
 }
 
 #past-positions {
     overflow-y: scroll;
-    width: 200px;
-    height: 550px;
+    height: 50vh;
+    aspect-ratio: 0.4;
     background-color: burlywood;
-    font-size: 40px;
+    font-size: 4vh;
     text-align: center;
 }
