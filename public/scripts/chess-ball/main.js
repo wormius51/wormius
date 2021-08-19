@@ -62,6 +62,7 @@ function selectSquare (file, rank, xInSquare, yInSquare, isDrag) {
         if (!move.ballMoves && !move.promotions) {
             positionPlayMove(position, move);
             kickingPiece = undefined;
+            draggedPiece = undefined;
             sendMove(move);
         }
     }
@@ -78,6 +79,7 @@ function selectSquare (file, rank, xInSquare, yInSquare, isDrag) {
         if (kickMove && !(ballMove.bx == ballMove.sx && ballMove.by == ballMove.sy)) {
             positionPlayMove(position, ballMove);
             kickingPiece = undefined;
+            draggedPiece = undefined;
             sendMove(ballMove);
         }
     }
