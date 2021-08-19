@@ -39,6 +39,8 @@ function selectCanvas (event, isDrag) {
 }
 
 function selectSquare (file, rank, xInSquare, yInSquare, isDrag) {
+    if (positionResult(position) != "playing")
+        return;
     if (flippedBoard) {
         file = boardWidth - 1 - file;
         rank = boardHeight - 1 - rank;
