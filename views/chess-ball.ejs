@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/chess-ball/style.css">
+    <link rel="shortcut icon" href="/images/chess-ball/ball.png" type="image/x-icon">
+    <title>Chess Ball</title>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <table>
+        <tr>
+            <td>
+                <canvas id = "boardCanvas"></canvas>
+            </td>
+            <td>
+                <h2 id = "resaltText"></h2>
+                <br>
+                <button id = "restartButton">Restart</button>
+                <br>
+                <button id = "flipBoardButton">Flip Board</button>
+                <br>
+                <button id = "multiplayerButton">Multiplayer</button>
+            </td>
+        </tr>
+    </table>
+    <script src="/scripts/chess-ball/piece.js"></script>
+    <script src="/scripts/chess-ball/images.js"></script>
+    <script src="/scripts/chess-ball/canvas.js"></script>
+    <script src="/scripts/chess-ball/position.js"></script>
+    <script src="/scripts/chess-ball/info.js"></script>
+    <script src="/scripts/chess-ball/main.js"></script>
+    <script src="/scripts/chess-ball/multiplayer.js"></script>
+</body>
+</html>

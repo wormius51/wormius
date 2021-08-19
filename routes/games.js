@@ -6,6 +6,9 @@ router.get("/", (req, res, next) => {
             description: "Play games made by me, the great wormius!",
             title: "Games",
             gameLinks: [
+                GameLink("Chess Ball", 
+                    "/chess-ball", "/images/gameLinks/chess-ball.png", 
+                    "A chess variant where you kick the ball with your pieces"),
                 GameLink("Pipe Pop",
                     "https://wormius51.itch.io/pipe-pop", "/images/gameLinks/pipe-pop.png",
                     "Rotate pipes to connect and pop them to win score."),
