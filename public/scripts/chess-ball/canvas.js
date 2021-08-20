@@ -15,6 +15,7 @@ let lightSquareColor = "rgb(200, 200, 255)";
 let darkSquareColor = "rgb(37, 10, 122)";
 let moveOptionColor = "#10fd30d3";
 let ballMoveColor = "grey";
+let backGroundOpacity = 0.85;
 
 let draggedPiece = undefined;
 let kickingPiece = undefined;
@@ -157,7 +158,9 @@ function drawDraggedPiece () {
     drawPiece(draggedPiece, file, rank);
 }
 function drawClydeBackground () {
+    context.globalAlpha = backGroundOpacity;
     context.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+    context.globalAlpha = 1;
 }
 function drawBoard () {
     setBoardCanvasSize();
