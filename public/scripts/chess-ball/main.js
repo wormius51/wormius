@@ -106,6 +106,7 @@ function selectSquare (file, rank, xInSquare, yInSquare, isDrag) {
 }
 
 function restart() {
+    possibleMoves = [];
     setStartingPosition();
     drawBoard();
     updateInfo();
