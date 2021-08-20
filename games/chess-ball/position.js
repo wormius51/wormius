@@ -320,7 +320,9 @@ function addKickMoves (board, moves) {
     });
     if (!kickMove)
         return;
+    let enpassant = board.enpassant;
     let afterPosition = positionAfterMove(board, kickMove);
+    afterPosition.enpassant = enpassant;
     let ballMoves = pieceMoves[board[kickMove.sy][kickMove.sx].type](afterPosition, kickMove.x, kickMove.y, false);
     ballMoves = ballMoves.filter(move => {
         return !afterPosition[move.y][move.x];
