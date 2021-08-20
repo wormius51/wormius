@@ -1,6 +1,7 @@
 window.addEventListener('load', () => {
     setStartingPosition();
     drawBoard();
+    updateInfo();
 });
 
 canvas.addEventListener('click', selectCanvas);
@@ -107,6 +108,7 @@ function selectSquare (file, rank, xInSquare, yInSquare, isDrag) {
 
 function restart() {
     possibleMoves = [];
+    mostRecentMove = undefined;
     setStartingPosition();
     drawBoard();
     updateInfo();

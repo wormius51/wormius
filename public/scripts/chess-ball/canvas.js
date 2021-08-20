@@ -17,10 +17,14 @@ let moveOptionColor = "#10fd30d3";
 let ballMoveColor = "grey";
 let backGroundOpacity = 0.85;
 
+let moveShowColor = "rgba(0,128,0,0.5)";
+
 let draggedPiece = undefined;
 let kickingPiece = undefined;
 let mouseX = 0;
 let mouseY = 0;
+
+let mostRecentMove = undefined;
 
 function setBoardCanvasSize () {
     canvas.height = boardHeight * squareEdgeLengh;
@@ -148,6 +152,24 @@ function drawMoveOptions () {
     });
 }
 
+function drawMarkSquare (file, rank, color) {
+    if (flippedBoard) {
+        file = boardWidth - 1 - file;
+        rank = boardHeight - 1 - rank;
+    }
+    context.fillStyle = color;
+    context.fillRect(file * squareEdgeLengh, rank * squareEdgeLengh, squareEdgeLengh, squareEdgeLengh);
+}
+
+function drawShowMove (move) {
+    if (!move)
+        return;
+    drawMarkSquare(move.sx, move.sy, moveShowColor);
+    drawMarkSquare(move.x, move.y, moveShowColor);
+    if (move.bx != undefined)
+        drawMarkSquare(move.bx, move.by, moveShowColor);
+}
+
 function drawDraggedPiece () {
     let file = mouseX;
     let rank = mouseY;
@@ -157,15 +179,17 @@ function drawDraggedPiece () {
     }
     drawPiece(draggedPiece, file, rank);
 }
+
 function drawClydeBackground () {
     context.globalAlpha = backGroundOpacity;
     context.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
     context.globalAlpha = 1;
 }
+
 function drawBoard () {
     setBoardCanvasSize();
-    //drawSquares();
     drawClydeBackground();
+    drawShowMove(mostRecentMove);
     drawPieces();
     drawMoveOptions();
     if (draggedPiece)

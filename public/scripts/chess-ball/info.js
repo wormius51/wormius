@@ -1,9 +1,12 @@
 const resultText = document.getElementById("resaltText");
-
+const title = document.querySelector("title");
 function updateInfo () {
+    title.innerHTML = "Chess Ball";
     switch (positionResult(position)) {
         case "playing":
-            resultText.innerHTML = "";
+            resultText.innerHTML = position.turn == "white" ? "White to move" : "Black to move";
+            if (matchData) 
+                title.innerHTML = position.turn == myColor ? "Your turn" : "Opponents turn";
             break;
         case "goal white":
             resultText.innerHTML = "White wins by goal";

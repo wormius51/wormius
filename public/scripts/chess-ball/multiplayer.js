@@ -26,13 +26,15 @@ socket.on('start', data => {
 socket.on('moves', data => {
     if (!matchData || data.moves.length <= matchData.moves.length)
         return;
-    matchData.moves.push(data);
+    mostRecentMove = data.lastMove;
+    matchData.moves.push(data.lastMove);
     positionPlayMove(position, data.lastMove);
     drawBoard();
     updateInfo();
 });
 
 function sendMove (move) {
+    mostRecentMove = move;
     if (!matchData)
         return;
     matchData.moves.push(move);
