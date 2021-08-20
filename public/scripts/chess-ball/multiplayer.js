@@ -16,7 +16,7 @@ socket.on('matchId', data => {
 socket.on('start', data => {
     myColor = data.youAre;
     matchData = data;
-    if (myColor == "black")
+    if ((myColor == "white") == flippedBoard)
         flipBoard();
     restart();
     multiplayerButton.style.visibility = "hidden";
@@ -38,3 +38,9 @@ function sendMove (move) {
     matchData.moves.push(move);
     socket.emit('playMove', move);
 }
+
+socket.on('end', () => {
+    myColor = "both";
+    restartButton.style.visibility = "visible";
+    multiplayerButton.style.visibility = "visible";
+});

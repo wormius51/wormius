@@ -80,6 +80,15 @@ function startMatch (match) {
     match.black.socket.emit("start", data);
 }
 
+function endMatch (match) {
+    match.state = "finished";
+    match.white.room = "lobby";
+    match.black.room = "lobby";
+    match.white.socket.emit("end");
+    match.black.socket.emit("end");
+    matches = matches.filter(m => m != match);
+}
+
 function joinMatchOrStart (player) {
     let match = matches.find(m => m.state == "looking");
     if (match)
@@ -110,6 +119,8 @@ function playMove (player, move) {
     match.spectators.forEach(s => {
         s.socket.emit("moves", data);
     });
+    if (position.positionResult(match.position) != "playing")
+        endMatch(match);
 }
 
 module.exports = Match;

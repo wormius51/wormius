@@ -99,7 +99,6 @@ function positionAfterMove (position, move) {
 }
 
 function positionPlayMove (position, move) {
-    
     let piece = position[move.sy][move.sx];
     position[move.sy][move.sx] = undefined;
     if (move.bx != undefined)

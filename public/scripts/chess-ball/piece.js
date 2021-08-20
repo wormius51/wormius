@@ -32,7 +32,7 @@ function copyPiece (piece) {
 function getMovesOfPiece(board, x, y, ignoreAttacks) {
     if (!board[y] || !board[y][x]) return [];
     if (!pieceMoves[board[y][x].type]) return [];
-    if (!ignoreAttacks && board[y][x].team != position.turn) return [];
+    if (!ignoreAttacks && board[y][x].team != board.turn) return [];
     let moves = pieceMoves[board[y][x].type](board, x, y, ignoreAttacks);
     moves.forEach(move => {
         move.sx = x;
@@ -240,12 +240,12 @@ const pieceMoves = {
                 moves.push({ x: x, y: y + dir * 2 });
         }
         if (x < board[y + dir].length - 1) {
-            if (ignoreAttacks || (board[y + dir][x + 1] && board[y + dir][x + 1].team != board[y][x].team) || (position.enpassant && position.enpassant.x == x + 1 && position.enpassant.y == y + dir)) {
+            if (ignoreAttacks || (board[y + dir][x + 1] && board[y + dir][x + 1].team != board[y][x].team) || (board.enpassant && board.enpassant.x == x + 1 && board.enpassant.y == y + dir)) {
                 moves.push({ x: x + 1, y: y + dir });
             }
         }
         if (x > 0) {
-            if (ignoreAttacks || (board[y + dir][x - 1] && board[y + dir][x - 1].team != board[y][x].team) || (position.enpassant && position.enpassant.x == x - 1 && position.enpassant.y == y + dir)) {
+            if (ignoreAttacks || (board[y + dir][x - 1] && board[y + dir][x - 1].team != board[y][x].team) || (board.enpassant && board.enpassant.x == x - 1 && board.enpassant.y == y + dir)) {
                 moves.push({ x: x - 1, y: y + dir });
             }
         }

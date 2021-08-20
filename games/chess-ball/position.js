@@ -284,7 +284,7 @@ function copyPiece (piece) {
  * @param {Number} x 
  * @param {Number} y 
  */
-function getMovesOfPiece(board, x, y, ignoreAttacks) {
+ function getMovesOfPiece(board, x, y, ignoreAttacks) {
     if (!board[y] || !board[y][x]) return [];
     if (!pieceMoves[board[y][x].type]) return [];
     if (!ignoreAttacks && board[y][x].team != board.turn) return [];
@@ -549,14 +549,11 @@ function isTheSamePiece(a, b) {
     return a.team == b.team && a.type == b.type;
 }
 
-
 module.exports.getStartingPosition = () => {
     return copyPosition(startPosition);
 }
 
-module.exports.positionPlayMove = positionPlayMove;
-
-module.exports.isLegalMove = (position, move) => {
+function isLegalMove (position, move) {
     for (let rank = 0; rank < position.length; rank++) {
         for (let file = 0; file < position[rank].length; file++) {
             let moves = getMovesOfPiece(position, file, rank);
@@ -572,10 +569,16 @@ module.exports.isLegalMove = (position, move) => {
                         if (isTheSameMove(pmove.promotions[j], move))
                             return true;
                     }
-                } else if (isTheSameMove(pmove, move))
-                    return true;
+                } else { 
+                    if (isTheSameMove(pmove, move))
+                        return true;
+                }
             }
         }
     }
     return false;
-};
+}
+
+module.exports.positionPlayMove = positionPlayMove;
+module.exports.positionResult = positionResult;
+module.exports.isLegalMove = isLegalMove;
