@@ -1,3 +1,7 @@
+body {
+    font-size: x-large;
+}
+
 #boardCanvas {
     background-color: white;
     border-color: rgb(37, 10, 122);
