@@ -493,21 +493,21 @@ const pieceMoves = {
         let moves = [];
         if (!ignoreAttacks && board[y + dir] && !board[y + dir][x]) {
             moves.push({ x: x, y: y + dir });
-            if ((isBallMove ? board.ball.firstMove : board[y][x].firstMove) && !board[y + dir * 2][x])
+            if ((isBallMove ? board.ball.firstMove : board[y][x].firstMove) && board[y + dir * 2] && !board[y + dir * 2][x])
                 moves.push({ x: x, y: y + dir * 2 });
         }
         if (x < board[y + dir].length - 1) {
-            if (ignoreAttacks || (board[y + dir][x + 1] && board[y + dir][x + 1].team != board[y][x].team) || (board.enpassant && board.enpassant.x == x + 1 && board.enpassant.y == y + dir)) {
+            if (ignoreAttacks || (board[y + dir] && board[y + dir][x + 1] && board[y + dir][x + 1].team != board[y][x].team) || (board.enpassant && board.enpassant.x == x + 1 && board.enpassant.y == y + dir)) {
                 moves.push({ x: x + 1, y: y + dir });
             }
         }
         if (x > 0) {
-            if (ignoreAttacks || (board[y + dir][x - 1] && board[y + dir][x - 1].team != board[y][x].team) || (board.enpassant && board.enpassant.x == x - 1 && board.enpassant.y == y + dir)) {
+            if (ignoreAttacks || (board[y + dir] && board[y + dir][x - 1] && board[y + dir][x - 1].team != board[y][x].team) || (board.enpassant && board.enpassant.x == x - 1 && board.enpassant.y == y + dir)) {
                 moves.push({ x: x - 1, y: y + dir });
             }
         }
 
-        if (board[y][x].team == "white" ? y == 1 : y == board.length - 2) {
+        if (!isBallMove && board[y][x].team == "white" ? y == 1 : y == board.length - 2) {
             moves.forEach(move => {
                 let promotions = [];
                 promotions.push({ x: move.x, y: move.y, promotion: "queen", xInSquare: 0, yInSquare: 0 });
