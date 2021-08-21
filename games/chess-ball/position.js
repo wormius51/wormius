@@ -323,7 +323,7 @@ function addKickMoves (board, moves) {
     let enpassant = board.enpassant;
     let afterPosition = positionAfterMove(board, kickMove);
     afterPosition.enpassant = enpassant;
-    let ballMoves = pieceMoves[board[kickMove.sy][kickMove.sx].type](afterPosition, kickMove.x, kickMove.y, false);
+    let ballMoves = pieceMoves[board[kickMove.sy][kickMove.sx].type](afterPosition, kickMove.x, kickMove.y, false, true);
     ballMoves = ballMoves.filter(move => {
         return !afterPosition[move.y][move.x];
     });
@@ -488,12 +488,12 @@ const pieceMoves = {
         return moves;
     },
 
-    pawn: (board, x, y, ignoreAttacks) => {
+    pawn: (board, x, y, ignoreAttacks, isBallMove) => {
         let dir = board[y][x].team == "white" ? -1 : 1;
         let moves = [];
         if (!ignoreAttacks && board[y + dir] && !board[y + dir][x]) {
             moves.push({ x: x, y: y + dir });
-            if (((board[y][x].team == board.turn) ? board[y][x].firstMove : board.ball.firstMove) && !board[y + dir * 2][x])
+            if ((isBallMove ? board.ball.firstMove : board[y][x].firstMove) && !board[y + dir * 2][x])
                 moves.push({ x: x, y: y + dir * 2 });
         }
         if (x < board[y + dir].length - 1) {
