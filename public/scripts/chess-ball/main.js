@@ -1,3 +1,4 @@
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 window.addEventListener('load', () => {
     setStartingPosition();
     drawBoard();
@@ -9,6 +10,26 @@ canvas.addEventListener('mousedown', event => {
     selectCanvas(event, true);
 });
 canvas.addEventListener('mousemove', setMouseXY);
+
+if (isMobile) {
+    canvas.addEventListener('touchend', event => {
+        event.clientX = event.changedTouches[0].pageX;
+        event.clientY = event.changedTouches[0].pageY;
+        selectCanvas(event);
+    });
+    canvas.addEventListener('touchstart', event => {
+        event.clientX = event.changedTouches[0].pageX;
+        event.clientY = event.changedTouches[0].pageY;
+        setMouseXY(event);
+        selectCanvas(event, true);
+    });
+    canvas.addEventListener('touchmove', event => {
+        event.clientX = event.changedTouches[0].pageX;
+        event.clientY = event.changedTouches[0].pageY;
+        setMouseXY(event);
+    });
+}
+
 
 const flipButton = document.getElementById("flipBoardButton");
 flipButton.addEventListener('click', flipBoard);
@@ -87,8 +108,6 @@ function selectSquare (file, rank, xInSquare, yInSquare, isDrag) {
         }
     }
     if (move) {
-        if (move.bx != undefined)
-            position.ball.firstMove = false;
         if (move.ballMoves) {
             possibleMoves = move.ballMoves;
             draggedPiece = position.ball;

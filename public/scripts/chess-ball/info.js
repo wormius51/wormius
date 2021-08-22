@@ -1,5 +1,6 @@
 const resultText = document.getElementById("resaltText");
 const title = document.querySelector("title");
+const playerCount = document.getElementById("playerCount");
 function updateInfo () {
     title.innerHTML = "Chess Ball";
     switch (positionResult(position)) {
@@ -25,3 +26,7 @@ function updateInfo () {
             break;
     }
 }
+
+socket.on('player-count', data => {
+    playerCount.innerHTML = data + " players online";
+});

@@ -8,6 +8,7 @@ function start () {
     socketer.addListener(namespace, "add-player", (data, socket, nsp) => {
         Player.removePlayerById(socket.id);
         Player(socket, data);
+        nsp.emit("player-count", Player.countPlayers());
     });
 
     socketer.addListener(namespace, "reconnect", (data, socket, nsp) => {
@@ -18,9 +19,10 @@ function start () {
         }
     });
 
-    /*socketer.addListener(namespace, "disconnect", (data, socket, nsp) => {
+    socketer.addListener(namespace, "disconnect", (data, socket, nsp) => {
         Player.removePlayerById(socket.id);
-    });*/
+        nsp.emit("player-count", Player.countPlayers());
+    });
 
     socketer.addListener(namespace, "makeMatch", (data, socket, nsp) => {
         let player = Player.getPlayerById(socket.id);

@@ -51,4 +51,7 @@ module.exports.removePlayerById = removePlayerById;
 module.exports.getPlayers = () => {
     return players;
 };
+module.exports.countPlayers = () => {
+    return players.length;
+};
 module.exports.getAvatarById = getAvatarById;

@@ -5,6 +5,8 @@ multiplayerButton.addEventListener('click', () => {
     socket.emit("quickMatch");
 });
 
+socket.emit('add-player');
+
 socket.on('deny', data => {
     console.log(data);
 });
@@ -43,6 +45,8 @@ function sendMove (move) {
 
 socket.on('end', () => {
     myColor = "both";
+    matchData = undefined;
     restartButton.style.visibility = "visible";
     multiplayerButton.style.visibility = "visible";
+    updateInfo();
 });

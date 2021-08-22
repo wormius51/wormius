@@ -129,6 +129,8 @@ function positionPlayMove (position, move) {
         }
     }
     piece.firstMove = false;
+    if (move.bx != undefined)
+        position.ball.firstMove = false;
     if (position.enpassant && position.turn != position.enpassant.team)
         position.enpassant = undefined;
     position.turn = (position.turn == "white") ? "black" : "white";
