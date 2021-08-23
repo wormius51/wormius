@@ -20,8 +20,15 @@ function start () {
     });
 
     socketer.addListener(namespace, "disconnect", (data, socket, nsp) => {
+        let player = Player.getPlayerById(socket.id);
+        if (!player)
+            return;
         Player.removePlayerById(socket.id);
         nsp.emit("player-count", Player.countPlayers());
+        if (player.match && (player.match.white == player || player.match.black == player)) {
+            let resaon = "disconnect " + (player.match.white == player ? "white" : "black");
+            Match.endMatch(player.match, resaon);
+        }
     });
 
     socketer.addListener(namespace, "makeMatch", (data, socket, nsp) => {

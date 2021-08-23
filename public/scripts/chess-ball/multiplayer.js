@@ -43,10 +43,10 @@ function sendMove (move) {
     socket.emit('playMove', move);
 }
 
-socket.on('end', () => {
+socket.on('end', result => {
     myColor = "both";
     matchData = undefined;
     restartButton.style.visibility = "visible";
     multiplayerButton.style.visibility = "visible";
-    updateInfo();
+    updateInfo(result);
 });

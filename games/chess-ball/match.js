@@ -16,6 +16,7 @@ function Match (player) {
     match.state = "looking";
     matches.push(match);
     player.room = match.id;
+    player.match = match;
     player.socket.emit("matchId", match.id);
     return match;
 }
@@ -51,6 +52,7 @@ function joinMatch (match, player) {
     else
         spectate(match, player);
     player.room = match.id;
+    player.match = match;
 }
 
 function spectate (match, player) {
@@ -80,12 +82,21 @@ function startMatch (match) {
     match.black.socket.emit("start", data);
 }
 
-function endMatch (match) {
+function endMatch (match, reason) {
     match.state = "finished";
-    match.white.room = "lobby";
-    match.black.room = "lobby";
-    match.white.socket.emit("end");
-    match.black.socket.emit("end");
+    if (match.white) {
+        match.white.room = "lobby";
+        match.white.match = undefined;
+        match.white.socket.emit("end", reason);
+    }
+    if (match.black) {
+        match.black.room = "lobby";
+        match.black.match = undefined;
+        match.black.socket.emit("end", reason);
+    }
+    match.spectators.forEach(s => {
+        s.socket.emit("end", reason);
+    });
     matches = matches.filter(m => m != match);
 }
 
@@ -119,11 +130,13 @@ function playMove (player, move) {
     match.spectators.forEach(s => {
         s.socket.emit("moves", data);
     });
-    if (position.positionResult(match.position) != "playing")
-        endMatch(match);
+    let result = position.positionResult(match.position);
+    if (result != "playing")
+        endMatch(match, result);
 }
 
 module.exports = Match;
 module.exports.join = joinById;
 module.exports.joinMatchOrStart = joinMatchOrStart;
 module.exports.playMove = playMove;
+module.exports.endMatch = endMatch;

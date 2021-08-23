@@ -1,9 +1,9 @@
 const resultText = document.getElementById("resaltText");
 const title = document.querySelector("title");
 const playerCount = document.getElementById("playerCount");
-function updateInfo () {
+function updateInfo (result) {
     title.innerHTML = "Chess Ball";
-    switch (positionResult(position)) {
+    switch (result ? result : positionResult(position)) {
         case "playing":
             resultText.innerHTML = position.turn == "white" ? "White to move" : "Black to move";
             if (matchData) 
@@ -20,6 +20,12 @@ function updateInfo () {
             break;
         case "mate black":
             resultText.innerHTML = "Black wins by checkmate";
+            break;
+        case "disconnect white":
+            resultText.innerHTML = "Black wins by disconnection";
+            break;
+        case "disconnect black":
+            resultText.innerHTML = "White wins by disconnection";
             break;
         case "stalemate":
             resultText.innerHTML = "Draw by stalemate";
