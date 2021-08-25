@@ -84,6 +84,7 @@ function selectSquare (file, rank, xInSquare, yInSquare, isDrag) {
     });
     if (move) {
         if (!move.ballMoves && !move.promotions) {
+            console.log(moveString(position, move));
             positionPlayMove(position, move);
             kickingPiece = undefined;
             draggedPiece = undefined;

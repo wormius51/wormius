@@ -140,14 +140,16 @@ function positionPlayMove (position, move) {
 /**
  * Is this team in check
  */
-function isCheck(position, team) {
+ function isCheck(position, team) {
+    if (!team)
+        team = position.turn;
     for (let y = 0; y < position.length; y++) {
         for (let x = 0; x < position[y].length; x++) {
             if (!position[y][x] || position[y][x].team == team) continue;
             let moves = getMovesOfPiece(position, x, y, true);
             for (let i = 0; i < moves.length; i++) {
                 let move = moves[i];
-                if (position[move.y][move.x]) {
+                if (position[move.y] && position[move.y][move.x]) {
                     if (position[move.y][move.x].type == "king" && position[move.y][move.x].team == team) {
                         return true;
                     }
@@ -169,13 +171,6 @@ function copyMove (move, copyTo) {
     copyTo.promotion = move.promotion;
 }
 
-function isTheSameMove (a, b) {
-    return a.x == b.x && a.y == b.y &&
-    a.sx == b.sx && a.sy == b.sy &&
-    a.bx == b.bx && a.by == b.by &&
-    a.promotion == b.promotion;
-}
-
 function isSavingMove (position, team, move) {
     let pos = positionAfterMove(position, move)
     return !isCheck(pos, team) || isGoal(pos, team);
@@ -185,6 +180,8 @@ function isSavingMove (position, team, move) {
  * Is this team mated
  */
 function isMate (position, team, savingMove) {
+    if (!team)
+        team = position.turn;
     if (!isCheck(position, team)) return false;
     for (let y = 0; y < position.length; y++) {
         for (let x = 0; x < position[y].length; x++) {
@@ -251,6 +248,39 @@ function positionResult (position) {
     return "playing";
 }
 
+function isTheSameMove (a, b) {
+    return a.x == b.x && a.y == b.y &&
+    a.sx == b.sx && a.sy == b.sy &&
+    a.bx == b.bx && a.by == b.by &&
+    a.promotion == b.promotion;
+}
+
+function isLegalMove (position, move) {
+    for (let rank = 0; rank < position.length; rank++) {
+        for (let file = 0; file < position[rank].length; file++) {
+            let moves = getMovesOfPiece(position, file, rank);
+            for (let i = 0; i < moves.length; i++) {
+                let pmove = moves[i];
+                if (pmove.ballMoves) {
+                    for (let j = 0; j < pmove.ballMoves.length; j++) {
+                        if (isTheSameMove(pmove.ballMoves[j], move))
+                            return true;
+                    }
+                } else if (pmove.promotions) {
+                    for (let j = 0; j < pmove.promotions.length; j++) {
+                        if (isTheSameMove(pmove.promotions[j], move))
+                            return true;
+                    }
+                } else { 
+                    if (isTheSameMove(pmove, move))
+                        return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
 
 
 
@@ -286,7 +316,7 @@ function copyPiece (piece) {
  * @param {Number} x 
  * @param {Number} y 
  */
- function getMovesOfPiece(board, x, y, ignoreAttacks) {
+function getMovesOfPiece(board, x, y, ignoreAttacks) {
     if (!board[y] || !board[y][x]) return [];
     if (!pieceMoves[board[y][x].type]) return [];
     if (!ignoreAttacks && board[y][x].team != board.turn) return [];
@@ -317,6 +347,8 @@ function copyPiece (piece) {
 
 function addKickMoves (board, moves) {
     let kickMove = moves.find(move => {
+        if (!board[move.y])
+            return false;
         let piece = board[move.y][move.x];
         return piece && piece.type == "ball";
     });
@@ -498,7 +530,7 @@ const pieceMoves = {
             if ((isBallMove ? board.ball.firstMove : board[y][x].firstMove) && board[y + dir * 2] && !board[y + dir * 2][x])
                 moves.push({ x: x, y: y + dir * 2 });
         }
-        if (x < board[y + dir].length - 1) {
+        if (board[y + dir] && x < board[y + dir].length - 1) {
             if (ignoreAttacks || (board[y + dir] && board[y + dir][x + 1] && board[y + dir][x + 1].team != board[y][x].team) || (board.enpassant && board.enpassant.x == x + 1 && board.enpassant.y == y + dir)) {
                 moves.push({ x: x + 1, y: y + dir });
             }
@@ -509,7 +541,7 @@ const pieceMoves = {
             }
         }
 
-        if (!isBallMove && board[y][x].team == "white" ? y == 1 : y == board.length - 2) {
+        if (!isBallMove && (board[y][x].team == "white" ? y == 1 : y == board.length - 2)) {
             moves.forEach(move => {
                 let promotions = [];
                 promotions.push({ x: move.x, y: move.y, promotion: "queen", xInSquare: 0, yInSquare: 0 });
@@ -527,20 +559,11 @@ const pieceMoves = {
     }
 };
 
-function getLetterOfPiece(type) {
-    switch (type) {
-        case "king":
-            return "K";
-        case "queen":
-            return "Q";
-        case "rook":
-            return "R";
-        case "bishop":
-            return "B";
-        case "knight":
-            return "N";
-    }
-    return "";
+
+
+function getSrcOfPiece(piece) {
+    if (!piece) return "/images/empty.gif";
+    return "/images/" + piece.type + " " + piece.team + ".gif";
 }
 
 function isTheSamePiece(a, b) {
@@ -555,32 +578,6 @@ function isTheSamePiece(a, b) {
 
 module.exports.getStartingPosition = () => {
     return copyPosition(startPosition);
-}
-
-function isLegalMove (position, move) {
-    for (let rank = 0; rank < position.length; rank++) {
-        for (let file = 0; file < position[rank].length; file++) {
-            let moves = getMovesOfPiece(position, file, rank);
-            for (let i = 0; i < moves.length; i++) {
-                let pmove = moves[i];
-                if (pmove.ballMoves) {
-                    for (let j = 0; j < pmove.ballMoves.length; j++) {
-                        if (isTheSameMove(pmove.ballMoves[j], move))
-                            return true;
-                    }
-                } else if (pmove.promotions) {
-                    for (let j = 0; j < pmove.promotions.length; j++) {
-                        if (isTheSameMove(pmove.promotions[j], move))
-                            return true;
-                    }
-                } else { 
-                    if (isTheSameMove(pmove, move))
-                        return true;
-                }
-            }
-        }
-    }
-    return false;
 }
 
 module.exports.positionPlayMove = positionPlayMove;

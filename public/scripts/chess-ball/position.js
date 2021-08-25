@@ -144,13 +144,15 @@ function positionPlayMove (position, move) {
  * Is this team in check
  */
 function isCheck(position, team) {
+    if (!team)
+        team = position.turn;
     for (let y = 0; y < position.length; y++) {
         for (let x = 0; x < position[y].length; x++) {
             if (!position[y][x] || position[y][x].team == team) continue;
             let moves = getMovesOfPiece(position, x, y, true);
             for (let i = 0; i < moves.length; i++) {
                 let move = moves[i];
-                if (position[move.y][move.x]) {
+                if (position[move.y] && position[move.y][move.x]) {
                     if (position[move.y][move.x].type == "king" && position[move.y][move.x].team == team) {
                         return true;
                     }
@@ -181,6 +183,8 @@ function isSavingMove (position, team, move) {
  * Is this team mated
  */
 function isMate (position, team, savingMove) {
+    if (!team)
+        team = position.turn;
     if (!isCheck(position, team)) return false;
     for (let y = 0; y < position.length; y++) {
         for (let x = 0; x < position[y].length; x++) {

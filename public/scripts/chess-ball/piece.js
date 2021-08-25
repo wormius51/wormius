@@ -60,6 +60,8 @@ function getMovesOfPiece(board, x, y, ignoreAttacks) {
 
 function addKickMoves (board, moves) {
     let kickMove = moves.find(move => {
+        if (!board[move.y])
+            return false;
         let piece = board[move.y][move.x];
         return piece && piece.type == "ball";
     });
@@ -241,7 +243,7 @@ const pieceMoves = {
             if ((isBallMove ? board.ball.firstMove : board[y][x].firstMove) && board[y + dir * 2] && !board[y + dir * 2][x])
                 moves.push({ x: x, y: y + dir * 2 });
         }
-        if (x < board[y + dir].length - 1) {
+        if (board[y + dir] && x < board[y + dir].length - 1) {
             if (ignoreAttacks || (board[y + dir] && board[y + dir][x + 1] && board[y + dir][x + 1].team != board[y][x].team) || (board.enpassant && board.enpassant.x == x + 1 && board.enpassant.y == y + dir)) {
                 moves.push({ x: x + 1, y: y + dir });
             }
@@ -270,21 +272,7 @@ const pieceMoves = {
     }
 };
 
-function getLetterOfPiece(type) {
-    switch (type) {
-        case "king":
-            return "K";
-        case "queen":
-            return "Q";
-        case "rook":
-            return "R";
-        case "bishop":
-            return "B";
-        case "knight":
-            return "N";
-    }
-    return "";
-}
+
 
 function getSrcOfPiece(piece) {
     if (!piece) return "/images/empty.gif";
