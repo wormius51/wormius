@@ -163,5 +163,4 @@ function rollPositionToMove (moveIndex) {
         positionPlayMove(position, moves[i]);
     }
     drawBoard();
-    updateInfo();
 }
