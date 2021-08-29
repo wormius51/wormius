@@ -28,8 +28,11 @@ socket.on('start', data => {
 socket.on('moves', data => {
     if (!matchData || data.moves.length <= matchData.moves.length)
         return;
+    rollPositionToMove(Infinity);
     mostRecentMove = data.lastMove;
     matchData.moves.push(data.lastMove);
+    mostRecentMove.string = moveString(position, mostRecentMove);
+    moves.push(mostRecentMove);
     positionPlayMove(position, data.lastMove);
     drawBoard();
     updateInfo();

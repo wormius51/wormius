@@ -41,18 +41,19 @@ var possibleMoves = [];
 var myColor = "both";
 
 function setMouseXY (event) {
-    let x = event.clientX - canvas.offsetLeft;
-    let y = event.clientY - canvas.offsetTop;
+    let x = event.clientX - canvas.offsetLeft + window.scrollX;
+    let y = event.clientY - canvas.offsetTop + window.scrollY;
     mouseX = x / squareEdgeLengh -0.5;
     mouseY = y / squareEdgeLengh -0.5;
     drawBoard();
 }
 
 function selectCanvas (event, isDrag) {
+    rollPositionToMove(Infinity);
     if (myColor != "both" && myColor != position.turn)
         return;
-    let x = event.clientX - canvas.offsetLeft;
-    let y = event.clientY - canvas.offsetTop;
+    let x = event.clientX - canvas.offsetLeft + window.scrollX;
+    let y = event.clientY - canvas.offsetTop + window.scrollY;
     let file = Math.floor(x / squareEdgeLengh);
     let rank = Math.floor(y / squareEdgeLengh);
     let xInSquare = x / squareEdgeLengh - file;
@@ -84,7 +85,8 @@ function selectSquare (file, rank, xInSquare, yInSquare, isDrag) {
     });
     if (move) {
         if (!move.ballMoves && !move.promotions) {
-            console.log(moveString(position, move));
+            move.string = moveString(position, move);
+            moves.push(move);
             positionPlayMove(position, move);
             kickingPiece = undefined;
             draggedPiece = undefined;
@@ -127,6 +129,7 @@ function selectSquare (file, rank, xInSquare, yInSquare, isDrag) {
 }
 
 function restart() {
+    moves = [];
     possibleMoves = [];
     mostRecentMove = undefined;
     setStartingPosition();

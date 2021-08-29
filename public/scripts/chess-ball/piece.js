@@ -245,12 +245,12 @@ const pieceMoves = {
         }
         if (board[y + dir] && x < board[y + dir].length - 1) {
             if (ignoreAttacks || (board[y + dir] && board[y + dir][x + 1] && board[y + dir][x + 1].team != board[y][x].team) || (board.enpassant && board.enpassant.x == x + 1 && board.enpassant.y == y + dir)) {
-                moves.push({ x: x + 1, y: y + dir });
+                moves.push({ x: x + 1, y: y + dir, enpassant: true});
             }
         }
         if (x > 0) {
             if (ignoreAttacks || (board[y + dir] && board[y + dir][x - 1] && board[y + dir][x - 1].team != board[y][x].team) || (board.enpassant && board.enpassant.x == x - 1 && board.enpassant.y == y + dir)) {
-                moves.push({ x: x - 1, y: y + dir });
+                moves.push({ x: x - 1, y: y + dir, enpassant: true});
             }
         }
 

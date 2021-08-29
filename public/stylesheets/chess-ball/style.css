@@ -7,3 +7,16 @@ body {
     border-color: rgb(37, 10, 122);
     border-style: solid;
 }
+
+#movesDiv {
+    background-color: bisque;
+    width: 200px;
+    height: 100px;
+    overflow-y: scroll;
+    border-color: rgb(37, 10, 122);
+    border-style: solid;
+}
+
+.moveSpan {
+    
+}
