@@ -120,6 +120,14 @@ function moveString (position, move) {
     } else if (moveType) {
         finalSourceFileString = sourceFileString;
     }
+    if (move.castling) {
+        letter = move.castling;
+        finalSourceFileString = "";
+        finalSourceRankString = "";
+        moveType = "";
+        destinationFileString = "";
+        destinationRankString = "";
+    }
     return letter + finalSourceFileString + finalSourceRankString + moveType + destinationFileString + destinationRankString + promotion + suffix;
 }
 

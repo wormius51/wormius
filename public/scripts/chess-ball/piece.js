@@ -126,9 +126,9 @@ const pieceMoves = {
                     return move.y == y && (
                         move.x == x + 1 ||
                         move.x == x + 2
-                    )
+                    );
                 }))
-                moves.push({x: x + 2, y: y});
+                moves.push({x: x + 2, y: y, castling: "O-O"});
             
             if (board.castling[team].long &&
                 board[y][x - 1] == undefined &&
@@ -138,9 +138,9 @@ const pieceMoves = {
                     return move.y == y && (
                         move.x == x - 1 ||
                         move.x == x - 2
-                    )
+                    );
                 }))
-                moves.push({x: x - 2, y: y});
+                moves.push({x: x - 2, y: y, castling: "O-O-O"});
         }
         
         return moves;
