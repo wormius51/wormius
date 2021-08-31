@@ -23,6 +23,28 @@ function copyPiece (piece) {
     };
 }
 
+function getMovesOfPosition (position) {
+    let moves = [];
+    for (let y = 0; y < position.length; y++) {
+        for (let x = 0; x < position[y].length; x++) {
+            let pieceMoves = getMovesOfPiece(position, x, y);
+            pieceMoves.forEach(move => {
+                if (move.ballMoves)
+                    move.ballMoves.forEach(ballMove => {
+                        moves.push(ballMove);
+                    });
+                else if (move.promotions)
+                    move.promotions.forEach(promotionMove => {
+                        moves.push(promotionMove);
+                    });
+                else
+                    moves.push(move);
+            });
+        }
+    }
+    return moves;
+}
+
 /**
  * Returns the legal moves of the piece at position (x,y);
  * @param {Pieces[][]} board 

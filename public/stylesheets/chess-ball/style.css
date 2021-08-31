@@ -22,7 +22,7 @@ body {
     vertical-align: top;
 }
 
-.moveSpan {
+#movesTable tr td {
     border-style: groove;
     border-color: chocolate;
     background-color: darkkhaki;
