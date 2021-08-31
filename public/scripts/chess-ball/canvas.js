@@ -6,7 +6,8 @@ let flippedBoard = false;
 const boardHeight = 8;
 const boardWidth = 8;
 
-let squareEdgeLengh = 70;
+let squareEdgeLength = 70;
+let minimumEdgeLength = 40;
 const pieceEdgeLength = 320;
 const pieceOutlineSize = 0.1;
 const moveOptionRadius = 0.4;
@@ -26,16 +27,27 @@ let mouseY = 0;
 
 let mostRecentMove = undefined;
 
+window.addEventListener('load', resizeBoard);
+window.addEventListener('resize', resizeBoard);
+
+function resizeBoard () {
+    squareEdgeLength = Math.min(window.innerWidth / 20, window.innerHeight / 10);
+    if (squareEdgeLength < minimumEdgeLength)
+        squareEdgeLength = minimumEdgeLength;
+    setBoardCanvasSize();
+    drawBoard();
+}
+
 function setBoardCanvasSize () {
-    canvas.height = boardHeight * squareEdgeLengh;
-    canvas.width = boardWidth * squareEdgeLengh;
+    canvas.height = boardHeight * squareEdgeLength;
+    canvas.width = boardWidth * squareEdgeLength;
 }
 
 function drawSquares () {
     for (let file = 0; file < boardWidth; file++) {
         for (let rank = 0; rank < boardHeight; rank++) {
             context.fillStyle = ((file + rank) % 2 == 0) ? lightSquareColor : darkSquareColor;
-            context.fillRect(file * squareEdgeLengh, rank * squareEdgeLengh,  squareEdgeLengh, squareEdgeLengh);
+            context.fillRect(file * squareEdgeLength, rank * squareEdgeLength,  squareEdgeLength, squareEdgeLength);
         }
     }
 }
@@ -72,7 +84,7 @@ function drawPiece (piece, file, rank, size) {
             pieceX = 5;
             break;
         case "ball":
-            context.drawImage(ballImage, file * squareEdgeLengh, rank * squareEdgeLengh, squareEdgeLengh * size, squareEdgeLengh * size);
+            context.drawImage(ballImage, file * squareEdgeLength, rank * squareEdgeLength, squareEdgeLength * size, squareEdgeLength * size);
             return;
         default:
             return;
@@ -80,15 +92,15 @@ function drawPiece (piece, file, rank, size) {
     if (pieceY == 1)
         drawOutline(pieceX, pieceY, file, rank, size);
     
-    context.drawImage(piecesImage, pieceX * pieceEdgeLength, pieceY * pieceEdgeLength, pieceEdgeLength, pieceEdgeLength, file * squareEdgeLengh, rank * squareEdgeLengh, squareEdgeLengh * size, squareEdgeLengh * size);
+    context.drawImage(piecesImage, pieceX * pieceEdgeLength, pieceY * pieceEdgeLength, pieceEdgeLength, pieceEdgeLength, file * squareEdgeLength, rank * squareEdgeLength, squareEdgeLength * size, squareEdgeLength * size);
 }
 
 function drawOutline (pieceX, pieceY, file, rank, size) {
     context.globalCompositeOperation = "xor";
-    let outlineEngeLength = squareEdgeLengh * (1 + pieceOutlineSize);
-    dx = (squareEdgeLengh - outlineEngeLength) * 0.5;
-    dy = (squareEdgeLengh - outlineEngeLength) * 0.5;
-    context.drawImage(piecesImage, pieceX * pieceEdgeLength, pieceY * pieceEdgeLength, pieceEdgeLength, pieceEdgeLength, file * squareEdgeLengh + dx, rank * squareEdgeLengh + dy, outlineEngeLength * size, outlineEngeLength * size);
+    let outlineEngeLength = squareEdgeLength * (1 + pieceOutlineSize);
+    dx = (squareEdgeLength - outlineEngeLength) * 0.5;
+    dy = (squareEdgeLength - outlineEngeLength) * 0.5;
+    context.drawImage(piecesImage, pieceX * pieceEdgeLength, pieceY * pieceEdgeLength, pieceEdgeLength, pieceEdgeLength, file * squareEdgeLength + dx, rank * squareEdgeLength + dy, outlineEngeLength * size, outlineEngeLength * size);
     context.globalCompositeOperation = "source-over";
 }
 
@@ -114,9 +126,9 @@ function drawMoveOption (file, rank, color) {
     }
     context.fillStyle = color? color : moveOptionColor;
     context.beginPath();
-    let radius = moveOptionRadius * squareEdgeLengh / 2;
-    let centerX = (file + 0.5) * squareEdgeLengh;
-    let centerY = (rank + 0.5) * squareEdgeLengh;
+    let radius = moveOptionRadius * squareEdgeLength / 2;
+    let centerX = (file + 0.5) * squareEdgeLength;
+    let centerY = (rank + 0.5) * squareEdgeLength;
     context.arc(centerX, centerY, radius, 0, 2 * Math.PI);
     context.closePath();
     context.fill();
@@ -158,7 +170,7 @@ function drawMarkSquare (file, rank, color) {
         rank = boardHeight - 1 - rank;
     }
     context.fillStyle = color;
-    context.fillRect(file * squareEdgeLengh, rank * squareEdgeLengh, squareEdgeLengh, squareEdgeLengh);
+    context.fillRect(file * squareEdgeLength, rank * squareEdgeLength, squareEdgeLength, squareEdgeLength);
 }
 
 function drawShowMove (move) {

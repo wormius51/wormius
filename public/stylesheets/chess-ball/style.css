@@ -18,6 +18,12 @@ body {
     border-style: solid;
 }
 
+#layoutTable tr td {
+    vertical-align: top;
+}
+
 .moveSpan {
-    
+    border-style: groove;
+    border-color: chocolate;
+    background-color: darkkhaki;
 }

@@ -1,34 +1,38 @@
-const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+function isMobile () {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
 window.addEventListener('load', () => {
     setStartingPosition();
     drawBoard();
     updateInfo();
 });
 
+window.addEventListener('touchmove', event => {
+    if (draggedPiece)
+        event.preventDefault();
+}, {passive: false});
+
 canvas.addEventListener('click', selectCanvas);
 canvas.addEventListener('mousedown', event => {
     selectCanvas(event, true);
 });
 canvas.addEventListener('mousemove', setMouseXY);
-
-if (isMobile) {
-    canvas.addEventListener('touchend', event => {
-        event.clientX = event.changedTouches[0].pageX;
-        event.clientY = event.changedTouches[0].pageY;
-        selectCanvas(event);
-    });
-    canvas.addEventListener('touchstart', event => {
-        event.clientX = event.changedTouches[0].pageX;
-        event.clientY = event.changedTouches[0].pageY;
-        setMouseXY(event);
-        selectCanvas(event, true);
-    });
-    canvas.addEventListener('touchmove', event => {
-        event.clientX = event.changedTouches[0].pageX;
-        event.clientY = event.changedTouches[0].pageY;
-        setMouseXY(event);
-    });
-}
+canvas.addEventListener('touchend', event => {
+    event.clientX = event.changedTouches[0].pageX;
+    event.clientY = event.changedTouches[0].pageY;
+    selectCanvas(event);
+});
+canvas.addEventListener('touchstart', event => {
+    event.clientX = event.changedTouches[0].pageX;
+    event.clientY = event.changedTouches[0].pageY;
+    setMouseXY(event);
+    selectCanvas(event, true);
+});
+canvas.addEventListener('touchmove', event => {
+    event.clientX = event.changedTouches[0].pageX;
+    event.clientY = event.changedTouches[0].pageY;
+    setMouseXY(event);
+});
 
 
 const flipButton = document.getElementById("flipBoardButton");
@@ -40,11 +44,24 @@ var possibleMoves = [];
 
 var myColor = "both";
 
+function calculateX (clientX) {
+    let x = clientX - canvas.offsetLeft;
+    if (!isMobile())
+        x += window.scrollX;
+    return x;
+}
+function calculateY (clientY) {
+    let y = clientY - canvas.offsetTop;
+    if (!isMobile())
+        y += window.scrollY
+    return y;
+}
+
 function setMouseXY (event) {
-    let x = event.clientX - canvas.offsetLeft + window.scrollX;
-    let y = event.clientY - canvas.offsetTop + window.scrollY;
-    mouseX = x / squareEdgeLengh -0.5;
-    mouseY = y / squareEdgeLengh -0.5;
+    let x = calculateX(event.clientX);
+    let y = calculateY(event.clientY);
+    mouseX = x / squareEdgeLength -0.5;
+    mouseY = y / squareEdgeLength -0.5;
     drawBoard();
 }
 
@@ -52,12 +69,12 @@ function selectCanvas (event, isDrag) {
     rollPositionToMove(Infinity);
     if (myColor != "both" && myColor != position.turn)
         return;
-    let x = event.clientX - canvas.offsetLeft + window.scrollX;
-    let y = event.clientY - canvas.offsetTop + window.scrollY;
-    let file = Math.floor(x / squareEdgeLengh);
-    let rank = Math.floor(y / squareEdgeLengh);
-    let xInSquare = x / squareEdgeLengh - file;
-    let yInSquare = y / squareEdgeLengh - rank;
+    let x = calculateX(event.clientX);
+    let y = calculateY(event.clientY);
+    let file = Math.floor(x / squareEdgeLength);
+    let rank = Math.floor(y / squareEdgeLength);
+    let xInSquare = x / squareEdgeLength - file;
+    let yInSquare = y / squareEdgeLength - rank;
     selectSquare(file, rank, xInSquare, yInSquare, isDrag);
 }
 
