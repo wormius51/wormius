@@ -8,6 +8,15 @@
     <link rel="shortcut icon" href="/images/chess-ball/ball.png" type="image/x-icon">
     <title>Chess Ball</title>
     <script src="/socket.io/socket.io.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-145688783-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-145688783-1');
+    </script>
 </head>
 <body>
     <div id = "matchId"><%= matchId %></div>
@@ -19,7 +28,6 @@
                 <h2>Board background by Clyde</h2>
             </td>
             <td>
-                
                 <h2 id = "resaltText"></h2>
                 <div id = "movesDiv">
                     <table id = "movesTable"></table>
