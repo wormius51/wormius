@@ -3,7 +3,7 @@ const position = require('./position');
 
 var matches = [];
 
-function Match (player) {
+function Match (player, private) {
     let match = {};
     if (Math.random() > 0.5)
         match.white = player;
@@ -14,6 +14,7 @@ function Match (player) {
     match.position = position.getStartingPosition();
     match.spectators = [];
     match.state = "looking";
+    match.private = private;
     matches.push(match);
     player.room = match.id;
     player.match = match;
@@ -35,8 +36,10 @@ function joinById (matchId, player) {
 }
 
 function joinMatch (match, player) {
+    if (!match)
+        return;
     if (match.white == player || match.black == player) {
-        player.socket.emit("looking", matchId);
+        player.socket.emit("looking", match.id);
         return;
     }
     if (!match) {
@@ -101,7 +104,7 @@ function endMatch (match, reason) {
 }
 
 function joinMatchOrStart (player) {
-    let match = matches.find(m => m.state == "looking");
+    let match = matches.find(m => m.state == "looking" && !m.private);
     if (match)
         joinMatch(match, player);
     else
@@ -120,6 +123,7 @@ function playMove (player, move) {
     }
     if (!position.isLegalMove(match.position, move)) {
         player.socket.emit("deny", "Not a legal move");
+        player.socket.emit("position", match.position);
         return;
     }
     position.positionPlayMove(match.position, move);

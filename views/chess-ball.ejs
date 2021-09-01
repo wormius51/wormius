@@ -10,6 +10,7 @@
     <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
+    <div id = "matchId"><%= matchId %></div>
     <table id = "layoutTable">
         <tr>
             <td>
@@ -24,11 +25,24 @@
                     <table id = "movesTable"></table>
                 </div>
                 <br>
-                <button id = "restartButton">Solo</button>
-                <br>
                 <button id = "flipBoardButton">Flip Board</button>
                 <br>
-                <button id = "multiplayerButton">Multiplayer</button>
+                <div id = "offlineUI">
+                    <button id = "restartButton">Solo</button>
+                    <br>
+                    <button id = "randomMatchButton">Random Match</button>
+                    <button id = "friendMatchButton">Play with a friend</button>
+                    <br>
+                    <div id = "matchLinkDiv">
+                        Send this link to your friend<br>
+                        <input type="text" id="matchLink" readonly>
+                        <button id = "copyMatchLinkButton">
+                            <img src="/images/chess-ball/clipboard.png" alt="Copy link">
+                        </button>
+                    </div>
+                    
+                </div>
+                
                 <h6 id = "playerCount"></h4>
                 <p id = "infoText">
                     <h3>Chess Ball by Eyal Hazor</h3>
@@ -39,11 +53,6 @@
                 </p>
             </td>
         </tr>
-        <!--<tr>
-            <td>
-                <h2>Board background by Clyde</h2>
-            </td>
-        </tr>-->
     </table>
     <script src="/scripts/chess-ball/piece.js"></script>
     <script src="/scripts/chess-ball/images.js"></script>

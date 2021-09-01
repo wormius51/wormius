@@ -35,7 +35,7 @@ function start () {
         let player = Player.getPlayerById(socket.id);
         if (!player)
             player = Player(socket);
-        Match(player);
+        Match(player, true);
     });
 
     socketer.addListener(namespace, "join", (data, socket, nsp) => {
@@ -60,6 +60,8 @@ function start () {
         let player = Player.getPlayerById(socket.id);
         if (player && player.room != "lobby")
             Match.playMove(player, data);
+        else
+            socket.emit("You are not in a match");
     });
 }
 

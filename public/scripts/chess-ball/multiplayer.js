@@ -1,8 +1,29 @@
 const socket = io('/chess-ball');
 var matchData = undefined;
-const multiplayerButton = document.getElementById("multiplayerButton");
-multiplayerButton.addEventListener('click', () => {
+const offlineUI = document.getElementById("offlineUI");
+const randomMatchButton = document.getElementById("randomMatchButton");
+const friendMatchButton = document.getElementById("friendMatchButton");
+const matchLinkField = document.getElementById("matchLink");
+const copyMatchLinkButton = document.getElementById("copyMatchLinkButton");
+const matchLinkDiv = document.getElementById("matchLinkDiv");
+const linkMatchId = document.getElementById("matchId").innerHTML;
+
+window.addEventListener('load', () => {
+    if (linkMatchId)
+        socket.emit("join", linkMatchId);
+});
+
+copyMatchLinkButton.addEventListener('click', () => {
+    navigator.clipboard.writeText(matchLinkField.value);
+});
+
+randomMatchButton.addEventListener('click', () => {
     socket.emit("quickMatch");
+});
+
+friendMatchButton.addEventListener('click', () => {
+    socket.emit("makeMatch");
+    matchLinkDiv.style.visibility = "visible";
 });
 
 socket.emit('add-player');
@@ -12,6 +33,9 @@ socket.on('deny', data => {
 });
 
 socket.on('matchId', data => {
+    matchLinkField.value = window.location.href + "/" + data;
+    matchLinkField.value = matchLinkField.value.replace("/" + linkMatchId, "");
+    navigator.clipboard.writeText(matchLinkField.value);
     console.log("matchId: " + data);
 });
 
@@ -21,8 +45,8 @@ socket.on('start', data => {
     if ((myColor == "white") == flippedBoard)
         flipBoard();
     restart();
-    multiplayerButton.style.visibility = "hidden";
-    restartButton.style.visibility = "hidden";
+    offlineUI.style.visibility = "hidden";
+    matchLinkDiv.style.visibility = "hidden";
 });
 
 socket.on('moves', data => {
@@ -49,7 +73,11 @@ function sendMove (move) {
 socket.on('end', result => {
     myColor = "both";
     matchData = undefined;
-    restartButton.style.visibility = "visible";
-    multiplayerButton.style.visibility = "visible";
+    offlineUI.style.visibility = "visible";
+    matchLinkField.value = "";
     updateInfo(result);
+});
+
+socket.on('position', data => {
+    console.log(data);
 });

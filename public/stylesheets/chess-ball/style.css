@@ -27,3 +27,21 @@ body {
     border-color: chocolate;
     background-color: darkkhaki;
 }
+
+#matchId {
+    visibility: hidden;
+    position: absolute;
+}
+
+#copyMatchLinkButton {
+    padding: 0%;
+}
+
+#copyMatchLinkButton img{
+    height: 20px;
+    width: 20px;
+}
+
+#matchLinkDiv {
+    visibility: hidden;
+}

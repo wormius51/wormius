@@ -255,29 +255,32 @@ function isTheSameMove (a, b) {
     a.promotion == b.promotion;
 }
 
-function isLegalMove (position, move) {
-    for (let rank = 0; rank < position.length; rank++) {
-        for (let file = 0; file < position[rank].length; file++) {
-            let moves = getMovesOfPiece(position, file, rank);
-            for (let i = 0; i < moves.length; i++) {
-                let pmove = moves[i];
-                if (pmove.ballMoves) {
-                    for (let j = 0; j < pmove.ballMoves.length; j++) {
-                        if (isTheSameMove(pmove.ballMoves[j], move))
-                            return true;
-                    }
-                } else if (pmove.promotions) {
-                    for (let j = 0; j < pmove.promotions.length; j++) {
-                        if (isTheSameMove(pmove.promotions[j], move))
-                            return true;
-                    }
-                } else { 
-                    if (isTheSameMove(pmove, move))
-                        return true;
-                }
-            }
+function getMovesOfPosition (position) {
+    let moves = [];
+    for (let y = 0; y < position.length; y++) {
+        for (let x = 0; x < position[y].length; x++) {
+            let pieceMoves = getMovesOfPiece(position, x, y);
+            pieceMoves.forEach(move => {
+                if (move.ballMoves)
+                    move.ballMoves.forEach(ballMove => {
+                        moves.push(ballMove);
+                    });
+                else if (move.promotions)
+                    move.promotions.forEach(promotionMove => {
+                        moves.push(promotionMove);
+                    });
+                else
+                    moves.push(move);
+            });
         }
     }
+    return moves;
+}
+
+function isLegalMove (position, move) {
+    let moves = getMovesOfPosition(position);
+    if (moves.find(m => isTheSameMove(m, move)))
+        return true;
     return false;
 }
 
