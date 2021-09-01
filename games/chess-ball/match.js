@@ -62,13 +62,20 @@ function spectate (match, player) {
     match.spectators.push(player);
     let avatars = [];
     match.spectators.forEach(s => {
-        avatars.push(s);
-    })
+        avatars.push(s.avatar);
+    });
     match.white.socket.emit("spectators", avatars);
     match.black.socket.emit("spectators", avatars);
     match.spectators.forEach(spectator => {
         spectator.socket.emit("spectators", avatars);
     });
+    let data = {
+        matchId: match.id,
+        white: match.white.avatar,
+        black: match.black.avatar,
+        moves: match.moves
+    };
+    player.socket.emit("start", data);
 }
 
 function startMatch (match) {

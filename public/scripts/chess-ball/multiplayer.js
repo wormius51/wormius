@@ -47,6 +47,11 @@ socket.on('start', data => {
     restart();
     offlineUI.style.visibility = "hidden";
     matchLinkDiv.style.visibility = "hidden";
+    if (!myColor) {
+        moves = matchData.moves;
+        rollPositionToMove(Infinity);
+        updateInfo();
+    }
 });
 
 socket.on('moves', data => {
@@ -54,9 +59,14 @@ socket.on('moves', data => {
         return;
     rollPositionToMove(Infinity);
     mostRecentMove = data.lastMove;
-    matchData.moves.push(data.lastMove);
-    mostRecentMove.string = moveString(position, mostRecentMove);
-    moves.push(mostRecentMove);
+    if (!myColor) {
+        matchData.moves = data.moves;
+        moves = data.moves;
+    } else {
+        matchData.moves.push(data.lastMove);
+        mostRecentMove.string = moveString(position, mostRecentMove);
+        moves.push(mostRecentMove);
+    }
     positionPlayMove(position, data.lastMove);
     drawBoard();
     updateInfo();
@@ -64,7 +74,7 @@ socket.on('moves', data => {
 
 function sendMove (move) {
     mostRecentMove = move;
-    if (!matchData)
+    if (!matchData || !myColor)
         return;
     matchData.moves.push(move);
     socket.emit('playMove', move);
