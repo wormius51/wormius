@@ -57,7 +57,6 @@ socket.on('start', data => {
 socket.on('moves', data => {
     if (!matchData || data.moves.length <= matchData.moves.length)
         return;
-    rollPositionToMove(Infinity);
     mostRecentMove = data.lastMove;
     if (!myColor) {
         matchData.moves = data.moves;
@@ -67,7 +66,7 @@ socket.on('moves', data => {
         mostRecentMove.string = moveString(position, mostRecentMove);
         moves.push(mostRecentMove);
     }
-    positionPlayMove(position, data.lastMove);
+    rollPositionToMove(Infinity);
     drawBoard();
     updateInfo();
 });
