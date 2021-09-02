@@ -88,9 +88,12 @@ function aiMove (position, depth) {
 
 function ExecuteAiMove () {
     rollPositionToMove(Infinity);
+    let posCopy = copyPosition(position);
     let move = aiMove(position);
     move.string = moveString(position, move);
-    moves.push(move);
-    rollPositionToMove(Infinity);
-    updateInfo();
+    if (!matchData && isLegalMove(posCopy, move)) {
+        moves.push(move);
+        rollPositionToMove(Infinity);
+        updateInfo();
+    }
 }
