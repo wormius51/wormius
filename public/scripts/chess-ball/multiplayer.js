@@ -73,6 +73,10 @@ socket.on('moves', data => {
 
 function sendMove (move) {
     mostRecentMove = move;
+    if (!matchData) {
+        if (positionResult(position) == "playing")
+            setTimeout(ExecuteAiMove, 0);
+    }
     if (!matchData || !myColor)
         return;
     matchData.moves.push(move);
