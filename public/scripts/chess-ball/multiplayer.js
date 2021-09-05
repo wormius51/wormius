@@ -65,9 +65,10 @@ socket.on('moves', data => {
         matchData.moves = data.moves;
         moves = data.moves;
     } else {
-        matchData.moves.push(data.lastMove);
+        matchData.moves = data.moves;
+        moves = matchData.moves;
+        mostRecentMove = data.lastMove;
         mostRecentMove.string = moveString(position, mostRecentMove);
-        moves.push(mostRecentMove);
     }
     rollPositionToMove(Infinity);
     drawBoard();
@@ -76,13 +77,19 @@ socket.on('moves', data => {
 
 function sendMove (move) {
     mostRecentMove = move;
+    possibleMoves = [];
     if (!matchData) {
         if (positionResult(position) == "playing")
             setTimeout(ExecuteAiMove, 0);
     }
+    if (!matchData) {
+        matchData.moves.push(move);
+        rollPositionToMove(Infinity);
+        drawBoard();
+        updateInfo();
+    }
     if (!matchData || !myColor)
         return;
-    matchData.moves.push(move);
     socket.emit('playMove', move);
 }
 
