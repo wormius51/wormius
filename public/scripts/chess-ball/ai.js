@@ -107,6 +107,8 @@ function aiMove (position, depth, alpha, beta) {
 
 function ExecuteAiMove () {
     rollPositionToMove(Infinity);
+    if (position.turn != aiParams.aiColor)
+        return;
     let posCopy = copyPosition(position);
     let move = aiMove(position);
     move.string = moveString(position, move);
