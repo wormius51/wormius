@@ -1,6 +1,7 @@
 const aiParams = {
     ballRankWeight: 1,
     materialWeight: 1,
+    movesCountWeight: 0.01,
     aiColor: "black",
     depth: 2
 };
@@ -17,8 +18,10 @@ function evaluatePosition (position) {
         case "stalemate":
             return 0;
     }
+    let moves = getMovesOfPosition(position);
     return aiParams.materialWeight * materialBalance(position) +
-    aiParams.ballRankWeight * (-ballRank(position) + position.length / 2);
+    aiParams.ballRankWeight * (-ballRank(position) + position.length / 2) +
+    moves.length * aiParams.movesCountWeight * (position.turn == "white" ? 1 : -1);
 }
 
 function materialBalance (position) {
@@ -63,25 +66,41 @@ function ballRank (position) {
     }
 }
 
-function aiMove (position, depth) {
+function aiMove (position, depth, alpha, beta) {
     if (depth == undefined)
         depth = aiParams.depth;
+    if (alpha == undefined)
+        alpha = -Infinity;
+    if (beta == undefined)
+        beta = Infinity;
     let moves = getMovesOfPosition(position);
     let bestMove = moves[0];
     let colorSign = position.turn == "white" ? 1 : -1;
     let bestEval = -Infinity * colorSign;
-    moves.forEach(move => {
+    for (let i = 0; i < moves.length; i++) {
+        let move = moves[i];
         let afterEval = 0;
         let afterPosition = positionAfterMove(position, move);
         if (depth > 0 && positionResult(afterPosition) == "playing")
-            afterEval = aiMove(afterPosition, depth - 1).eval;
+            afterEval = aiMove(afterPosition, depth - 1, alpha, beta).eval;
         else
             afterEval = evaluatePosition(afterPosition);
         if (afterEval * colorSign > bestEval * colorSign) {
             bestMove = move;
             bestEval = afterEval;
+            if (position.turn == "white") {
+                alpha = Math.max(bestEval, alpha);
+                if (bestEval > beta) {
+                    break;
+                }
+             } else {
+                beta = Math.min(bestEval, beta);
+                if (bestEval < alpha) {
+                    break;
+                }
+             }
         }
-    });
+    }
     bestMove.eval = bestEval;
     return bestMove;
 }

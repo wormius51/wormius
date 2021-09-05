@@ -7,15 +7,20 @@ const namespace = "chess-ball";
 function start () {
     socketer.addListener(namespace, "add-player", (data, socket, nsp) => {
         Player.removePlayerById(socket.id);
-        Player(socket, data);
+        let player = Player(socket, data);
         nsp.emit("player-count", Player.countPlayers());
+        socket.emit("player-added", player.avatar);
+    });
+
+    socketer.addListener(namespace, "update-player", (data, socket, nsp) => {
+        Player.updatePlayer(socket.id, data);
     });
 
     socketer.addListener(namespace, "reconnect", (data, socket, nsp) => {
         let player = Player.getPlayerById(data);
         if (player) {
             player.socket = socket;
-            socket.emit("player-added", {name: player.name, socketId: socket.id});
+            nsp.emit("player-count", Player.countPlayers());
         }
     });
 

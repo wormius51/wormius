@@ -5,7 +5,7 @@ var players = [];
 function Player (socket ,name) {
     if (!name) name = "Guest";
     let player = {
-        socketId: socket.id,
+        socketId: socket? socket.id : uuidv4(),
         socket: socket,
         room: 'lobby',
         avatar: {
@@ -45,6 +45,15 @@ function getAvatarById(id) {
     return player.avatar;
 }
 
+function updatePlayer(id, data) {
+    if (!data || !id)
+        return;
+    let player = Player.getPlayerById(id);
+        if (!player)
+            return;
+    player.avatar.name = data.name;
+}
+
 module.exports = Player;
 module.exports.getPlayerById = getPlayerById;
 module.exports.removePlayerById = removePlayerById;
@@ -55,3 +64,4 @@ module.exports.countPlayers = () => {
     return players.length;
 };
 module.exports.getAvatarById = getAvatarById;
+module.exports.updatePlayer = updatePlayer;

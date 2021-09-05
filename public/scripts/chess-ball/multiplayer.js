@@ -9,8 +9,8 @@ const matchLinkDiv = document.getElementById("matchLinkDiv");
 const linkMatchId = document.getElementById("matchId").innerHTML;
 
 window.addEventListener('load', () => {
-    if (linkMatchId)
-        socket.emit("join", linkMatchId);
+    loadCookie();
+    socket.emit('add-player', cookie.name);
 });
 
 copyMatchLinkButton.addEventListener('click', () => {
@@ -26,7 +26,10 @@ friendMatchButton.addEventListener('click', () => {
     matchLinkDiv.style.visibility = "visible";
 });
 
-socket.emit('add-player');
+socket.on("player-added", avatar => {
+    if (linkMatchId)
+        socket.emit("join", linkMatchId);
+});
 
 socket.on('deny', data => {
     console.log(data);
