@@ -67,7 +67,7 @@ function getLetterOfPiece(type) {
 }
 
 function moveString (position, move) {
-    let letter =  getLetterOfPiece(position[move.sy][move.sx].type);
+    let letter = getLetterOfPiece(position[move.sy][move.sx].type);
     let finalSourceRankString = "";
     let finalSourceFileString = "";
     let sourceRankString = "" + (position.length - move.sy);

@@ -43,5 +43,9 @@ body {
 }
 
 #matchLinkDiv {
-    visibility: hidden;
+    display: none;
+}
+
+#matchInfoDiv {
+    display: none;
 }

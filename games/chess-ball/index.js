@@ -13,7 +13,9 @@ function start () {
     });
 
     socketer.addListener(namespace, "update-player", (data, socket, nsp) => {
-        Player.updatePlayer(socket.id, data);
+        let player = Player.updatePlayer(socket.id, data);
+        if (player && player.match)
+            Match.sendData(player.match);
     });
 
     socketer.addListener(namespace, "reconnect", (data, socket, nsp) => {
@@ -28,6 +30,7 @@ function start () {
         let player = Player.getPlayerById(socket.id);
         if (!player)
             return;
+        player.avatar.connected = false;
         Player.removePlayerById(socket.id);
         nsp.emit("player-count", Player.countPlayers());
         if (player.match && (player.match.white == player || player.match.black == player)) {

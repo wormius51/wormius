@@ -9,9 +9,12 @@ const matchLinkDiv = document.getElementById("matchLinkDiv");
 const linkMatchId = document.getElementById("matchId").innerHTML;
 
 const nameField = document.getElementById("nameField");
+const matchInfoDiv = document.getElementById("matchInfoDiv");
+const namesText = document.getElementById("namesText");
 
 window.addEventListener('load', () => {
     loadCookie();
+    nameField.value = cookie.name;
     socket.emit('add-player', cookie.name);
 });
 
@@ -33,7 +36,7 @@ randomMatchButton.addEventListener('click', () => {
 
 friendMatchButton.addEventListener('click', () => {
     socket.emit("makeMatch");
-    matchLinkDiv.style.visibility = "visible";
+    matchLinkDiv.style.display = "block";
 });
 
 socket.on("player-added", avatar => {
@@ -58,13 +61,20 @@ socket.on('start', data => {
     if ((myColor == "white") == flippedBoard)
         flipBoard();
     restart();
-    offlineUI.style.visibility = "hidden";
-    matchLinkDiv.style.visibility = "hidden";
+    offlineUI.style.display = "none";
+    matchLinkDiv.style.display = "none";
+    matchInfoDiv.style.display = "block";
+    namesText.innerText = matchData.white.name + " VS " + matchData.black.name;
     if (!myColor) {
         moves = matchData.moves;
         rollPositionToMove(Infinity);
         updateInfo();
     }
+});
+
+socket.on("updateMatch", data => {
+    matchData = data;
+    namesText.innerText = matchData.white.name + " VS " + matchData.black.name;
 });
 
 socket.on('moves', data => {
@@ -77,8 +87,6 @@ socket.on('moves', data => {
     } else {
         matchData.moves = data.moves;
         moves = matchData.moves;
-        mostRecentMove = data.lastMove;
-        mostRecentMove.string = moveString(position, mostRecentMove);
     }
     rollPositionToMove(Infinity);
     drawBoard();
@@ -94,7 +102,8 @@ function sendMove (move) {
 socket.on('end', result => {
     myColor = "both";
     matchData = undefined;
-    offlineUI.style.visibility = "visible";
+    offlineUI.style.display = "block";
+    matchInfoDiv.style.display = "none";
     matchLinkField.value = "";
     updateInfo(result);
 });

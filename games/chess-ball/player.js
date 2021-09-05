@@ -52,6 +52,7 @@ function updatePlayer(id, data) {
         if (!player)
             return;
     player.avatar.name = data.name;
+    return player;
 }
 
 module.exports = Player;

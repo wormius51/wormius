@@ -146,8 +146,25 @@ function playMove (player, move) {
         endMatch(match, result);
 }
 
+function sendData (match) {
+    let data = {
+        matchId: match.id,
+        white: match.white.avatar,
+        black: match.black.avatar,
+        moves: match.moves
+    };
+    data.youAre = "white";
+    match.white.socket.emit("updateMatch", data);
+    data.youAre = "black";
+    match.black.socket.emit("updateMatch", data);
+    match.spectators.forEach(s => {
+        s.socket.emit("updateMatch", data);
+    });
+}
+
 module.exports = Match;
 module.exports.join = joinById;
 module.exports.joinMatchOrStart = joinMatchOrStart;
 module.exports.playMove = playMove;
 module.exports.endMatch = endMatch;
+module.exports.sendData = sendData;
