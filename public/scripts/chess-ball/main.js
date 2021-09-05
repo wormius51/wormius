@@ -102,12 +102,7 @@ function selectSquare (file, rank, xInSquare, yInSquare, isDrag) {
     });
     if (move) {
         if (!move.ballMoves && !move.promotions) {
-            move.string = moveString(position, move);
-            moves.push(move);
-            positionPlayMove(position, move);
-            kickingPiece = undefined;
-            draggedPiece = undefined;
-            sendMove(move);
+            applyMove(move);
         }
     }
     else {
@@ -121,10 +116,7 @@ function selectSquare (file, rank, xInSquare, yInSquare, isDrag) {
             return ballMove;
         });
         if (kickMove && !(ballMove.bx == ballMove.sx && ballMove.by == ballMove.sy)) {
-            positionPlayMove(position, ballMove);
-            kickingPiece = undefined;
-            draggedPiece = undefined;
-            sendMove(ballMove);
+            applyMove(ballMove);
         }
     }
     if (move) {
@@ -143,6 +135,20 @@ function selectSquare (file, rank, xInSquare, yInSquare, isDrag) {
     }
     drawBoard();
     updateInfo();
+}
+
+function applyMove (move) {
+    move.string = moveString(position, move);
+    moves.push(move);
+    positionPlayMove(position, move);
+    kickingPiece = undefined;
+    draggedPiece = undefined;
+    mostRecentMove = move;
+    if (!matchData) {
+        if (positionResult(position) == "playing")
+            setTimeout(ExecuteAiMove, 0);
+    }
+    sendMove(move);
 }
 
 function restart() {

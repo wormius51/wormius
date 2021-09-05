@@ -8,10 +8,20 @@ const copyMatchLinkButton = document.getElementById("copyMatchLinkButton");
 const matchLinkDiv = document.getElementById("matchLinkDiv");
 const linkMatchId = document.getElementById("matchId").innerHTML;
 
+const nameField = document.getElementById("nameField");
+
 window.addEventListener('load', () => {
     loadCookie();
     socket.emit('add-player', cookie.name);
 });
+
+nameField.addEventListener('change', updatePlayer);
+
+function updatePlayer () {
+    cookie.name = nameField.value;
+    socket.emit("update-player", cookie);
+    saveCookie();
+}
 
 copyMatchLinkButton.addEventListener('click', () => {
     navigator.clipboard.writeText(matchLinkField.value);
@@ -76,18 +86,6 @@ socket.on('moves', data => {
 });
 
 function sendMove (move) {
-    mostRecentMove = move;
-    possibleMoves = [];
-    if (!matchData) {
-        if (positionResult(position) == "playing")
-            setTimeout(ExecuteAiMove, 0);
-    }
-    if (!matchData) {
-        matchData.moves.push(move);
-        rollPositionToMove(Infinity);
-        drawBoard();
-        updateInfo();
-    }
     if (!matchData || !myColor)
         return;
     socket.emit('playMove', move);
