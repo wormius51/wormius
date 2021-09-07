@@ -119,9 +119,12 @@ function fenToPosition (fen) {
         }
         if (isNaN(c)) {
             let piece = charToPiece(c, rank);
-            position[rank][file] = piece;
-            if (piece.type == "ball")
-                position.ball = piece;
+            if (piece.type == "ball") {
+                if (!position.ball)
+                    position[rank][file] = piece;
+                position.ball = piece; 
+            } else
+                position[rank][file] = piece;
             file++;
         }
         else

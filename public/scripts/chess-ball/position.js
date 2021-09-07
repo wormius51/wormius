@@ -1,10 +1,13 @@
 var position = [];
 
 function setStartingPosition () {
-   position = copyPosition(startPosition);
-   position.turn = "white";
-   position.castling = {white: {short: true, long: true}, black: {short: true, long: true}};
-   position.ball = position[3][4];
+    position = copyPosition(startPosition);
+    if (!position.turn)
+        position.turn = "white";
+    if (!position.castling)
+        position.castling = {white: {short: true, long: true}, black: {short: true, long: true}};
+    if (!position.ball)
+        position.ball = position[3][4];
 }
 
 const emptyPosition = [
@@ -18,7 +21,7 @@ const emptyPosition = [
     [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined]
 ];
 
-const startPosition = [
+const defaultStartingPosition = [
     [Piece("black", "rook"), Piece("black", "knight"), Piece("black", "bishop"), Piece("black", "queen"), Piece("black", "king"), Piece("black", "bishop"), Piece("black", "knight"), Piece("black", "rook")],
     [Piece("black", "pawn"), Piece("black", "pawn"), Piece("black", "pawn"), Piece("black", "pawn"), Piece("black", "pawn"), Piece("black", "pawn"), Piece("black", "pawn"), Piece("black", "pawn")],
     [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
@@ -28,6 +31,8 @@ const startPosition = [
     [Piece("white", "pawn"), Piece("white", "pawn"), Piece("white", "pawn"), Piece("white", "pawn"), Piece("white", "pawn"), Piece("white", "pawn"), Piece("white", "pawn"), Piece("white", "pawn")],
     [Piece("white", "rook"), Piece("white", "knight"), Piece("white", "bishop"), Piece("white", "queen"), Piece("white", "king"), Piece("white", "bishop"), Piece("white", "knight"), Piece("white", "rook")]
 ];
+
+let startPosition = defaultStartingPosition;
 
 function copyPosition(position) {
     let newPosition = [];

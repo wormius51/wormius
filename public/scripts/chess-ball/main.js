@@ -85,7 +85,8 @@ function selectSquare (file, rank, xInSquare, yInSquare, isDrag) {
         file = boardWidth - 1 - file;
         rank = boardHeight - 1 - rank;
     }
-    if (position[rank] && draggedPiece == position.ball && position[rank][file] == position.ball)
+    if (position[rank] && position[rank][file] &&
+        draggedPiece && draggedPiece.type == "ball" && position[rank][file].type == "ball")
         return;
     if (isDrag && position[rank])
         draggedPiece = position[rank][file];
@@ -122,7 +123,7 @@ function selectSquare (file, rank, xInSquare, yInSquare, isDrag) {
     if (move) {
         if (move.ballMoves) {
             possibleMoves = move.ballMoves;
-            draggedPiece = position.ball;
+            draggedPiece = position[move.y][move.x];
             kickingPiece = position[move.sy][move.sx];
         }
         else if (move.promotions)
@@ -145,8 +146,7 @@ function applyMove (move) {
     draggedPiece = undefined;
     mostRecentMove = move;
     if (!matchData) {
-        if (positionResult(position) == "playing")
-            setTimeout(ExecuteAiMove, 0);
+        nonBlockAiMove();
     }
     sendMove(move);
 }

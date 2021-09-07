@@ -49,13 +49,16 @@ socket.on('deny', data => {
 });
 
 socket.on('matchId', data => {
-    matchLinkField.value = window.location.href + "/" + data;
+    matchLinkField.value = window.location.href;
     matchLinkField.value = matchLinkField.value.replace("/" + linkMatchId, "");
+    matchLinkField.value = matchLinkField.value.replace(/\?pos=.*/, "");
+    matchLinkField.value += "/" + data
     navigator.clipboard.writeText(matchLinkField.value);
     console.log("matchId: " + data);
 });
 
 socket.on('start', data => {
+    startPosition = defaultStartingPosition;
     myColor = data.youAre;
     matchData = data;
     if ((myColor == "white") == flippedBoard)

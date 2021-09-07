@@ -6,6 +6,8 @@ const aiParams = {
     depth: 2
 };
 
+let aiTimeout = undefined;
+
 function evaluatePosition (position) {
     let result = positionResult(position);
     switch (result) {
@@ -117,4 +119,14 @@ function ExecuteAiMove () {
         rollPositionToMove(Infinity);
         updateInfo();
     }
+    mostRecentMove = move;
+    if (aiTimeout)
+        clearTimeout(aiTimeout);
+}
+
+function nonBlockAiMove () {
+    if (aiTimeout)
+        clearTimeout(aiTimeout);
+    if (positionResult(position) == "playing")
+        aiTimeout = setTimeout(ExecuteAiMove, 0);
 }

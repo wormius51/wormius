@@ -49,3 +49,7 @@ body {
 #matchInfoDiv {
     display: none;
 }
+
+#startPosition {
+    display: none;
+}
