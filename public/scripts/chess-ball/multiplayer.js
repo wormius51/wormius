@@ -52,7 +52,7 @@ socket.on('matchId', data => {
     matchLinkField.value = window.location.href;
     matchLinkField.value = matchLinkField.value.replace("/" + linkMatchId, "");
     matchLinkField.value = matchLinkField.value.replace(/\?pos=.*/, "");
-    matchLinkField.value += "/" + data
+    matchLinkField.value += "?mi=" + data
     navigator.clipboard.writeText(matchLinkField.value);
     console.log("matchId: " + data);
 });
