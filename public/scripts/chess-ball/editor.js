@@ -1,0 +1,1 @@
+const isEditor = true;
