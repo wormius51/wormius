@@ -1,6 +1,9 @@
 function isMobile () {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
+
+const isEditor = false;
+
 window.addEventListener('load', () => {
     setStartingPosition();
     drawBoard();
@@ -45,15 +48,17 @@ var possibleMoves = [];
 var myColor = "both";
 
 function calculateX (clientX) {
-    let x = clientX - canvas.offsetLeft;
+    let offset = offsetofElement(canvas);
+    let x = clientX - offset.left;
     if (!isMobile())
         x += window.scrollX;
     return x;
 }
 function calculateY (clientY) {
-    let y = clientY - canvas.offsetTop;
+    let offset = offsetofElement(canvas);
+    let y = clientY - offset.top;
     if (!isMobile())
-        y += window.scrollY
+        y += window.scrollY;
     return y;
 }
 

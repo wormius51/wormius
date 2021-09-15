@@ -24,11 +24,21 @@
         <tr>
             <td>
                 <canvas id = "boardCanvas"></canvas>
+                <br>
+                <input type="text" id="posLink" readonly>
+                <button id = "copyPosLinkButton" class="copyButton">
+                    <img src="/images/chess-ball/clipboard.png" alt="Copy link">
+                </button>
+            </td>
+            <td>
+                <canvas id = "piecesCanvas"></canvas>
             </td>
         </tr>
     </table>
-
-    <script src="/scripts/chess-ball/images.js"></script>
+    <script src="/scripts/chess-ball/util.js"></script> 
+    <script src="/scripts/chess-ball/images.js"></script> 
+    <script src="/scripts/chess-ball/piece.js"></script>
+    <script src="/scripts/chess-ball/position.js"></script>
     <script src="/scripts/chess-ball/canvas.js"></script>
     <script src="/scripts/chess-ball/fen.js"></script>
     <script src="/scripts/chess-ball/editor.js"></script>

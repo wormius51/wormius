@@ -33,11 +33,11 @@ body {
     position: absolute;
 }
 
-#copyMatchLinkButton {
+.copyButton {
     padding: 0%;
 }
 
-#copyMatchLinkButton img{
+.copyButton img{
     height: 20px;
     width: 20px;
 }
@@ -52,4 +52,10 @@ body {
 
 #startPosition {
     display: none;
+}
+
+#piecesCanvas {
+    background-color: white;
+    border-color: rgb(37, 10, 122);
+    border-style: solid;
 }

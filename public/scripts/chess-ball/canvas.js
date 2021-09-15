@@ -52,7 +52,9 @@ function drawSquares () {
     }
 }
 
-function drawPiece (piece, file, rank, size) {
+function drawPiece (piece, file, rank, size, ctx) {
+    if (!ctx)
+        ctx = context;
     if (!piece)
         return;
     if (!size)
@@ -84,24 +86,24 @@ function drawPiece (piece, file, rank, size) {
             pieceX = 5;
             break;
         case "ball":
-            context.drawImage(ballImage, file * squareEdgeLength, rank * squareEdgeLength, squareEdgeLength * size, squareEdgeLength * size);
+            ctx.drawImage(ballImage, file * squareEdgeLength, rank * squareEdgeLength, squareEdgeLength * size, squareEdgeLength * size);
             return;
         default:
             return;
     }
     if (pieceY == 1)
-        drawOutline(pieceX, pieceY, file, rank, size);
+        drawOutline(pieceX, pieceY, file, rank, size, ctx);
     
-    context.drawImage(piecesImage, pieceX * pieceEdgeLength, pieceY * pieceEdgeLength, pieceEdgeLength, pieceEdgeLength, file * squareEdgeLength, rank * squareEdgeLength, squareEdgeLength * size, squareEdgeLength * size);
+    ctx.drawImage(piecesImage, pieceX * pieceEdgeLength, pieceY * pieceEdgeLength, pieceEdgeLength, pieceEdgeLength, file * squareEdgeLength, rank * squareEdgeLength, squareEdgeLength * size, squareEdgeLength * size);
 }
 
-function drawOutline (pieceX, pieceY, file, rank, size) {
-    context.globalCompositeOperation = "xor";
+function drawOutline (pieceX, pieceY, file, rank, size, ctx) {
+    ctx.globalCompositeOperation = "xor";
     let outlineEngeLength = squareEdgeLength * (1 + pieceOutlineSize);
     dx = (squareEdgeLength - outlineEngeLength) * 0.5;
     dy = (squareEdgeLength - outlineEngeLength) * 0.5;
-    context.drawImage(piecesImage, pieceX * pieceEdgeLength, pieceY * pieceEdgeLength, pieceEdgeLength, pieceEdgeLength, file * squareEdgeLength + dx, rank * squareEdgeLength + dy, outlineEngeLength * size, outlineEngeLength * size);
-    context.globalCompositeOperation = "source-over";
+    ctx.drawImage(piecesImage, pieceX * pieceEdgeLength, pieceY * pieceEdgeLength, pieceEdgeLength, pieceEdgeLength, file * squareEdgeLength + dx, rank * squareEdgeLength + dy, outlineEngeLength * size, outlineEngeLength * size);
+    ctx.globalCompositeOperation = "source-over";
 }
 
 function drawPieces () {
@@ -203,6 +205,8 @@ function drawBoard () {
     drawClydeBackground();
     drawShowMove(mostRecentMove);
     drawPieces();
+    if (isEditor)
+        return;
     drawMoveOptions();
     if (draggedPiece)
         drawDraggedPiece();
