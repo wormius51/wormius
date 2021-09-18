@@ -50,7 +50,6 @@ socket.on('deny', data => {
 
 socket.on('matchId', data => {
     matchLinkField.value = window.location.href;
-    matchLinkField.value = matchLinkField.value.replace("/" + linkMatchId, "");
     matchLinkField.value = matchLinkField.value.replace(/\?.*/, "");
     matchLinkField.value += "?mi=" + data
     navigator.clipboard.writeText(matchLinkField.value);
