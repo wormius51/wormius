@@ -120,6 +120,7 @@ function ExecuteAiMove () {
         updateInfo();
     }
     mostRecentMove = move;
+    drawBoard();
     if (aiTimeout)
         clearTimeout(aiTimeout);
 }

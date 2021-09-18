@@ -18,8 +18,12 @@ function updateInfo (result) {
     switch (result ? result : positionResult(position)) {
         case "playing":
             resultText.innerHTML = position.turn == "white" ? "White to move" : "Black to move";
-            if (matchData) 
+            if (matchData) {
+                namesText.innerText = matchData.white.name + " VS " + matchData.black.name;
                 title.innerHTML = position.turn == myColor ? "Your turn" : "Opponents turn";
+                if (!myColor)
+                    title.innerText = matchData.white.name + " VS " + matchData.black.name;
+            }
             break;
         case "goal white":
             resultText.innerHTML = "White wins by goal";

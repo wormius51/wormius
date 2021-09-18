@@ -288,3 +288,13 @@ function isLegalMove (position, move) {
     }
     return false;
 }
+
+function ballCoordinates (position) {
+    for (let rank = 0; rank < position.length; rank++) {
+        for (let file = 0; file < position[rank].length; file++) {
+            let piece = position[rank][file];
+            if (piece && piece.type == "ball")
+                return {x: file, y: rank};
+        }
+    }
+}
