@@ -1,6 +1,7 @@
 const matchDataString = document.getElementById("matchData").innerHTML;
 const saveGameField = document.getElementById("saveGameField");
 const saveGameButton = document.getElementById("saveGameButton");
+const loadGameButton = document.getElementById("loadGameButton");
 
 window.addEventListener('load', () => {
     if (matchDataString)
@@ -9,7 +10,11 @@ window.addEventListener('load', () => {
 
 saveGameButton.addEventListener('click', () => {
     navigator.clipboard.writeText(saveGameField.value);
-    alert("Link to the game added to the clip board");
+    alert("The game data was added to the clip board. Paste it somewhere to keep it.");
+});
+
+loadGameButton.addEventListener('click', () => {
+    decodeMatchString(saveGameField.value);
 });
 
 /**
@@ -101,7 +106,5 @@ function moveMinString (move) {
 }
 
 function updateSaveGameField () {
-    saveGameField.value = window.location.href;
-    saveGameField.value = saveGameField.value.replace(/\?.*/, "");
-    saveGameField.value += `?md=${matchString()}`;
+    saveGameField.value = matchString();
 }

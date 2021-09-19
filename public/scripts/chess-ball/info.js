@@ -125,6 +125,12 @@ function moveString (position, move) {
     } else if (moveType) {
         finalSourceFileString = sourceFileString;
     }
+    if (!move.castling && position[move.sy][move.sx].type == "king") {
+        if (move.x - move.sx > 1)
+            move.castling = "O-O";
+        else if (move.x - move.sx < -1)
+            move.castling = "O-O-O";
+    }
     if (move.castling) {
         letter = move.castling;
         finalSourceFileString = "";
