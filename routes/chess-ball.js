@@ -4,6 +4,7 @@ router.get("/", (req, res) => {
     res.render('chess-ball', {
         matchId: req.query.mi,
         startPosition: req.query.pos,
+        matchData: req.query.md,
         title: "Chess Ball",
         description: "Chess where you kick the ball with your pieces.",
         keyWords: ["multiplayer","chess"]

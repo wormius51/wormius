@@ -28,9 +28,8 @@ body {
     background-color: darkkhaki;
 }
 
-#matchId {
-    visibility: hidden;
-    position: absolute;
+.data {
+    display: none;
 }
 
 .copyButton {
@@ -47,10 +46,6 @@ body {
 }
 
 #matchInfoDiv {
-    display: none;
-}
-
-#startPosition {
     display: none;
 }
 

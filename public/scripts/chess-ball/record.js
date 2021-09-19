@@ -1,34 +1,67 @@
+const matchDataString = document.getElementById("matchData").innerHTML;
+
+window.addEventListener('load', () => {
+    if (matchDataString)
+        decodeMatchString(matchDataString);
+});
+
 /**
- * Encodes the data of the match in base 64
+ * Encodes the data of the match in a string
  */
 function matchString () {
     let movesString = "";
     moves.forEach(move => {
-        movesString += moveChar(move);
+        movesString += moveMinString(move) + ",";
     });
+    movesString = movesString.substr(0, movesString.length - 1);
     return movesString;
 }
 
 function decodeMatchString (string) {
-    let movesChars = movesString.split("");
+    let movesChars = string.split(",");
     moves = [];
-    movesChars.forEach(char => {
-        let move = charToMove(char);
+    rollPositionToMove(0);
+    movesChars.forEach(s => {
+        let move = stringToMove(s);
+        move.string = moveString(position, move);
         moves.push(move);
         positionPlayMove(position, move);
     });
+    rollPositionToMove(-1);
+    updateInfo();
 }
 
-function charToMove (char) {
-    if (!char)
+function stringToMove (string) {
+    if (!string)
         return;
-    let move = {};
-    
-
+    let code = Base64.toNumber(string) + "";
+    let move = {
+        sx: code[0] * 1,
+        sy: code[1] * 1,
+        x: code[2] * 1,
+        y: code[3] * 1,
+        bx: code[4] == "9" ? undefined : code[4] * 1,
+        by: code[5] == "9" ? undefined : code[5] * 1,
+        enpassant: code[6] == "1"
+    };
+    switch (code[7]) {
+        case "1":
+            move.promotion = "knight";
+            break;
+        case "2":
+            move.promotion = "bishop";
+            break;
+        case "3":
+            move.promotion = "rook";
+            break;
+        case "4":
+            move.promotion = "queen";
+            break;
+    }
     return move;
 }
 
-function moveChar (move) {
+function moveMinString (move) {
     if (!move)
         return '';
     let charCode = '';
@@ -56,5 +89,6 @@ function moveChar (move) {
             charCode += 0;
     }
     charCode = +charCode;
-    return String.fromCharCode(charCode);
+    let s = Base64.fromNumber(charCode);
+    return s;
 }
