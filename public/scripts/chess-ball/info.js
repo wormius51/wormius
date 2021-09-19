@@ -84,7 +84,7 @@ function moveString (position, move) {
         x = move.bx;
         y = move.by;
         moveType = "o";
-    } else if (position[y][x] || move.enpassant)
+    } else if ((position[y] && position[y][x]) || move.enpassant)
         moveType = "x";
     let destinationRankString = "" + (position.length - y);
     let destinationFileString = String.fromCharCode("a".charCodeAt(0) + x);
