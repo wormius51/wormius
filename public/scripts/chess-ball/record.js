@@ -1,8 +1,15 @@
 const matchDataString = document.getElementById("matchData").innerHTML;
+const saveGameField = document.getElementById("saveGameField");
+const saveGameButton = document.getElementById("saveGameButton");
 
 window.addEventListener('load', () => {
     if (matchDataString)
         decodeMatchString(matchDataString);
+});
+
+saveGameButton.addEventListener('click', () => {
+    navigator.clipboard.writeText(saveGameField.value);
+    alert("Link to the game added to the clip board");
 });
 
 /**
@@ -91,4 +98,10 @@ function moveMinString (move) {
     charCode = +charCode;
     let s = Base64.fromNumber(charCode);
     return s;
+}
+
+function updateSaveGameField () {
+    saveGameField.value = window.location.href;
+    saveGameField.value = saveGameField.value.replace(/\?.*/, "");
+    saveGameField.value += `?md=${matchString()}`;
 }

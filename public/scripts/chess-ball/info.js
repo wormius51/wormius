@@ -48,6 +48,7 @@ function updateInfo (result) {
             break;
     }
     updateMovesDiv();
+    updateSaveGameField();
 }
 
 socket.on('player-count', data => {
