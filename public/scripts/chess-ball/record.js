@@ -32,7 +32,7 @@ function matchString () {
 function decodeMatchString (string) {
     let movesChars = string.split(",");
     moves = [];
-    rollPositionToMove(0);
+    rollPositionToMove(-1);
     movesChars.forEach(s => {
         let move = stringToMove(s);
         move.string = moveString(position, move);
@@ -47,6 +47,8 @@ function stringToMove (string) {
     if (!string)
         return;
     let code = Base64.toNumber(string) + "";
+    while (code.length < 8)
+        code = "0" + code;
     let move = {
         sx: code[0] * 1,
         sy: code[1] * 1,
@@ -70,6 +72,8 @@ function stringToMove (string) {
             move.promotion = "queen";
             break;
     }
+    console.log(code);
+    console.log(move);
     return move;
 }
 
