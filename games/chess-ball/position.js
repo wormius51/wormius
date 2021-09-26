@@ -415,7 +415,7 @@ const pieceMoves = {
                 !attackerMoves.find(move => {
                     return move.y == y && (
                         move.x == x + 1 ||
-                        move.x == x + 2
+                        move.x == x
                     )
                 }))
                 moves.push({x: x + 2, y: y});
