@@ -4,7 +4,9 @@ var soundConfig = {
 
 function plaSound(sound) {
     let audio = new Audio();
-    audio.src = "sounds/" + sound + ".mp4";
+    audio.src = "sounds/" + sound;
+    if (sound.indexOf(".") == -1)
+        audio.src += ".mp4";
     audio.volume = soundConfig.sfxVolume;
     audio.play();
 }
@@ -14,7 +16,7 @@ function changeSfxVolume() {
     if (soundConfig.sfxVolume < 0) {
         soundConfig.sfxVolume = 1;
     }
-    plaSound("dash");
+    plaSound("dash.wav");
     saveSoundConfig();
 }
 

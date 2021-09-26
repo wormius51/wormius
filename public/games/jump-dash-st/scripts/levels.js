@@ -136,14 +136,14 @@ const levels = [
         Coin(Vector2D(4370,60));
         Goal(Vector2D(4300, -200));
     },
-    //rocket lunchers
+    //rocket Launchers
     () => {
         player = Player(Vector2D(100, 100));
         Block(Vector2D(-300, 200), Vector2D(500, 200));
         Block(Vector2D(-300, -100), Vector2D(50, 350));
-        RocketLuncher(Vector2D(500,100));
+        RocketLauncher(Vector2D(500,100));
         Block(Vector2D(400, 200), Vector2D(400, 200));
-        RocketLuncher(Vector2D(1300,-100));
+        RocketLauncher(Vector2D(1300,-100));
         Block(Vector2D(1100, 200), Vector2D(400, 200));
         Block(Vector2D(1400, 50), Vector2D(400, 200));
         Block(Vector2D(1600, 350), Vector2D(200, 200));
@@ -157,8 +157,8 @@ const levels = [
         Block(Vector2D(3000,250),Vector2D(200,50));
         Block(Vector2D(2800,100),Vector2D(200,50));
         Coin(Vector2D(2040,560));
-        RocketLuncher(Vector2D(2040,300)).spawnTime = 3000;
-        RocketLuncher(Vector2D(3000,-100)).spawnTime = 3000;
+        RocketLauncher(Vector2D(2040,300)).spawnTime = 3000;
+        RocketLauncher(Vector2D(3000,-100)).spawnTime = 3000;
         Block(Vector2D(2600,-50),Vector2D(200,50));
         Goal(Vector2D(2600,-350));
     },
@@ -204,14 +204,14 @@ const levels = [
         Block(Vector2D(1000, 700), Vector2D(300, 60));
         Enemy(Vector2D(1100,650)).maxWalkTime = 750;
         Block(Vector2D(950, 950), Vector2D(1000, 60));
-        //rocket lunchers
+        //rocket Launchers
         Block(Vector2D(1600,800),Vector2D(200,50));
         Block(Vector2D(1400,650),Vector2D(200,50));
         Block(Vector2D(1600,500),Vector2D(200,50));
         Block(Vector2D(1400,350),Vector2D(200,50));
         Block(Vector2D(1600,200),Vector2D(200,50));
-        RocketLuncher(Vector2D(1640,450));
-        RocketLuncher(Vector2D(1500,-150));
+        RocketLauncher(Vector2D(1640,450));
+        RocketLauncher(Vector2D(1500,-150));
         //unltra combo
         FlyingEnemy(Vector2D(1700,-50));
         FlyingEnemy(Vector2D(1950,0));

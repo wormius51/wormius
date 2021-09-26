@@ -80,12 +80,13 @@ function Player(position) {
                 player.velocity.y = - player.jumpSpeed;
                 player.dashTime = player.maxDashTime;
                 player.dashes = 0;
-                let r = Math.floor(Math.random() * 4);
+                /*let r = Math.floor(Math.random() * 4);
                 while (r == this.r) {
                     r = Math.floor(Math.random() * 4);
                 }
                 this.r = r;
-                plaSound("jump" + r);
+                plaSound("jump" + r);*/
+                plaSound("8bit_jump.wav");
             } else {
                 if (player.dashTime < player.maxDashTime) {
                     player.dash(deltaTime);
@@ -112,7 +113,7 @@ function Player(position) {
     player.dash = deltaTime => {
         if (player.dashTime == 0) {
             player.dashes++;
-            plaSound("dash");
+            plaSound("dash.wav");
         };
         player.isDashing = true;
         player.velocity.x = player.direction * player.dashSpeed;
@@ -134,11 +135,11 @@ function Player(position) {
             other.destroy = true;
             player.maxDashes++;
         } else if (other.finishLevel) {
-            plaSound("score");
+            plaSound("coin.wav");
             loadLevel(currentLevel + 1);
         } else if (other.collectable) {
             other.destroy = true;
-            plaSound("score");
+            plaSound("coin.wav");
         }
     }
     player.onDeath = death;
@@ -242,34 +243,45 @@ function MasterHunter(position, walkSpeed) {
     return masterHunter;
 }
 
-function Rocket(position, speed) {
+function Rocket(position, speed, lifeTime) {
     if (!speed) speed = 4;
     let rocket = Hunter(position, speed);
     rocket.scale = Vector2D(20, 20);
     rocket.value = 0;
+    rocket.time = 0;
+    rocket.lifeTime = lifeTime || 400;
     rocket.onCollision = other => {
         if (other.solid && !other.damage && !other.maxDashTime) {
             rocket.destroy = true;
         }
     }
+    let moveFunc = rocket.onUpdate;
+    rocket.onUpdate = deltaTime => {
+        moveFunc(deltaTime);
+        rocket.time += deltaTime;
+        if (rocket.time >= rocket.lifeTime) {
+            rocket.destroy = true;
+        }
+    };
     return rocket;
 }
 
-function RocketLuncher(position) {
-    let rocketLuncher = Enemy(position, 0);
-    rocketLuncher.value = 30;
-    rocketLuncher.scale = Vector2D(40, 70);
-    rocketLuncher.color = "orange";
-    rocketLuncher.spawTime = 1000;
-    rocketLuncher.time = 0;
-    rocketLuncher.onUpdate = deltaTime => {
-        rocketLuncher.time += deltaTime;
-        if (rocketLuncher.time >= rocketLuncher.spawTime) {
-            rocketLuncher.time = 0;
-            Rocket(copyVector2D(rocketLuncher.position));
+function RocketLauncher(position) {
+    let rocketLauncher = Enemy(position, 0);
+    rocketLauncher.value = 30;
+    rocketLauncher.scale = Vector2D(40, 70);
+    rocketLauncher.color = "orange";
+    rocketLauncher.spawTime = 1000;
+    rocketLauncher.time = 0;
+    rocketLauncher.rocketLifetime = 1000;
+    rocketLauncher.onUpdate = deltaTime => {
+        rocketLauncher.time += deltaTime;
+        if (rocketLauncher.time >= rocketLauncher.spawTime) {
+            rocketLauncher.time = 0;
+            Rocket(copyVector2D(rocketLauncher.position), 4, rocketLauncher.rocketLifetime);
         }
     };
-    return rocketLuncher;
+    return rocketLauncher;
 }
 
 var eyeBoxesKilled = 0;
@@ -336,27 +348,27 @@ function EyeBox(position, scale) {
         return enemy;
     }
 
-    eyeBox.dropRocketLuncher = () => {
+    eyeBox.dropRocketLauncher = () => {
         let position = copyVector2D(eyeBox.position);
         addVectors(position, Vector2D(-70, -70));
-        eyeBox.minions.push(RocketLuncher(position));
+        eyeBox.minions.push(RocketLauncher(position));
     };
 
-    eyeBox.dropMountedLuncher = () => {
+    eyeBox.dropMountedLauncher = () => {
         let enemy = eyeBox.dropEnemy();
         let position = copyVector2D(eyeBox.position);
         addVectors(position, Vector2D(-70, -130));
-        let rocketLuncher = RocketLuncher(position);
-        eyeBox.minions.push(rocketLuncher);
-        rocketLuncher.onUpdate = deltaTime => {
-            rocketLuncher.position.x = enemy.position.x;
-            rocketLuncher.time += deltaTime;
-            if (rocketLuncher.time >= rocketLuncher.spawTime) {
-                rocketLuncher.time = 0;
-                Rocket(copyVector2D(rocketLuncher.position));
+        let rocketLauncher = RocketLauncher(position);
+        eyeBox.minions.push(rocketLauncher);
+        rocketLauncher.onUpdate = deltaTime => {
+            rocketLauncher.position.x = enemy.position.x;
+            rocketLauncher.time += deltaTime;
+            if (rocketLauncher.time >= rocketLauncher.spawTime) {
+                rocketLauncher.time = 0;
+                Rocket(copyVector2D(rocketLauncher.position));
             }
         };
-        return rocketLuncher;
+        return rocketLauncher;
     }
 
     eyeBox.spawnMinions = wave => {
@@ -369,10 +381,10 @@ function EyeBox(position, scale) {
                 eyeBox.dropEnemy();
                 break;
             case 2:
-                eyeBox.dropRocketLuncher();
+                eyeBox.dropRocketLauncher();
                 break;
             case 3:
-                eyeBox.dropMountedLuncher();
+                eyeBox.dropMountedLauncher();
                 break;
             case 4:
                 eyeBox.bottom.destroy = true;

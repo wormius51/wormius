@@ -1,5 +1,7 @@
 const fallSpeedLimit = 30;
 
+let deltatimeDevide = 15;
+
 function Vector2D(x, y) {
     let vector2D = {
         x: x,
@@ -68,8 +70,10 @@ function normalize(vector2D) {
  * Updates the position of the GameObject based on its velocity.
  * @param {*} gameObject 
  */
-function moveGameObject(gameObject) {
-    addVectors(gameObject.position, gameObject.velocity);
+function moveGameObject(gameObject, deltaTime) {
+    let delta = copyVector2D(gameObject.velocity);
+    mulVectorNum(delta, deltaTime / deltatimeDevide);
+    addVectors(gameObject.position, delta);
 }
 
 function checkCollision(a, b) {
@@ -101,7 +105,7 @@ function updateGameObject(gameObject, deltaTime) {
     if (gameObject.destroy) {
         gameObject.onDeath();
     }
-    moveGameObject(gameObject);
+    moveGameObject(gameObject, deltaTime);
 }
 
 function updateGameObjects(deltaTime) {
