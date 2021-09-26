@@ -248,7 +248,7 @@ function Rocket(position, speed, lifeTime) {
     let rocket = Hunter(position, speed);
     rocket.scale = Vector2D(20, 20);
     rocket.value = 0;
-    rocket.time = 0;
+    rocket.livedtime = 0;
     rocket.lifeTime = lifeTime || 400;
     rocket.onCollision = other => {
         if (other.solid && !other.damage && !other.maxDashTime) {
@@ -258,8 +258,8 @@ function Rocket(position, speed, lifeTime) {
     let moveFunc = rocket.onUpdate;
     rocket.onUpdate = deltaTime => {
         moveFunc(deltaTime);
-        rocket.time += deltaTime;
-        if (rocket.time >= rocket.lifeTime) {
+        rocket.livedtime += deltaTime;
+        if (rocket.livedtime >= rocket.lifeTime) {
             rocket.destroy = true;
         }
     };
@@ -273,7 +273,7 @@ function RocketLauncher(position) {
     rocketLauncher.color = "orange";
     rocketLauncher.spawTime = 1000;
     rocketLauncher.time = 0;
-    rocketLauncher.rocketLifetime = 1000;
+    rocketLauncher.rocketLifetime = 2000;
     rocketLauncher.onUpdate = deltaTime => {
         rocketLauncher.time += deltaTime;
         if (rocketLauncher.time >= rocketLauncher.spawTime) {
