@@ -80,12 +80,6 @@ function Player(position) {
                 player.velocity.y = - player.jumpSpeed;
                 player.dashTime = player.maxDashTime;
                 player.dashes = 0;
-                /*let r = Math.floor(Math.random() * 4);
-                while (r == this.r) {
-                    r = Math.floor(Math.random() * 4);
-                }
-                this.r = r;
-                plaSound("jump" + r);*/
                 plaSound("8bit_jump.wav");
             } else {
                 if (player.dashTime < player.maxDashTime) {
@@ -170,6 +164,10 @@ function Gummy(position, scale) {
     let gummy = Block(position, scale);
     gummy.bouncy = true;
     gummy.color = "purple";
+    gummy.onCollision = other => {
+        if (other.velocity && normal(other.velocity) != 0)
+            plaSound("bounce.flac");
+    }
     return gummy;
 }
 

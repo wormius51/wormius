@@ -105,7 +105,8 @@ const levels = [
         }
         Coin(Vector2D(1000,300));
         Block(Vector2D(1060, 400), Vector2D(700, 60));
-        Block(Vector2D(1060, 50), Vector2D(60, 400));
+        Block(Vector2D(1060, -250), Vector2D(60, 700));
+        TextObject(Vector2D(850, -200), "( ;", 50);
         Goal(Vector2D(1100, 50));
         Block(Vector2D(0, 570), Vector2D(1740, 60));
     },
@@ -241,6 +242,24 @@ const levels = [
         Block(Vector2D(650, -100), Vector2D(50, 350));
         EyeBox(Vector2D(-100,-200));
         EyeBox(Vector2D(250,-200));
+    },
+    //gummy
+    () => {
+        player = Player(Vector2D(100, 100));
+        Gummy(Vector2D(200, 100), Vector2D(400, 100));
+        Gummy(Vector2D(400, 0), Vector2D(400, 200));
+        Block(Vector2D(-300, 200), Vector2D(3000, 60));
+        Block(Vector2D(-300, -100), Vector2D(50, 350));
+        Block(Vector2D(1000, -100), Vector2D(100, 350));
+        Gummy(Vector2D(1200, 100), Vector2D(400, 100));
+        Gummy(Vector2D(1400, 0), Vector2D(400, 200));
+        Gummy(Vector2D(2100, -50), Vector2D(100, 250));
+        Gummy(Vector2D(2150, -150), Vector2D(400, 350));
+        Gummy(Vector2D(2400, -150), Vector2D(400, 50));
+        Gummy(Vector2D(2500, -330), Vector2D(400, 50));
+        Block(Vector2D(2600, -460), Vector2D(50, 50));
+        Goal(Vector2D(2600, 200));
+        Coin(Vector2D(2700,0));
     },
     () => {
         player = Player(Vector2D(100, 100));
