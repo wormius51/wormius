@@ -41,6 +41,7 @@ function Player(position) {
     if (unlocks.currentSkin) {
         player.image = images[unlocks.currentSkin];
     } 
+    player.isPlayer = true;
     player.walkSpeed = 7;
     player.jumpSpeed = 20;
     player.maxJumpTime = 1500;
@@ -158,6 +159,27 @@ function Block(position, scale) {
     let block = GameObject(position, scale, "black");
     block.g = 0;
     return block;
+}
+
+function Door (position, levelIndex) {
+    let door = Block(position, Vector2D(50, 50));
+    door.color = "green";
+    door.levelIndex = levelIndex ? levelIndex : 0;
+    let text = TextObject(Vector2D(position.x + 10, position.y + 40), levelIndex + 1, 50);
+    text.color = "black";
+    text.zIndex = 10;
+    door.onCollision = other => {
+        if (other.isPlayer)
+            loadLevel(door.levelIndex);
+    }
+    door.onUpdate = () => {
+        if (reachedLevel < door.levelIndex) {
+            door.destroy = true;
+            text.destroy = true;
+        }
+    }
+    
+    return door;
 }
 
 function Gummy(position, scale) {

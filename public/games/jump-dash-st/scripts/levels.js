@@ -1,4 +1,5 @@
 
+var reachedLevel = 0;
 var currentLevel = 0;
 
 const levels = [
@@ -6,7 +7,11 @@ const levels = [
     () => {
         player = Player(Vector2D(100, 100));
         Block(Vector2D(-300, 200), Vector2D(3000, 60));
-        Block(Vector2D(-300, -100), Vector2D(50, 350));
+        let backBlock = Block(Vector2D(-300, -100), Vector2D(50, 350));
+        backBlock.onUpdate = () => {
+            if (reachedLevel > 0)
+                backBlock.destroy = true;
+        };
         TextObject(Vector2D(-150, 50), "press " + controls.leftKey.key + " and " + controls.rightKey.key + " to move.", 60, undefined, "black");
         Block(Vector2D(1000, 100), Vector2D(100, 150));
         TextObject(Vector2D(600, -50), "press " + controls.upKey.key + " to jump.", 60, undefined, "black");
@@ -15,6 +20,11 @@ const levels = [
         TextObject(Vector2D(1500, -50), "press " + controls.upKey.key + " twice to dash.", 60, undefined, "black");
         Goal(Vector2D(2600, 200));
         Coin(Vector2D(2700,0));
+        Block(Vector2D(-600, 500), Vector2D(3000, 60));
+        Block(Vector2D(-600, 0), Vector2D(50, 550));
+        for (let i = 1; i < levels.length; i++) {
+            Door(Vector2D(-600 + 200 * i, 450), i);
+        }
     },
     //tutorial 2
     () => {
@@ -177,7 +187,7 @@ const levels = [
         FlyingEnemy(Vector2D(1550, 200));
         FlyingEnemy(Vector2D(1800, 200));
         Block(Vector2D(1200,500),Vector2D(2000,100));
-        Block(Vector2D(1500,300), Vector2D(100,250));
+        Block(Vector2D(1500, 250), Vector2D(100, 300));
         Coin(Vector2D(1700,400));
         Block(Vector2D(1200,700),Vector2D(2000,100));
         Enemy(Vector2D(1400,600));
@@ -278,4 +288,28 @@ function loadLevel(index) {
     camera = Camera();
     levelText.text = "Level: " + (currentLevel + 1);
     drawUiElements();
+    if (reachedLevel < currentLevel) {
+        reachedLevel = currentLevel;
+        saveReachedLevel();
+    }
 }
+
+
+function saveReachedLevel() {
+    let reachedLevelString = reachedLevel + "";
+    let date = new Date(Date.now() + 99999999999999);
+    document.cookie = "reachedLevel=" + reachedLevelString + "; path=/; expires=" + date.toUTCString();
+}
+
+function loadReachedLevel() {
+    let varRgx = /reachedLevel=([^;]+)/
+    let reachedLevelString = varRgx.exec(document.cookie);
+    if (!reachedLevelString) {
+        return;
+    }
+    reachedLevelString = reachedLevelString[1];
+    if (reachedLevelString)
+        reachedLevel = +reachedLevelString;
+}
+
+window.addEventListener('load', loadReachedLevel);
