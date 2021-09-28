@@ -56,6 +56,12 @@ function normal(vector2D) {
     return Math.sqrt(Math.pow(vector2D.x, 2) + Math.pow(vector2D.y, 2));
 }
 
+function distance (a, b) {
+    let d = copyVector2D(a);
+    subVectors(d, b);
+    return normal(d);
+}
+
 /**
  * Changes the normal (length) of the vector2D to 1 but keeps the direction.
  * @param {*} vector2D 

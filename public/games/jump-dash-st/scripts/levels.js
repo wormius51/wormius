@@ -271,6 +271,16 @@ const levels = [
         Goal(Vector2D(2600, 200));
         Coin(Vector2D(2700,0));
     },
+    //bouncy stairs
+    () => {
+        player = Player(Vector2D(100, 100));
+        Block(Vector2D(50, 200), Vector2D(1500, 50));
+        for (let i = 0; i < 10; i++) {
+            Gummy(Vector2D(250 + 250 * i, 50 - 50 * i), Vector2D(200, 50));
+        }
+        Enemy(Vector2D(1050, -150), 0);
+        Enemy(Vector2D(1100, -150), 0);
+    },
     () => {
         player = Player(Vector2D(100, 100));
         Block(Vector2D(-300, 200), Vector2D(1200, 60));

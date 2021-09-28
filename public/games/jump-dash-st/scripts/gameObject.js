@@ -188,13 +188,13 @@ function Gummy(position, scale) {
     gummy.color = "purple";
     gummy.onCollision = other => {
         if (other.velocity && normal(other.velocity) != 0)
-            plaSound("bounce.flac");
+            plaSound("bounce.flac", position);
     }
     return gummy;
 }
 
 function Enemy(position, walkSpeed) {
-    if (!walkSpeed) walkSpeed = 3;
+    if (walkSpeed == undefined) walkSpeed = 3;
     let enemy = GameObject(position, Vector2D(50, 50), "red", true, true);
     enemy.value = 10;
     enemy.walkSpeed = walkSpeed;
@@ -328,7 +328,7 @@ function EyeBox(position, scale) {
     eyeBox.right = Block(copyVector2D(position), Vector2D(50, eyeBox.scale.y + 50));
     eyeBox.wave = -1;
     eyeBox.minions = [];
-    eyeBox.time = 0;
+    eyeBox.time = 4000;
     eyeBox.attackTime = 5000;
     eyeBox.onUpdate = deltaTime => {
         eyeBox.positionWalls();
