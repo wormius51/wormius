@@ -284,8 +284,8 @@ const levels = [
         for (let i = 0; i < 8; i++) {
             Gummy(Vector2D(250 + 250 * 4 + 250 * i, 50 - 50 * 4 + 50 * i), Vector2D(260, 50));
         }
-        Enemy(Vector2D(800, -250), 0).g = 0;
-        Enemy(Vector2D(850, -250), 0).g = 0;
+        Enemy(Vector2D(700, -250), 0).g = 0;
+        Enemy(Vector2D(750, -250), 0).g = 0;
         Enemy(Vector2D(1050, -250), 0).g = 0;
         Enemy(Vector2D(1100, -250), 0).g = 0;
         Enemy(Vector2D(1550, -300), 0).g = 0;
