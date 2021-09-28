@@ -274,12 +274,29 @@ const levels = [
     //bouncy stairs
     () => {
         player = Player(Vector2D(100, 100));
-        Block(Vector2D(50, 200), Vector2D(1500, 50));
-        for (let i = 0; i < 10; i++) {
-            Gummy(Vector2D(250 + 250 * i, 50 - 50 * i), Vector2D(200, 50));
+        Block(Vector2D(50, 350), Vector2D(4000, 50));
+        Gummy(Vector2D(750, 300), Vector2D(1000, 50));
+        Enemy(Vector2D(1000, 200));
+        Enemy(Vector2D(1200, 200));
+        for (let i = 0; i < 4; i++) {
+            Gummy(Vector2D(250 + 250 * i, 50 - 50 * i), Vector2D(260, 50));
         }
-        Enemy(Vector2D(1050, -150), 0);
-        Enemy(Vector2D(1100, -150), 0);
+        for (let i = 0; i < 8; i++) {
+            Gummy(Vector2D(250 + 250 * 4 + 250 * i, 50 - 50 * 4 + 50 * i), Vector2D(260, 50));
+        }
+        Enemy(Vector2D(800, -250), 0).g = 0;
+        Enemy(Vector2D(850, -250), 0).g = 0;
+        Enemy(Vector2D(1050, -250), 0).g = 0;
+        Enemy(Vector2D(1100, -250), 0).g = 0;
+        Enemy(Vector2D(1550, -300), 0).g = 0;
+        Enemy(Vector2D(1600, -300), 0).g = 0;
+        Enemy(Vector2D(2550, -100), 0).g = 0;
+        Enemy(Vector2D(2600, -100), 0).g = 0;
+        for (let i = 0; i < 4; i++) {
+            Gummy(Vector2D(3900 + 250 * i, 80 - 50 * i), Vector2D(260, 50));
+        }
+        Goal(Vector2D(4850, -300));
+        Coin(Vector2D(5000, -300));
     },
     () => {
         player = Player(Vector2D(100, 100));

@@ -188,7 +188,7 @@ function Gummy(position, scale) {
     gummy.color = "purple";
     gummy.onCollision = other => {
         if (other.velocity && normal(other.velocity) != 0)
-            plaSound("bounce.flac", position);
+            plaSound("bounce.flac", other.position);
     }
     return gummy;
 }
