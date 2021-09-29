@@ -404,9 +404,6 @@ function EyeBox(position, scale) {
                 eyeBox.dropRocketLauncher();
                 break;
             case 3:
-                eyeBox.dropMountedLauncher();
-                break;
-            case 4:
                 eyeBox.bottom.destroy = true;
                 break;
         }
