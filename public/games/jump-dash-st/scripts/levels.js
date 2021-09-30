@@ -22,7 +22,7 @@ const levels = [
         Coin(Vector2D(2700,0));
         Block(Vector2D(-600, 500), Vector2D(3000, 60));
         Block(Vector2D(-600, 0), Vector2D(50, 550));
-        for (let i = 1; i < levels.length; i++) {
+        for (let i = 1; i < levels.length - 1; i++) {
             Door(Vector2D(-600 + 200 * i, 450), i);
         }
     },

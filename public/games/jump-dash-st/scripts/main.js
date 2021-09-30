@@ -1,7 +1,7 @@
 const gameCanvas = document.getElementById("game-canvas");
 const gameContext = gameCanvas.getContext("2d");
 
-const version = "0.0.0.3";
+const version = "0.0.0.4";
 
 let originalWidth = 900;
 let originalHeight = 600;
@@ -75,7 +75,7 @@ function drawGameObject(gameObject) {
     gameContext.fillStyle = gameObject.color;
     let positionOnScreen = Vector2D(gameObject.position.x - camera.position.x,
         gameObject.position.y - camera.position.y);
-    let offset = Vector2D(player.scale.x, player.scale.x);
+    let offset = Vector2D(50, 50);
     mulVectorNum(offset, -0.5);
     addVectors(positionOnScreen, offset);
     mulVectorNum(positionOnScreen, scaleRatio);

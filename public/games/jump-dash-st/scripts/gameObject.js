@@ -42,6 +42,7 @@ function Player(position) {
         player.image = images[unlocks.currentSkin];
     } 
     player.isPlayer = true;
+    player.upDash = false;
     player.walkSpeed = 7;
     player.jumpSpeed = 20;
     player.maxJumpTime = 1500;
@@ -56,8 +57,8 @@ function Player(position) {
     player.isDashing = false;
     player.onUpdate = deltaTime => {
         if (player.position.y > 2000) player.destroy = true;
-        player.color = "blue";
-        player.scale.y = 50;
+        if (!player.isDashing)
+            player.stopDash();
         if (player.grounded) {
             scoreMultiplier = 1;
             player.g = 0.07;
@@ -111,16 +112,26 @@ function Player(position) {
             plaSound("dash.wav");
         };
         player.isDashing = true;
-        player.velocity.x = player.direction * player.dashSpeed;
-        if (!player.velocity.x) player.velocity.x = player.dashSpeed;
-        player.g = 0;
-        player.velocity.y = 0;
+        if (player.upDash)
+            player.velocity.y = -player.dashSpeed;
+        else {
+            player.velocity.x = player.direction * player.dashSpeed;
+            if (!player.velocity.x) 
+                player.velocity.x = player.dashSpeed;
+            player.g = 0;
+            player.velocity.y = 0;
+        }
+        
         player.dashTime += deltaTime;
         let b = 255;
         let r = 100 * player.dashTime / player.maxDashTime;
         let g = r;
         player.color = "rgb(" + r + "," + g + "," + b + ")";
-        player.scale.y = 50 * (player.maxDashTime / (player.maxDashTime + player.dashTime));
+        let scale = 50 * (player.maxDashTime / (player.maxDashTime + player.dashTime));
+        if (player.upDash)
+            rescale(player, Vector2D(scale, 50));
+        else
+            rescale(player, Vector2D(50, scale));
     }
     player.onCollision = other => {
         if (other.damage && !player.isDashing) {
@@ -137,6 +148,10 @@ function Player(position) {
             plaSound("coin.wav");
         }
     }
+    player.stopDash = () => {
+        player.color = "blue";
+        rescale(player, Vector2D(50, 50));
+    };
     player.onDeath = death;
     return player;
 }
@@ -147,8 +162,9 @@ function Camera() {
     camera.solid = false;
     camera.followPresentage = 0.05;
     camera.onUpdate = deltaTime => {
+        let center = centerOfObject(player);
         mulVectorNum(camera.velocity, 0);
-        addVectors(camera.velocity, player.position);
+        addVectors(camera.velocity, center);
         subVectors(camera.velocity, camera.position);
         mulVectorNum(camera.velocity, camera.followPresentage);
     };
@@ -453,4 +469,18 @@ function Coin(position, value) {
         TextObject(copyVector2D(coin.position), coin.value, 30 + 3 * Math.log(coin.value), 1000, "green").zIndex = 10;
     };
     return coin;
+}
+
+
+function rescale (gameObject, scale) {
+    let objCenterX = gameObject.position.x + gameObject.scale.x / 2;
+    let objCenterY = gameObject.position.y + gameObject.scale.y / 2;
+    gameObject.scale.x = scale.x;
+    gameObject.scale.y = scale.y;
+    gameObject.position.x = objCenterX - gameObject.scale.x / 2;
+    gameObject.position.y = objCenterY - gameObject.scale.y / 2;
+}
+
+function centerOfObject (gameObject) {
+    return Vector2D(gameObject.position.x + gameObject.scale.x / 2, gameObject.position.y + gameObject.scale.y / 2);
 }
