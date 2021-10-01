@@ -75,7 +75,7 @@ function drawGameObject(gameObject) {
     gameContext.fillStyle = gameObject.color;
     let positionOnScreen = Vector2D(gameObject.position.x - camera.position.x,
         gameObject.position.y - camera.position.y);
-    let offset = Vector2D(50, 50);
+    let offset = Vector2D(50, 0);
     mulVectorNum(offset, -0.5);
     addVectors(positionOnScreen, offset);
     mulVectorNum(positionOnScreen, scaleRatio);

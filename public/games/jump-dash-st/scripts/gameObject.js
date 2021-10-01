@@ -123,9 +123,9 @@ function Player(position) {
         }
         
         player.dashTime += deltaTime;
-        let b = 255;
+        let b = player.upDash ? 144 : 255;
         let r = 100 * player.dashTime / player.maxDashTime;
-        let g = r;
+        let g = player.upDash ? 238 : r;
         player.color = "rgb(" + r + "," + g + "," + b + ")";
         let scale = 50 * (player.maxDashTime / (player.maxDashTime + player.dashTime));
         if (player.upDash)
@@ -149,7 +149,7 @@ function Player(position) {
         }
     }
     player.stopDash = () => {
-        player.color = "blue";
+        player.color = player.upDash ? "lightgreen" : "blue";
         rescale(player, Vector2D(50, 50));
     };
     player.onDeath = death;
@@ -469,6 +469,26 @@ function Coin(position, value) {
         TextObject(copyVector2D(coin.position), coin.value, 30 + 3 * Math.log(coin.value), 1000, "green").zIndex = 10;
     };
     return coin;
+}
+
+function UpDashPickup (position) {
+    let pickup = Coin(position, 50);
+    pickup.onCollision = other => {
+        if (other.isPlayer)
+            other.upDash = true;
+    }
+    pickup.color = "lightgreen";
+    return pickup;
+}
+
+function SideDashPickup (position) {
+    let pickup = Coin(position, 50);
+    pickup.onCollision = other => {
+        if (other.isPlayer)
+            other.upDash = false;
+    }
+    pickup.color = "blue";
+    return pickup;
 }
 
 

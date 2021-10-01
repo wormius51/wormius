@@ -298,6 +298,18 @@ const levels = [
         Goal(Vector2D(4850, -300));
         Coin(Vector2D(5000, -300));
     },
+    //updash
+    () => {
+        player = Player(Vector2D(100, 100));
+        Block(Vector2D(50, 200), Vector2D(400, 50));
+        UpDashPickup(Vector2D(300, 100));
+        Block(Vector2D(500, -100), Vector2D(400, 50));
+        Block(Vector2D(500, -400), Vector2D(400, 50));
+        FlyingEnemy(Vector2D(600, -750));
+        Block(Vector2D(800, -950), Vector2D(400, 50));
+        Goal(Vector2D(1100, -1100));
+        Coin(Vector2D(1200, -900));
+    },
     () => {
         player = Player(Vector2D(100, 100));
         Block(Vector2D(-300, 200), Vector2D(1200, 60));
