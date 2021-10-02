@@ -84,6 +84,15 @@ function drawGameObject(gameObject) {
     addVectors(positionOnScreen, offset);
     let scale = copyVector2D(gameObject.scale);
     mulVectorNum(scale, scaleRatio);
+    offset = copyVector2D(positionOnScreen);
+    let pivot = gameObject.pivot ? gameObject.pivot : Vector2D(gameObject.scale.x / 2, gameObject.scale.y / 2);
+    addVectors(offset, pivot);
+    if (gameObject.angle) {
+        gameContext.translate(offset.x, offset.y);
+        gameContext.rotate(-gameObject.angle);
+        positionOnScreen.x = -pivot.x;
+        positionOnScreen.y = -pivot.y;
+    }
     if (gameObject.color != "clear") {
         gameContext.fillRect(positionOnScreen.x,
             positionOnScreen.y,
@@ -93,6 +102,11 @@ function drawGameObject(gameObject) {
         gameContext.drawImage(gameObject.image, positionOnScreen.x, positionOnScreen.y, scale.x, scale.y);
     }
     gameObject.onDraw(positionOnScreen);
+    if (gameObject.angle) {
+        gameContext.rotate(gameObject.angle);
+        let pivot = gameObject.pivot ? gameObject.pivot : Vector2D(gameObject.scale.x / 2, gameObject.scale.y / 2);
+        gameContext.translate(-offset.x, -offset.y);
+    }
 }
 
 function drawGameScreen() {
