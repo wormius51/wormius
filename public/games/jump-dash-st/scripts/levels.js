@@ -266,8 +266,8 @@ const levels = [
         Gummy(Vector2D(2100, -50), Vector2D(100, 250));
         Gummy(Vector2D(2150, -150), Vector2D(400, 350));
         Gummy(Vector2D(2400, -150), Vector2D(400, 50));
-        Gummy(Vector2D(2500, -330), Vector2D(400, 50));
-        Block(Vector2D(2600, -460), Vector2D(50, 50));
+        Gummy(Vector2D(2500, -300), Vector2D(400, 50));
+        Block(Vector2D(2600, -430), Vector2D(50, 50));
         Goal(Vector2D(2600, 200));
         Coin(Vector2D(2700,0));
     },
