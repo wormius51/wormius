@@ -5,7 +5,8 @@ var matches = [];
 
 function Match (player, private) {
     let match = {};
-    if (Math.random() > 0.5)
+    if ((player.lastColor == undefined && Math.random() > 0.5) ||
+        player.lastColor == "black")
         match.white = player;
     else 
         match.black = player;
@@ -79,6 +80,8 @@ function spectate (match, player) {
 }
 
 function startMatch (match) {
+    match.white.lastColor = "white";
+    match.black.lastColor = "black";
     match.state = "playing";
     let data = {
         matchId: match.id,
