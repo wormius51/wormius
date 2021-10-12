@@ -104,7 +104,7 @@ function saveLevel () {
     let levelString = levelToString();
     let name = prompt("Level Name:", "My Level");
     if (!name)
-        name = "My Level";
+        return;
     let data = {name: name, levelString};
     data = JSON.stringify(data);
     let file = new Blob([data], {type: "txt"});
