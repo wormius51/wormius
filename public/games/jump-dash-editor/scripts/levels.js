@@ -321,6 +321,7 @@ const levels = [
 function loadLevel(index) {
     if (!levels[currentLevel])
         return;
+    editorLevel = undefined;
     clearGameObjects();
     eyeBoxesKilled = 0;
     levelScore = 0;

@@ -5,6 +5,8 @@ var selectedObject = undefined;
 var selectionOffset = undefined;
 var selectionOriginalScale = undefined;
 
+var editorLevel = undefined;
+
 window.addEventListener('click', editorClick);
 window.addEventListener('mousedown', editorMouseDown);
 window.addEventListener('mouseup', editorMouseUp);
@@ -105,8 +107,8 @@ function saveLevel () {
     let name = prompt("Level Name:", "My Level");
     if (!name)
         return;
-    let data = {name: name, levelString};
-    data = JSON.stringify(data);
+    editorLevel = {name: name, levelString};
+    let data = JSON.stringify(editorLevel);
     let file = new Blob([data], {type: "txt"});
     let filename = name + ".jd";
     var a = document.createElement("a"),
@@ -131,8 +133,8 @@ function uploadLevel () {
             var reader = new FileReader();
             reader.readAsText(file, "UTF-8");
             reader.onload = function (evt) {
-                let data = JSON.parse(evt.target.result);
-                parseBuild(data.levelString, data.name);
+                editorLevel = JSON.parse(evt.target.result);
+                parseBuild(editorLevel.levelString, editorLevel.name);
             }
             reader.onerror = function (evt) {
                 console.log("error");

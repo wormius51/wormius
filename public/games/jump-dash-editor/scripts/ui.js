@@ -39,7 +39,10 @@ function changeScore(change) {
 function death() {
     checkUnlocks();
     changeScore(-levelScore);
-    loadLevel(currentLevel);
+    if (editorLevel)
+        parseBuild(editorLevel.levelString, editorLevel.name);
+    else
+        loadLevel(currentLevel);
     pause();
     deaths++;
     deathText.text = "Deaths: " + deaths;
