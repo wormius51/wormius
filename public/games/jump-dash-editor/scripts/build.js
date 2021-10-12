@@ -10,13 +10,19 @@ const spawables = {
         Gummy(Vector2D(+params[1], +params[2]), Vector2D(+params[3], +params[4]));
     },
     e: params => {
-        Enemy(Vector2D(+params[1], +params[2]), +params[3]);
+        let enemy = Enemy(Vector2D(+params[1], +params[2]), +params[5]);
+        enemy.scale.x = +params[3];
+        enemy.scale.y = +params[4];
     },
     fe: params => {
-        FlyingEnemy(Vector2D(+params[1], +params[2]), +params[3]);
+        let enemy = FlyingEnemy(Vector2D(+params[1], +params[2]), +params[5]);
+        enemy.scale.x = +params[3];
+        enemy.scale.y = +params[4];
     },
     l: params => {
-        RocketLauncher(Vector2D(+params[1], +params[2]));
+        let enemy = RocketLauncher(Vector2D(+params[1], +params[2]));
+        enemy.scale.x = +params[3];
+        enemy.scale.y = +params[4];
     },
     gl: params => {
         Goal(Vector2D(+params[1], +params[2]));

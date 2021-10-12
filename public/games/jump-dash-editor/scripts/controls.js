@@ -16,6 +16,7 @@ const editorControls = {
     scale: { key: "S", keyCode: 83, pressed: false },
     ctrl: { key: "CONTROL", keyCode: 17, pressed: false },
     save: { key: "S", keyCode: 83, pressed: false },
+    load: { ket: "L", keyCode: 76, pressed: false },
     block: { key: "1", keyCode: 49, pressed: false },
     gummy: { key: "2", keyCode: 50, pressed: false },
     goal: { key: "3", keyCode: 51, pressed: false},
@@ -74,8 +75,12 @@ function keyChange(event, changeTo) {
             if (value.keyCode == event.keyCode)
                 value.pressed = changeTo;
         }
-        if (editorMode && editorControls.ctrl.pressed && editorControls.save.pressed) {
+        if (editorMode && editorControls.ctrl.pressed) {
             event.preventDefault();
+            if (editorControls.save.pressed)
+                saveLevel();
+            else if (editorControls.load.pressed)
+                uploadLevel();
         }
     } else {
         if (changeTo) {

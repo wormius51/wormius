@@ -106,5 +106,37 @@ function saveLevel () {
     if (!name)
         name = "My Level";
     let data = {name: name, levelString};
+    data = JSON.stringify(data);
     let file = new Blob([data], {type: "txt"});
+    let filename = name + ".jd";
+    var a = document.createElement("a"),
+            url = URL.createObjectURL(file);
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function() {
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);  
+    }, 0); 
+}
+
+function uploadLevel () {
+    let input = document.createElement("input");
+    input.type = "file";
+    input.click();
+    input.addEventListener('change', () => {
+        var file = input.files[0];
+        if (file) {
+            var reader = new FileReader();
+            reader.readAsText(file, "UTF-8");
+            reader.onload = function (evt) {
+                let data = JSON.parse(evt.target.result);
+                parseBuild(data.levelString, data.name);
+            }
+            reader.onerror = function (evt) {
+                console.log("error");
+            }
+        }
+    });
 }

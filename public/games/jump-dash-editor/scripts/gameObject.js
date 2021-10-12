@@ -248,8 +248,9 @@ function Enemy(position, walkSpeed) {
     };
     enemy.getString = () => {
         return "e " + enemy.position.x + " " + enemy.position.y +
-        " " + enemy.walkSpeed;
+        " " + enemy.scale.x + " " + enemy.scale.y + " " + " " + enemy.walkSpeed;
     }
+    enemy.scaleable = true;
     return enemy;
 }
 
@@ -260,7 +261,7 @@ function FlyingEnemy(position, speed) {
     flyingEnemy.g = 0;
     flyingEnemy.getString = () => {
         return "fe " + flyingEnemy.position.x + " " + flyingEnemy.position.y +
-        " " + flyingEnemy.walkSpeed;
+        " " + flyingEnemy.scale.x + " " + flyingEnemy.scale.y + " " + flyingEnemy.walkSpeed;
     }
     return flyingEnemy;
 }
@@ -458,7 +459,7 @@ function EyeBox(position, scale) {
 }
 
 function TextObject(position, text, fontSize, lifeTime, color) {
-    let textObject = GameObject(position, Vector2D(0, 0), color);
+    let textObject = GameObject(position, Vector2D(0, 0), "clear");
     textObject.solid = false;
     textObject.g = 0;
     textObject.text = text;
@@ -466,6 +467,7 @@ function TextObject(position, text, fontSize, lifeTime, color) {
     textObject.lifeTime = lifeTime;
     if (!fontSize) fontSize = 30;
     textObject.fontSize = fontSize;
+    textObject.textColor = color;
     textObject.onUpdate = deltaTime => {
         textObject.time += deltaTime;
         if (textObject.time >= textObject.lifeTime) {
@@ -474,9 +476,12 @@ function TextObject(position, text, fontSize, lifeTime, color) {
     };
     textObject.onDraw = positionOnScreen => {
         gameContext.font = "bold " + (textObject.fontSize * scaleRatio) + "px verda";
-        gameContext.fillText(textObject.text, positionOnScreen.x, positionOnScreen.y);
+        gameContext.fillStyle = textObject.textColor;
+        gameContext.fillText(textObject.text, positionOnScreen.x, positionOnScreen.y + (textObject.fontSize * scaleRatio));
     }
     textObject.zIndex = -1;
+    textObject.scale.y = textObject.fontSize * scaleRatio;
+    textObject.scale.x = textObject.fontSize * scaleRatio * text.length;
     return textObject;
 }
 
