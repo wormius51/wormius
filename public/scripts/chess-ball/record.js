@@ -1,5 +1,5 @@
+
 const matchDataString = document.getElementById("matchData").innerHTML;
-const saveGameField = document.getElementById("saveGameField");
 const saveGameButton = document.getElementById("saveGameButton");
 const loadGameButton = document.getElementById("loadGameButton");
 
@@ -8,14 +8,9 @@ window.addEventListener('load', () => {
         decodeMatchString(matchDataString);
 });
 
-saveGameButton.addEventListener('click', () => {
-    navigator.clipboard.writeText(saveGameField.value);
-    alert("The game data was added to the clip board. Paste it somewhere to keep it.");
-});
+saveGameButton.addEventListener('click', downloadGame);
 
-loadGameButton.addEventListener('click', () => {
-    decodeMatchString(saveGameField.value);
-});
+loadGameButton.addEventListener('click', uploadGame);
 
 /**
  * Encodes the data of the match in a string
@@ -72,8 +67,6 @@ function stringToMove (string) {
             move.promotion = "queen";
             break;
     }
-    console.log(code);
-    console.log(move);
     return move;
 }
 
@@ -111,4 +104,49 @@ function moveMinString (move) {
 
 function updateSaveGameField () {
     saveGameField.value = matchString();
+}
+
+function downloadGame () {
+    let data = {moves: matchString()};
+    if (matchData) {
+        data.white = matchData.white.name;
+        data.black = matchData.black.name;
+    } else {
+        data.white = nameField.value;
+        data.black = "AI";
+    }
+    let utc = new Date().toJSON().slice(0,10).replace(/-/g,'/');
+    let filename = data.white + "_VS_" + data.black + "_" + utc + ".cb";
+    data = JSON.stringify(data);
+    let file = new Blob([data], {type: "txt"});
+    var a = document.createElement("a"),
+            url = URL.createObjectURL(file);
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function() {
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);  
+    }, 0); 
+}
+
+function uploadGame () {
+    let input = document.createElement("input");
+    input.type = "file";
+    input.click();
+    input.addEventListener('change', () => {
+        var file = input.files[0];
+        if (file) {
+            var reader = new FileReader();
+            reader.readAsText(file, "UTF-8");
+            reader.onload = function (evt) {
+                let data = JSON.parse(evt.target.result);
+                decodeMatchString(data.moves);
+            }
+            reader.onerror = function (evt) {
+                console.log("error");
+            }
+        }
+    });
 }
