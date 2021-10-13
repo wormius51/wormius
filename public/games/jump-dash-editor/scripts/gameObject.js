@@ -191,8 +191,7 @@ function Door (position, levelIndex) {
     let door = Block(position, Vector2D(50, 50));
     door.color = "green";
     door.levelIndex = levelIndex ? levelIndex : 0;
-    let text = TextObject(Vector2D(position.x + 10, position.y + 40), levelIndex + 1, 50);
-    text.color = "black";
+    let text = TextObject(Vector2D(position.x + 10, position.y + 40), (levelIndex + 1) + "", 50);
     text.zIndex = 10;
     door.onCollision = other => {
         if (other.isPlayer)
@@ -462,10 +461,11 @@ function TextObject(position, text, fontSize, lifeTime, color) {
     let textObject = GameObject(position, Vector2D(0, 0), "clear");
     textObject.solid = false;
     textObject.g = 0;
-    textObject.text = text;
+    textObject.text = text + "";
     textObject.time = 0;
     textObject.lifeTime = lifeTime;
     if (!fontSize) fontSize = 30;
+    if (!color) color = "black";
     textObject.fontSize = fontSize;
     textObject.textColor = color;
     textObject.onUpdate = deltaTime => {
@@ -473,6 +473,8 @@ function TextObject(position, text, fontSize, lifeTime, color) {
         if (textObject.time >= textObject.lifeTime) {
             textObject.destroy = true;
         }
+        textObject.scale.y = textObject.fontSize * scaleRatio;
+        textObject.scale.x = textObject.fontSize * scaleRatio * textObject.text.length * 0.4;
     };
     textObject.onDraw = positionOnScreen => {
         gameContext.font = "bold " + (textObject.fontSize * scaleRatio) + "px verda";
@@ -480,8 +482,11 @@ function TextObject(position, text, fontSize, lifeTime, color) {
         gameContext.fillText(textObject.text, positionOnScreen.x, positionOnScreen.y + (textObject.fontSize * scaleRatio));
     }
     textObject.zIndex = -1;
-    textObject.scale.y = textObject.fontSize * scaleRatio;
-    textObject.scale.x = textObject.fontSize * scaleRatio * text.length;
+    textObject.scaleable = true;
+    textObject.getString = () => {
+        return "t " + textObject.position.x + " " + textObject.position.y +
+        " \"" + textObject.text + "\" " + textObject.fontSize;
+    };
     return textObject;
 }
 

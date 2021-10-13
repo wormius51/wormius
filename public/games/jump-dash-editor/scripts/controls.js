@@ -25,7 +25,8 @@ const editorControls = {
     flyingEnemy: { key: "6", keyCode: 54, pressed: false},
     launcher: { key: "6", keyCode: 55, pressed: false},
     upDash: { key: "7", keyCode: 56, pressed: false},
-    sideDash: { key: "8", keyCode: 57, pressed: false}
+    sideDash: { key: "8", keyCode: 57, pressed: false},
+    text: { key: "0", keyCode: 48, pressed: false }
 };
 
 if (isMobile) {
@@ -75,7 +76,7 @@ function keyChange(event, changeTo) {
             if (value.keyCode == event.keyCode)
                 value.pressed = changeTo;
         }
-        if (editorMode && editorControls.ctrl.pressed) {
+        if (editorControls.ctrl.pressed) {
             event.preventDefault();
             if (editorControls.save.pressed)
                 saveLevel();

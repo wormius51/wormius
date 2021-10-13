@@ -20,6 +20,11 @@ function editorClick (event) {
     if (g) {
         if (editorControls.delete.pressed)
             g.destroy = true;
+        else if (g.text && !editorControls.move.pressed && !editorControls.scale.pressed) {
+            let text = prompt("Object Text", g.text);
+            if (text)
+                g.text = text;
+        }
     } else {
         if (editorControls.block.pressed)
             Block(pos, Vector2D(50, 50));
@@ -39,6 +44,11 @@ function editorClick (event) {
             UpDashPickup(pos);
         else if (editorControls.sideDash.pressed)
             SideDashPickup(pos);
+        else if (editorControls.text.pressed) {
+            let text = prompt("Object Text", "(;");
+            if (text)
+                TextObject(pos, text);
+        }
     }
 }
 
@@ -81,6 +91,12 @@ function editorMouseMove (event) {
             selectedObject.scale.x *= -1;
         if (selectedObject.scale.y < 0)
             selectedObject.scale.y *= -1;
+        if (selectedObject.text) {
+            selectedObject.fontSize = selectedObject.scale.y / scaleRatio;
+            selectedObject.fontSize = Math.min(selectedObject.fontSize, selectedObject.scale.x / 
+                (scaleRatio * selectedObject.text.length * 0.4));
+            
+        }
     }
 }
 
