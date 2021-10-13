@@ -343,7 +343,8 @@ function RocketLauncher(position) {
         }
     };
     rocketLauncher.getString = () => {
-        return "l " + rocketLauncher.position.x + " " + rocketLauncher.position.y;
+        return "l " + rocketLauncher.position.x + " " + rocketLauncher.position.y + " "
+        + rocketLauncher.scale.x + " " + rocketLauncher.scale.y;
     }
     return rocketLauncher;
 }
