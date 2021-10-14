@@ -65,6 +65,7 @@ function editorClick (event) {
 function editorMouseDown (event) {
     if (!editorMode)
         return;
+    editorClick(event);
     let pos = screenToWorld(event.clientX, event.clientY);
     selectedObject = lookForObject(pos);
     if (!selectedObject)
