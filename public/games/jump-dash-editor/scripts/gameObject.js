@@ -25,7 +25,7 @@ function GameObject(position, scale, color, damage, killable) {
         g: 0.1,
         damage: damage,
         killable: killable,
-        zIndex: 0
+        zIndex: 100
     };
     currentId++;
     gameObjects.push(gameObject);
@@ -489,6 +489,21 @@ function TextObject(position, text, fontSize, lifeTime, color) {
         " \"" + textObject.text + "\" " + textObject.fontSize;
     };
     return textObject;
+}
+
+function ImageObject (position, scale, src) {
+    let imageObject = GameObject(position, scale, "clear");
+    imageObject.solid = false;
+    imageObject.g = 0;
+    imageObject.scaleable = true;
+    imageObject.image = new Image();
+    imageObject.image.src = src;
+    imageObject.zIndex = -2;
+    imageObject.getString = () => {
+        return "i " + imageObject.position.x + " " + imageObject.position.y + " "
+        + imageObject.scale.x + " " + imageObject.scale.y + " \"" + imageObject.image.src + "\"";
+    }
+    return imageObject;
 }
 
 function Goal(position) {

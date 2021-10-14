@@ -7,7 +7,7 @@ var selectionOriginalScale = undefined;
 
 var editorLevel = undefined;
 
-window.addEventListener('click', editorClick);
+//window.addEventListener('click', editorClick);
 window.addEventListener('mousedown', editorMouseDown);
 window.addEventListener('mouseup', editorMouseUp);
 window.addEventListener('mousemove', editorMouseMove);
@@ -20,10 +20,16 @@ function editorClick (event) {
     if (g) {
         if (editorControls.delete.pressed)
             g.destroy = true;
-        else if (g.text && !editorControls.move.pressed && !editorControls.scale.pressed) {
-            let text = prompt("Object Text", g.text);
-            if (text)
-                g.text = text;
+        else if (!editorControls.move.pressed && !editorControls.scale.pressed) {
+            if (g.text) {
+                let text = prompt("Object Text", g.text);
+                if (text)
+                    g.text = text;
+            } else if (g.image) {
+                let src = prompt("Image URL", "");
+                if (src)
+                    g.image.src = src;
+            }
         }
     } else {
         if (editorControls.block.pressed)
@@ -48,6 +54,10 @@ function editorClick (event) {
             let text = prompt("Object Text", "(;");
             if (text)
                 TextObject(pos, text);
+        } else if (editorControls.image.pressed) {
+            let src = prompt("Image URL", "");
+            if (src)
+                ImageObject(pos, Vector2D(100, 100), src);
         }
     }
 }

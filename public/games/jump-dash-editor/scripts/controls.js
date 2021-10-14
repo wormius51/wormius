@@ -21,12 +21,13 @@ const editorControls = {
     gummy: { key: "2", keyCode: 50, pressed: false },
     goal: { key: "3", keyCode: 51, pressed: false},
     coin: { key: "4", keyCode: 52, pressed: false },
-    enemy: { key: "5", keyCode: 53, pressed: false},
-    flyingEnemy: { key: "6", keyCode: 54, pressed: false},
-    launcher: { key: "6", keyCode: 55, pressed: false},
-    upDash: { key: "7", keyCode: 56, pressed: false},
-    sideDash: { key: "8", keyCode: 57, pressed: false},
-    text: { key: "0", keyCode: 48, pressed: false }
+    enemy: { key: "5", keyCode: 53, pressed: false },
+    flyingEnemy: { key: "6", keyCode: 54, pressed: false },
+    launcher: { key: "6", keyCode: 55, pressed: false },
+    upDash: { key: "7", keyCode: 56, pressed: false },
+    sideDash: { key: "8", keyCode: 57, pressed: false },
+    text: { key: "0", keyCode: 48, pressed: false },
+    image: { key: "MINUS", keyCode: 189, pressed: false }
 };
 
 if (isMobile) {

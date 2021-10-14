@@ -38,6 +38,9 @@ const spawables = {
     },
     t: params => {
         TextObject(Vector2D(+params[1], +params[2]), params[3].substr(1, params[3].length - 2), +params[4]);
+    },
+    i: params => {
+        ImageObject(Vector2D(+params[1], +params[2]), Vector2D(+params[3], +params[4]), params[5].substr(1, params[5].length - 2));
     }
 }
 
@@ -47,7 +50,7 @@ function parseBuild (data, levelName) {
         eyeBoxesKilled = 0;
         levelScore = 0;
     }
-    let spawnRegex = /[a-z]+\s[^a-z]+\s+("[^"]+"\s+[^a-z]+)?/g;
+    let spawnRegex = /[a-z]+\s[^a-z]+\s+("[^"]+"(\s+[^a-z]+)*)?/g;
     let matches = data.match(spawnRegex);
     matches.forEach(m => {
         let params = m.split(/\s+/);
