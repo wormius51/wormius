@@ -7,7 +7,6 @@ var selectionOriginalScale = undefined;
 
 var editorLevel = undefined;
 
-//window.addEventListener('click', editorClick);
 window.addEventListener('mousedown', editorMouseDown);
 window.addEventListener('mouseup', editorMouseUp);
 window.addEventListener('mousemove', editorMouseMove);

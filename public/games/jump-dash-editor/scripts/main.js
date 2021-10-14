@@ -107,7 +107,11 @@ function drawGameObject(gameObject) {
             scale.x, scale.y);
     }
     if (gameObject.image) {
-        gameContext.drawImage(gameObject.image, positionOnScreen.x, positionOnScreen.y, scale.x, scale.y);
+        try {
+            gameContext.drawImage(gameObject.image, positionOnScreen.x, positionOnScreen.y, scale.x, scale.y);
+        } catch {
+            gameContext.drawImage(images.dummy, positionOnScreen.x, positionOnScreen.y, scale.x, scale.y);
+        }
     }
     gameObject.onDraw(positionOnScreen);
     if (gameObject.angleZ) {
