@@ -201,16 +201,11 @@ function setUpUi() {
         drawUiElements();
     });
     skinsText = UiElement(250, 350, 200, 50, "Skins", { color: "white" });
-    editorModeButton = UiElement(400, 260, 200, 50, "Editor Mode", { color: "white" }, () => {
-        editorMode = true;
-        unpause();
-    });
     optionsPannel.children = [
         sfxText,
         UiElement(400, 300, 200, 50, "Resume", { color: "white" }, unpause),
         UiElement(400, 50, 200, 50, "Restart Game", { color: "white" }, restart),
-        skinsText,
-        editorModeButton
+        skinsText
     ];
     if (!isMobile) {
         optionsPannel.children.push(UiElement(400, 100, 200, 50, "Controls", { color: "white" }, setControls));

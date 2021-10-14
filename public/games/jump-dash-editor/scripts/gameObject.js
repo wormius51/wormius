@@ -557,6 +557,16 @@ function SideDashPickup (position) {
     return pickup;
 }
 
+function EditorPortal (poaition) {
+    let portal = Coin(poaition, 69);
+    portal.color = "green";
+    portal.onCollision = other => {
+        if (other.isPlayer)
+            activateEditorMode();
+    }
+    return portal;
+}
+
 
 function rescale (gameObject, scale) {
     let objCenterX = gameObject.position.x + gameObject.scale.x / 2;

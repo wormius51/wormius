@@ -123,6 +123,7 @@ const levels = [
     //tunnels of hell
     () => {
         player = Player(Vector2D(100, 100));
+        EditorPortal(Vector2D(100, 400));
         Block(Vector2D(-300, 200), Vector2D(500, 60));
         Block(Vector2D(-300, -600), Vector2D(50, 850));
         Block(Vector2D(400, 70), Vector2D(500, 60));

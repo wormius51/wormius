@@ -10,6 +10,26 @@ var controls = {
     rightKey: { key: "D", keyCode: 68, pressed: false }
 };
 
+const editorControls = {
+    delete: { key: "DELETE", keyCode: 46, pressed: false },
+    move: { key: "M", keyCode: 77, pressed: false },
+    scale: { key: "S", keyCode: 83, pressed: false },
+    ctrl: { key: "CONTROL", keyCode: 17, pressed: false },
+    save: { key: "S", keyCode: 83, pressed: false },
+    load: { ket: "L", keyCode: 76, pressed: false },
+    block: { key: "1", keyCode: 49, pressed: false },
+    gummy: { key: "2", keyCode: 50, pressed: false },
+    goal: { key: "3", keyCode: 51, pressed: false},
+    coin: { key: "4", keyCode: 52, pressed: false },
+    enemy: { key: "5", keyCode: 53, pressed: false },
+    flyingEnemy: { key: "6", keyCode: 54, pressed: false },
+    launcher: { key: "6", keyCode: 55, pressed: false },
+    upDash: { key: "7", keyCode: 56, pressed: false },
+    sideDash: { key: "8", keyCode: 57, pressed: false },
+    text: { key: "0", keyCode: 48, pressed: false },
+    image: { key: "MINUS", keyCode: 189, pressed: false }
+};
+
 if (isMobile) {
     controls.upKey.key = "UP";
     controls.leftKey.key = "LEFT";
@@ -37,29 +57,32 @@ function loadControls() {
 window.addEventListener('load', loadControls);
 
 function releaseAllKeys() {
-    controls.upKey.pressed = false;
-    controls.downKey.pressed = false;
-    controls.leftKey.pressed = false;
-    controls.rightKey.pressed = false;
+    for (const [key, value] of Object.entries(controls)) {
+        value.pressed = false;
+    }
+    for (const [key, value] of Object.entries(editorControls)) {
+        value.pressed = false;
+    }
 }
 
 window.addEventListener('blur', releaseAllKeys);
 
 function keyChange(event, changeTo) {
     if (!settingKey) {
-        switch (event.keyCode) {
-            case controls.upKey.keyCode:
-                controls.upKey.pressed = changeTo
-                break;
-            case controls.downKey.keyCode:
-                controls.downKey.pressed = changeTo
-                break;
-            case controls.leftKey.keyCode:
-                controls.leftKey.pressed = changeTo
-                break;
-            case controls.rightKey.keyCode:
-                controls.rightKey.pressed = changeTo
-                break;
+        for (const [key, value] of Object.entries(controls)) {
+            if (value.keyCode == event.keyCode)
+                value.pressed = changeTo;
+        }
+        for (const [key, value] of Object.entries(editorControls)) {
+            if (value.keyCode == event.keyCode)
+                value.pressed = changeTo;
+        }
+        if (editorControls.ctrl.pressed) {
+            event.preventDefault();
+            if (editorControls.save.pressed)
+                saveLevel();
+            else if (editorControls.load.pressed)
+                uploadLevel();
         }
     } else {
         if (changeTo) {

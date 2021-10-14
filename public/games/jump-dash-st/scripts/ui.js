@@ -23,6 +23,8 @@ var mobileButtons = [];
 
 var unlockTextBox;
 
+var editorModeButton;
+
 if (isMobile) {
     screen.orientation.lock('landscape');
 }
@@ -37,7 +39,10 @@ function changeScore(change) {
 function death() {
     checkUnlocks();
     changeScore(-levelScore);
-    loadLevel(currentLevel);
+    if (editorLevel)
+        parseBuild(editorLevel.levelString, editorLevel.name);
+    else
+        loadLevel(currentLevel);
     pause();
     deaths++;
     deathText.text = "Deaths: " + deaths;
@@ -195,12 +200,12 @@ function setUpUi() {
         sfxText.text = "SFX volume: " + soundConfig.sfxVolume;
         drawUiElements();
     });
-    skinsText = UiElement(250, 350, 200, 50, "Skins", { color: "white" })
+    skinsText = UiElement(250, 350, 200, 50, "Skins", { color: "white" });
     optionsPannel.children = [
         sfxText,
         UiElement(400, 300, 200, 50, "Resume", { color: "white" }, unpause),
         UiElement(400, 50, 200, 50, "Restart Game", { color: "white" }, restart),
-        skinsText,
+        skinsText
     ];
     if (!isMobile) {
         optionsPannel.children.push(UiElement(400, 100, 200, 50, "Controls", { color: "white" }, setControls));

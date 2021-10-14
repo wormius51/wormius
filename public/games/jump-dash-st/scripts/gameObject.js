@@ -25,7 +25,7 @@ function GameObject(position, scale, color, damage, killable) {
         g: 0.1,
         damage: damage,
         killable: killable,
-        zIndex: 0
+        zIndex: 100
     };
     currentId++;
     gameObjects.push(gameObject);
@@ -146,6 +146,8 @@ function Player(position) {
         } else if (other.collectable) {
             other.destroy = true;
             plaSound("coin.wav");
+            if (other.onPick)
+                other.onPick(player);
         }
     }
     player.stopDash = () => {
@@ -153,6 +155,9 @@ function Player(position) {
         rescale(player, Vector2D(50, 50));
     };
     player.onDeath = death;
+    player.getString = () => {
+        return "p " + player.position.x + " " + player.position.y;
+    }
     return player;
 }
 
@@ -174,6 +179,11 @@ function Camera() {
 function Block(position, scale) {
     let block = GameObject(position, scale, "black");
     block.g = 0;
+    block.getString = () => {
+        return "b " + block.position.x + " " + block.position.y +
+        " " + block.scale.x + " " + block.scale.y;
+    }
+    block.scaleable = true;
     return block;
 }
 
@@ -181,8 +191,7 @@ function Door (position, levelIndex) {
     let door = Block(position, Vector2D(50, 50));
     door.color = "green";
     door.levelIndex = levelIndex ? levelIndex : 0;
-    let text = TextObject(Vector2D(position.x + 10, position.y + 40), levelIndex + 1, 50);
-    text.color = "black";
+    let text = TextObject(Vector2D(position.x + 10, position.y + 40), (levelIndex + 1) + "", 50);
     text.zIndex = 10;
     door.onCollision = other => {
         if (other.isPlayer)
@@ -194,7 +203,7 @@ function Door (position, levelIndex) {
             text.destroy = true;
         }
     }
-    
+    door.getString = undefined;
     return door;
 }
 
@@ -205,6 +214,10 @@ function Gummy(position, scale) {
     gummy.onCollision = other => {
         if (other.velocity && normal(other.velocity) != 0)
             plaSound("bounce.flac", other.position);
+    }
+    gummy.getString = () => {
+        return "g " + gummy.position.x + " " + gummy.position.y +
+        " " + gummy.scale.x + " " + gummy.scale.y;
     }
     return gummy;
 }
@@ -232,12 +245,23 @@ function Enemy(position, walkSpeed) {
             TextObject(copyVector2D(enemy.position), scoreChange, 30 + 3 * Math.log(scoreChange), 1000, "green").zIndex = 10;
         }
     };
+    enemy.getString = () => {
+        return "e " + enemy.position.x + " " + enemy.position.y +
+        " " + enemy.scale.x + " " + enemy.scale.y + " " + " " + enemy.walkSpeed;
+    }
+    enemy.scaleable = true;
     return enemy;
 }
 
 function FlyingEnemy(position, speed) {
+    if (!speed)
+        speed = 3;
     let flyingEnemy = Enemy(position, speed);
     flyingEnemy.g = 0;
+    flyingEnemy.getString = () => {
+        return "fe " + flyingEnemy.position.x + " " + flyingEnemy.position.y +
+        " " + flyingEnemy.scale.x + " " + flyingEnemy.scale.y + " " + flyingEnemy.walkSpeed;
+    }
     return flyingEnemy;
 }
 
@@ -256,6 +280,7 @@ function Hunter(position, speed) {
             mulVectorNum(hunter.velocity, hunter.walkSpeed);
         }
     };
+    hunter.getString = undefined;
     return hunter;
 }
 
@@ -317,6 +342,10 @@ function RocketLauncher(position) {
             Rocket(copyVector2D(rocketLauncher.position), 4, rocketLauncher.rocketLifetime);
         }
     };
+    rocketLauncher.getString = () => {
+        return "l " + rocketLauncher.position.x + " " + rocketLauncher.position.y + " "
+        + rocketLauncher.scale.x + " " + rocketLauncher.scale.y;
+    }
     return rocketLauncher;
 }
 
@@ -430,31 +459,59 @@ function EyeBox(position, scale) {
 }
 
 function TextObject(position, text, fontSize, lifeTime, color) {
-    let textObject = GameObject(position, Vector2D(0, 0), color);
+    let textObject = GameObject(position, Vector2D(0, 0), "clear");
     textObject.solid = false;
     textObject.g = 0;
-    textObject.text = text;
+    textObject.text = text + "";
     textObject.time = 0;
     textObject.lifeTime = lifeTime;
     if (!fontSize) fontSize = 30;
+    if (!color) color = "black";
     textObject.fontSize = fontSize;
+    textObject.textColor = color;
     textObject.onUpdate = deltaTime => {
         textObject.time += deltaTime;
         if (textObject.time >= textObject.lifeTime) {
             textObject.destroy = true;
         }
+        textObject.scale.y = textObject.fontSize * scaleRatio;
+        textObject.scale.x = textObject.fontSize * scaleRatio * textObject.text.length * 0.4;
     };
     textObject.onDraw = positionOnScreen => {
         gameContext.font = "bold " + (textObject.fontSize * scaleRatio) + "px verda";
-        gameContext.fillText(textObject.text, positionOnScreen.x, positionOnScreen.y);
+        gameContext.fillStyle = textObject.textColor;
+        gameContext.fillText(textObject.text, positionOnScreen.x, positionOnScreen.y + (textObject.fontSize * scaleRatio));
     }
     textObject.zIndex = -1;
+    textObject.scaleable = true;
+    textObject.getString = () => {
+        return "t " + textObject.position.x + " " + textObject.position.y +
+        " \"" + textObject.text + "\" " + textObject.fontSize;
+    };
     return textObject;
+}
+
+function ImageObject (position, scale, src) {
+    let imageObject = GameObject(position, scale, "clear");
+    imageObject.solid = false;
+    imageObject.g = 0;
+    imageObject.scaleable = true;
+    imageObject.image = new Image();
+    imageObject.image.src = src;
+    imageObject.zIndex = -2;
+    imageObject.getString = () => {
+        return "i " + imageObject.position.x + " " + imageObject.position.y + " "
+        + imageObject.scale.x + " " + imageObject.scale.y + " \"" + imageObject.image.src + "\"";
+    }
+    return imageObject;
 }
 
 function Goal(position) {
     let goal = GameObject(position, Vector2D(50, 300), "yellow");
     goal.finishLevel = true;
+    goal.getString = () => {
+        return "gl " + goal.position.x + " " + goal.position.y;
+    }
     return goal;
 }
 
@@ -468,27 +525,46 @@ function Coin(position, value) {
         changeScore(coin.value);
         TextObject(copyVector2D(coin.position), coin.value, 30 + 3 * Math.log(coin.value), 1000, "green").zIndex = 10;
     };
+    coin.getString = () => {
+        return "c " + coin.position.x + " " + coin.position.y;
+    }
     return coin;
 }
 
 function UpDashPickup (position) {
     let pickup = Coin(position, 50);
-    pickup.onCollision = other => {
+    pickup.onPick = other => {
         if (other.isPlayer)
             other.upDash = true;
     }
     pickup.color = "lightgreen";
+    pickup.getString = () => {
+        return "u " + pickup.position.x + " " + pickup.position.y;
+    }
     return pickup;
 }
 
 function SideDashPickup (position) {
     let pickup = Coin(position, 50);
-    pickup.onCollision = other => {
+    pickup.onPick = other => {
         if (other.isPlayer)
             other.upDash = false;
     }
     pickup.color = "blue";
+    pickup.getString = () => {
+        return "s " + pickup.position.x + " " + pickup.position.y;
+    }
     return pickup;
+}
+
+function EditorPortal (poaition) {
+    let portal = Coin(poaition, 69);
+    portal.color = "green";
+    portal.onCollision = other => {
+        if (other.isPlayer)
+            activateEditorMode();
+    }
+    return portal;
 }
 
 

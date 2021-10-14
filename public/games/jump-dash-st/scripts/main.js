@@ -1,7 +1,7 @@
 const gameCanvas = document.getElementById("game-canvas");
 const gameContext = gameCanvas.getContext("2d");
 
-const version = "0.0.0.4";
+const version = "0.0.0.7";
 
 let originalWidth = 900;
 let originalHeight = 600;
@@ -107,7 +107,11 @@ function drawGameObject(gameObject) {
             scale.x, scale.y);
     }
     if (gameObject.image) {
-        gameContext.drawImage(gameObject.image, positionOnScreen.x, positionOnScreen.y, scale.x, scale.y);
+        try {
+            gameContext.drawImage(gameObject.image, positionOnScreen.x, positionOnScreen.y, scale.x, scale.y);
+        } catch {
+            gameContext.drawImage(images.dummy, positionOnScreen.x, positionOnScreen.y, scale.x, scale.y);
+        }
     }
     gameObject.onDraw(positionOnScreen);
     if (gameObject.angleZ) {

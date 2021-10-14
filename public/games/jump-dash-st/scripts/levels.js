@@ -23,7 +23,7 @@ const levels = [
         Block(Vector2D(-600, 500), Vector2D(3000, 60));
         Block(Vector2D(-600, 0), Vector2D(50, 550));
         for (let i = 1; i < levels.length - 1; i++) {
-            Door(Vector2D(-600 + 200 * i, 450), i);
+            Door(Vector2D(-600 + 200 * i, 340), i);
         }
     },
     //tutorial 2
@@ -123,6 +123,7 @@ const levels = [
     //tunnels of hell
     () => {
         player = Player(Vector2D(100, 100));
+        EditorPortal(Vector2D(100, 400));
         Block(Vector2D(-300, 200), Vector2D(500, 60));
         Block(Vector2D(-300, -600), Vector2D(50, 850));
         Block(Vector2D(400, 70), Vector2D(500, 60));
@@ -293,7 +294,7 @@ const levels = [
         Enemy(Vector2D(2550, -100), 0).g = 0;
         Enemy(Vector2D(2600, -100), 0).g = 0;
         for (let i = 0; i < 4; i++) {
-            Gummy(Vector2D(3900 + 250 * i, 80 - 50 * i), Vector2D(260, 50));
+            Gummy(Vector2D(3900 + 250 * i, 80 - 50 * i), Vector2D(260, 40));
         }
         Goal(Vector2D(4850, -300));
         Coin(Vector2D(5000, -300));
@@ -319,6 +320,9 @@ const levels = [
 ];
 
 function loadLevel(index) {
+    if (!levels[currentLevel])
+        return;
+    editorLevel = undefined;
     clearGameObjects();
     eyeBoxesKilled = 0;
     levelScore = 0;
