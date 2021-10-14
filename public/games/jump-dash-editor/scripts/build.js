@@ -50,10 +50,10 @@ function parseBuild (data, levelName) {
         eyeBoxesKilled = 0;
         levelScore = 0;
     }
-    let spawnRegex = /[a-z]+\s[^a-z]+\s+("[^"]+"(\s+[^a-z]+)*)?/g;
+    let spawnRegex = /[a-z]+\s[^a-z]+\s+("([^"]+)"(\s+[^a-z]+)*)?/g;
     let matches = data.match(spawnRegex);
     matches.forEach(m => {
-        let params = m.split(/\s+/);
+        let params = m.match(/[^\s"]+|"[^"]+"/g);
         if (spawables[params[0]])
             spawables[params[0]](params);
     });
