@@ -320,8 +320,8 @@ const levels = [
 ];
 
 function loadLevel(index) {
-    if (!levels[currentLevel])
-        return;
+    if (!levels[index])
+        index = levels.length - 1;
     editorLevel = undefined;
     clearGameObjects();
     eyeBoxesKilled = 0;
