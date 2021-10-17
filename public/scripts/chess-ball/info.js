@@ -5,6 +5,7 @@ const movesDiv = document.getElementById("movesDiv");
 const movesTable = document.getElementById("movesTable");
 
 let isFreeScrolling = false;
+let currentMoveIndex = 0;
 
 movesDiv.addEventListener('scroll', () => {
     let scrollValue = movesDiv.scrollHeight - Math.floor(movesDiv.scrollTop);
@@ -172,9 +173,16 @@ function updateMovesDiv () {
 }
 
 function rollPositionToMove (moveIndex) {
+    currentMoveIndex = moveIndex;
     setStartingPosition();
     if (moveIndex != Infinity)
         possibleMoves = [];
+    else
+        currentMoveIndex = moves.length;
+    if (currentMoveIndex < 0)
+        currentMoveIndex = 0;
+    else if (currentMoveIndex > moves.length - 1)
+        currentMoveIndex = moves.length - 1;
     for (let i = 0; i <= moveIndex; i++) {
         if (!moves[i])
             break;
@@ -182,3 +190,27 @@ function rollPositionToMove (moveIndex) {
     }
     drawBoard();
 }
+
+function scrollMoves (down) {
+    if (down)
+        rollPositionToMove(currentMoveIndex + 1);
+    else
+        rollPositionToMove(currentMoveIndex - 1);
+}
+
+window.addEventListener('keydown', event => {
+    switch (event.key) {
+        case "ArrowRight":
+            scrollMoves(true);
+            break;
+        case "ArrowLeft":
+            scrollMoves(false);
+            break;
+        case "ArrowUp":
+            rollPositionToMove(-1);
+            break;
+        case "ArrowDown":
+            rollPositionToMove(Infinity);
+            break;
+    }
+});

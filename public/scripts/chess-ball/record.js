@@ -67,6 +67,8 @@ function stringToMove (string) {
             move.promotion = "queen";
             break;
     }
+    if (move.bx != undefined && move.by == undefined)
+        move.by = 0;
     return move;
 }
 
@@ -78,8 +80,8 @@ function moveMinString (move) {
     charCode += move.sy;
     charCode += move.x;
     charCode += move.y;
-    charCode += move.bx ? move.bx : 9;
-    charCode += move.by ? move.by : 9;
+    charCode += move.bx != undefined ? move.bx : 9;
+    charCode += move.by != undefined ? move.by : 9;
     charCode += move.enpassant ? 1 : 0;
     switch (move.promotion) {
         case "knight":
