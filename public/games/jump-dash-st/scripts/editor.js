@@ -10,6 +10,7 @@ var editorLevel = undefined;
 window.addEventListener('mousedown', editorMouseDown);
 window.addEventListener('mouseup', editorMouseUp);
 window.addEventListener('mousemove', editorMouseMove);
+window.addEventListener('contextmenu', event => {if (editorMode) event.preventDefault()});
 
 function editorClick (event) {
     if (!editorMode)
@@ -19,7 +20,7 @@ function editorClick (event) {
     if (g) {
         if (editorControls.delete.pressed)
             g.destroy = true;
-        else if (!editorControls.move.pressed && !editorControls.scale.pressed) {
+        else if (!editorControls.move.pressed && !editorControls.scale.pressed && event.which != 3) {
             if (g.text) {
                 let text = prompt("Object Text", g.text);
                 if (text)
@@ -88,7 +89,7 @@ function editorMouseMove (event) {
     if (!selectedObject)
         return;
     let pos = screenToWorld(event.clientX, event.clientY);
-    if (editorControls.move.pressed) {
+    if (editorControls.move.pressed || event.which == 3) {
         selectedObject.position = copyVector2D(pos);
         subVectors(selectedObject.position, selectionOffset);
     } else if (editorControls.scale.pressed && selectedObject.scaleable) {
