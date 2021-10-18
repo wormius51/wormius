@@ -4,7 +4,7 @@ const spawables = {
         player = Player(Vector2D(+params[1], +params[2]));
     },
     b: params => {
-        Block(Vector2D(+params[1], +params[2]), Vector2D(+params[3], +params[4]));
+        Block(Vector2D(+params[1], +params[2]), Vector2D(+params[3], +params[4]), +params[5], +params[6]);
     },
     g: params => {
         Gummy(Vector2D(+params[1], +params[2]), Vector2D(+params[3], +params[4]));

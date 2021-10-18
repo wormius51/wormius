@@ -176,13 +176,33 @@ function Camera() {
     return camera;
 }
 
-function Block(position, scale) {
+function Block(position, scale, horizontalSpeed, verticalSpeed) {
     let block = GameObject(position, scale, "black");
     block.g = 0;
+    block.isBlock = true;
+    if (!horizontalSpeed)
+        horizontalSpeed = 0;
+    if (!verticalSpeed)
+        verticalSpeed = 0;
+    block.horizontalSpeed = horizontalSpeed;
+    block.verticalSpeed = verticalSpeed;
+    block.walkTime = 0;
+    block.maxWalkTime = 2000;
     block.getString = () => {
         return "b " + block.position.x + " " + block.position.y +
-        " " + block.scale.x + " " + block.scale.y;
-    }
+        " " + block.scale.x + " " + block.scale.y + 
+        " " + block.horizontalSpeed + " " + block.verticalSpeed;
+    };
+    block.onUpdate = deltaTime => {
+        if (block.walkTime >= block.maxWalkTime) {
+            block.walkTime = 0;
+            block.horizontalSpeed *= -1;
+            block.verticalSpeed *= -1;
+        }
+        block.velocity.x = block.horizontalSpeed;
+        block.velocity.y = block.verticalSpeed;
+        block.walkTime += deltaTime;
+    };
     block.scaleable = true;
     return block;
 }
@@ -537,6 +557,12 @@ function UpDashPickup (position) {
         if (other.isPlayer)
             other.upDash = true;
     }
+    pickup.onCollision = other => {
+        if (other.isBlock) {
+            pickup.destroy = true;
+            other.verticalSpeed++;
+        }
+    }
     pickup.color = "lightgreen";
     pickup.getString = () => {
         return "u " + pickup.position.x + " " + pickup.position.y;
@@ -549,6 +575,12 @@ function SideDashPickup (position) {
     pickup.onPick = other => {
         if (other.isPlayer)
             other.upDash = false;
+    }
+    pickup.onCollision = other => {
+        if (other.isBlock) {
+            pickup.destroy = true;
+            other.horizontalSpeed++;
+        }
     }
     pickup.color = "blue";
     pickup.getString = () => {
