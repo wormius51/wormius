@@ -102,7 +102,6 @@ function sendMove (move) {
 
 socket.on('end', result => {
     myColor = "both";
-    //matchData = undefined;
     offlineUI.style.display = "block";
     matchInfoDiv.style.display = "none";
     matchLinkField.value = "";

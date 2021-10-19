@@ -174,19 +174,21 @@ function updateMovesDiv () {
 
 function rollPositionToMove (moveIndex) {
     currentMoveIndex = moveIndex;
+    mostRecentMove = undefined;
     setStartingPosition();
     if (moveIndex != Infinity)
         possibleMoves = [];
     else
         currentMoveIndex = moves.length;
     if (currentMoveIndex < 0)
-        currentMoveIndex = 0;
+        currentMoveIndex = -1;
     else if (currentMoveIndex > moves.length - 1)
         currentMoveIndex = moves.length - 1;
     for (let i = 0; i <= moveIndex; i++) {
         if (!moves[i])
             break;
         positionPlayMove(position, moves[i]);
+        mostRecentMove = moves[i];
     }
     drawBoard();
 }
