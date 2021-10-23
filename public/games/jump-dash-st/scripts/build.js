@@ -4,25 +4,24 @@ const spawables = {
         player = Player(Vector2D(+params[1], +params[2]));
     },
     b: params => {
-        Block(Vector2D(+params[1], +params[2]), Vector2D(+params[3], +params[4]), +params[5], +params[6]);
+        let block = Block();
+        applyParams(block, params);
     },
     g: params => {
-        Gummy(Vector2D(+params[1], +params[2]), Vector2D(+params[3], +params[4]));
+        let block = Gummy();
+        applyParams(block, params);
     },
     e: params => {
-        let enemy = Enemy(Vector2D(+params[1], +params[2]), +params[5]);
-        enemy.scale.x = +params[3];
-        enemy.scale.y = +params[4];
+        let enemy = Enemy();
+        applyParams(enemy, params);
     },
     fe: params => {
-        let enemy = FlyingEnemy(Vector2D(+params[1], +params[2]), +params[5]);
-        enemy.scale.x = +params[3];
-        enemy.scale.y = +params[4];
+        let enemy = FlyingEnemy();
+        applyParams(enemy, params);
     },
     l: params => {
-        let enemy = RocketLauncher(Vector2D(+params[1], +params[2]));
-        enemy.scale.x = +params[3];
-        enemy.scale.y = +params[4];
+        let enemy = RocketLauncher();
+        applyParams(enemy, params);
     },
     gl: params => {
         Goal(Vector2D(+params[1], +params[2]));
@@ -41,7 +40,31 @@ const spawables = {
     },
     i: params => {
         ImageObject(Vector2D(+params[1], +params[2]), Vector2D(+params[3], +params[4]), params[5].substr(1, params[5].length - 2));
+    },
+    pl: params => {
+        let portal = Portal();
+        applyParams(portal, params);
+        for (let i = 0; i < params.length; i++) {
+            if (params[i].indexOf("\"") != -1) {
+                let exitParams = params[i].substr(1, params[i].length - 2).match(/[^"\s]+/g);
+                exitParams.unshift("pe");
+                applyParams(portal.exit, exitParams);
+                break;
+            }
+        }
     }
+}
+
+function applyParams (gameObject, params) {
+    gameObject.position.x = +params[1];
+    gameObject.position.y = +params[2];
+    gameObject.scale.x = +params[3];
+    gameObject.scale.y = +params[4];
+    if (params.length < 8)
+        return;
+    gameObject.horizontalSpeed = +params[5];
+    gameObject.verticalSpeed = +params[6];
+    gameObject.walkTime = +params[7];
 }
 
 function parseBuild (data, levelName) {

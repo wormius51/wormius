@@ -216,3 +216,7 @@ window.addEventListener('keydown', event => {
             break;
     }
 });
+
+canvas.addEventListener('mousewheel', event => {
+    scrollMoves(event.deltaY > 0);
+});

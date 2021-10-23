@@ -1,7 +1,7 @@
 const gameCanvas = document.getElementById("game-canvas");
 const gameContext = gameCanvas.getContext("2d");
 
-const version = "0.0.0.8";
+const version = "0.0.0.9";
 
 let originalWidth = 900;
 let originalHeight = 600;

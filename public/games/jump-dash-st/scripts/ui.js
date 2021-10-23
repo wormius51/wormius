@@ -172,7 +172,7 @@ function drawUiElements() {
 }
 
 function checkOnUi(element, x, y) {
-    if (!element.visible) return false;
+    if (!element || !element.visible) return false;
     if (x < element.x * scaleRatio || x > (element.x + element.width) * scaleRatio) return false;
     if (y < element.y * scaleRatio || y > (element.y + element.height) * scaleRatio) return false;
     return true;

@@ -10,6 +10,10 @@ var currentId = 0;
  * @returns The new GameObject.
  */
 function GameObject(position, scale, color, damage, killable) {
+    if (!position)
+        position = Vector2D(0, 0);
+    if (!scale)
+        scale = Vector2D(0, 0);
     let gameObject = {
         id: currentId,
         position: position,
@@ -29,6 +33,18 @@ function GameObject(position, scale, color, damage, killable) {
     };
     currentId++;
     gameObjects.push(gameObject);
+    gameObject.walkTime = 0;
+    gameObject.horizontalSpeed = 0;
+    gameObject.verticalSpeed = 0;
+    gameObject.getString = () => {
+        if (!gameObject.sybol)
+            return "";
+        let s = gameObject.sybol + " " + gameObject.position.x + " " + gameObject.position.y + " " +
+        gameObject.scale.x + " " + gameObject.scale.y;
+        if (gameObject.horizontalSpeed || gameObject.verticalSpeed)
+            s += " " + gameObject.horizontalSpeed + " " + gameObject.verticalSpeed + " " + gameObject.walkTime;
+        return s
+    }
     return gameObject;
 }
 
@@ -188,11 +204,7 @@ function Block(position, scale, horizontalSpeed, verticalSpeed) {
     block.verticalSpeed = verticalSpeed;
     block.walkTime = 0;
     block.maxWalkTime = 2000;
-    block.getString = () => {
-        return "b " + block.position.x + " " + block.position.y +
-        " " + block.scale.x + " " + block.scale.y + 
-        " " + block.horizontalSpeed + " " + block.verticalSpeed;
-    };
+    block.sybol = "b";
     block.onUpdate = deltaTime => {
         if (block.walkTime >= block.maxWalkTime) {
             block.walkTime = 0;
@@ -235,26 +247,25 @@ function Gummy(position, scale) {
         if (other.velocity && normal(other.velocity) != 0)
             plaSound("bounce.flac", other.position);
     }
-    gummy.getString = () => {
-        return "g " + gummy.position.x + " " + gummy.position.y +
-        " " + gummy.scale.x + " " + gummy.scale.y;
-    }
+    gummy.sybol = "g";
     return gummy;
 }
 
 function Enemy(position, walkSpeed) {
     if (walkSpeed == undefined) walkSpeed = 3;
     let enemy = GameObject(position, Vector2D(50, 50), "red", true, true);
+    enemy.isEnemy = true;
     enemy.value = 10;
+    enemy.horizontalSpeed = walkSpeed;
     enemy.walkSpeed = walkSpeed;
     enemy.walkTime = 0;
     enemy.maxWalkTime = 2000;
     enemy.onUpdate = deltaTime => {
         if (enemy.walkTime >= enemy.maxWalkTime) {
             enemy.walkTime = 0;
-            enemy.walkSpeed *= -1;
+            enemy.horizontalSpeed *= -1;
         }
-        enemy.velocity.x = enemy.walkSpeed;
+        enemy.velocity.x = enemy.horizontalSpeed;
         enemy.walkTime += deltaTime;
     };
     enemy.onDeath = () => {
@@ -265,10 +276,7 @@ function Enemy(position, walkSpeed) {
             TextObject(copyVector2D(enemy.position), scoreChange, 30 + 3 * Math.log(scoreChange), 1000, "green").zIndex = 10;
         }
     };
-    enemy.getString = () => {
-        return "e " + enemy.position.x + " " + enemy.position.y +
-        " " + enemy.scale.x + " " + enemy.scale.y + " " + " " + enemy.walkSpeed;
-    }
+    enemy.sybol = "e";
     enemy.scaleable = true;
     return enemy;
 }
@@ -278,10 +286,7 @@ function FlyingEnemy(position, speed) {
         speed = 3;
     let flyingEnemy = Enemy(position, speed);
     flyingEnemy.g = 0;
-    flyingEnemy.getString = () => {
-        return "fe " + flyingEnemy.position.x + " " + flyingEnemy.position.y +
-        " " + flyingEnemy.scale.x + " " + flyingEnemy.scale.y + " " + flyingEnemy.walkSpeed;
-    }
+    flyingEnemy.sybol = "fe";
     return flyingEnemy;
 }
 
@@ -362,10 +367,7 @@ function RocketLauncher(position) {
             Rocket(copyVector2D(rocketLauncher.position), 4, rocketLauncher.rocketLifetime);
         }
     };
-    rocketLauncher.getString = () => {
-        return "l " + rocketLauncher.position.x + " " + rocketLauncher.position.y + " "
-        + rocketLauncher.scale.x + " " + rocketLauncher.scale.y;
-    }
+    rocketLauncher.sybol = "l";
     return rocketLauncher;
 }
 
@@ -553,6 +555,7 @@ function Coin(position, value) {
 
 function UpDashPickup (position) {
     let pickup = Coin(position, 50);
+    pickup.isUpDashPickup = true;
     pickup.onPick = other => {
         if (other.isPlayer)
             other.upDash = true;
@@ -560,7 +563,7 @@ function UpDashPickup (position) {
     pickup.onCollision = other => {
         if (other.isBlock) {
             pickup.destroy = true;
-            other.verticalSpeed++;
+            other.verticalSpeed--;
         }
     }
     pickup.color = "lightgreen";
@@ -580,6 +583,10 @@ function SideDashPickup (position) {
         if (other.isBlock) {
             pickup.destroy = true;
             other.horizontalSpeed++;
+        } else if (other.isUpDashPickup) {
+            pickup.destroy = true;
+            other.destroy = true;
+            Portal(pickup.position);
         }
     }
     pickup.color = "blue";
@@ -589,16 +596,53 @@ function SideDashPickup (position) {
     return pickup;
 }
 
-function EditorPortal (poaition) {
-    let portal = Coin(poaition, 69);
+function EditorPortal (position) {
+    let portal = Coin(position, 69);
     portal.color = "green";
     portal.onCollision = other => {
         if (other.isPlayer)
             activateEditorMode();
     }
+    portal.onUpdate = () => {
+        if (isMobile)
+            portal.destroy = true;
+    };
     return portal;
 }
 
+function Portal (position, exitPosition) {
+    let portal = Block(position, Vector2D(30, 30));
+    if (!exitPosition) {
+        exitPosition = copyVector2D(portal.position);
+        exitPosition.x += 100;
+    }
+    portal.exit = Block(exitPosition, Vector2D(30, 30));
+    portal.color = "#a9fc03";
+    portal.exit.color = "#03fc20";
+    portal.solid = false;
+    portal.exit.solid = false;
+    portal.onCollision = other => {
+        if (portal.exit && (other.isPlayer || other.isEnemy))
+            other.position = copyVector2D(portal.exit.position);
+    }
+    portal.exit.getString = undefined;
+    portal.selfString = portal.getString;
+    portal.sybol = "pl";
+    portal.getString = () => {
+        let s = portal.selfString();
+        if (portal.exit) {
+            s += " \"" + portal.exit.position.x + " " + portal.exit.position.y + " " +
+            portal.exit.scale.x + " " + portal.exit.scale.y;
+            if (portal.exit.horizontalSpeed || portal.exit.verticalSpeed) 
+                s += " " + portal.exit.horizontalSpeed + " " + portal.exit.verticalSpeed + " " +
+                portal.exit.walkTime;
+            s += "\""
+        }
+        return s;
+    } 
+
+    return portal;
+}
 
 function rescale (gameObject, scale) {
     let objCenterX = gameObject.position.x + gameObject.scale.x / 2;
