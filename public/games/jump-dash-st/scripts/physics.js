@@ -95,7 +95,7 @@ function collisions(gameObject) {
     gameObjects.forEach(other => {
         if (checkCollision(gameObject, other)) {
             gameObject.onCollision(other);
-            if (gameObject.solid && other.solid) {
+            if (gameObject.solid && other.solid && !gameObject.unblockable) {
                 blockGameObject(gameObject, other);
             }
         }
@@ -140,7 +140,7 @@ function blockGameObject(gameObject, blocker) {
     //is the collision accuring from the side?
     if (dy > dx) {
         if (gameObject.position.x > blocker.position.x) {
-            if (gameObject.velocity.x < 0) {
+            if (gameObject.velocity.x <= 0) {
                 if (blocker.bouncy) {
                     gameObject.velocity.x *= -1;
                 } else {
@@ -149,7 +149,7 @@ function blockGameObject(gameObject, blocker) {
                 gameObject.position.x = blocker.position.x + blocker.scale.x;
             }
         } else {
-            if (gameObject.velocity.x > 0) {
+            if (gameObject.velocity.x >= 0) {
                 if (blocker.bouncy) {
                     gameObject.velocity.x *= -1;
                 } else {
@@ -160,7 +160,7 @@ function blockGameObject(gameObject, blocker) {
         }
     } else {
         if (gameObject.position.y > blocker.position.y) {
-            if (gameObject.velocity.y < 0) {
+            if (gameObject.velocity.y <= 0) {
                 if (blocker.bouncy) {
                     gameObject.velocity.y *= -1;
                 } else {
@@ -169,7 +169,7 @@ function blockGameObject(gameObject, blocker) {
                 gameObject.position.y = blocker.position.y + blocker.scale.y;
             }
         } else {
-            if (gameObject.velocity.y > 0) {
+            if (gameObject.velocity.y >= 0) {
                 if (blocker.bouncy) {
                     gameObject.velocity.y *= -1;
                 } else {

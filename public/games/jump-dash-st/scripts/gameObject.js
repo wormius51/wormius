@@ -216,6 +216,7 @@ function Block(position, scale, horizontalSpeed, verticalSpeed) {
         block.walkTime += deltaTime;
     };
     block.scaleable = true;
+    block.unblockable = true;
     return block;
 }
 
