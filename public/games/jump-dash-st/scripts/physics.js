@@ -160,7 +160,7 @@ function blockGameObject(gameObject, blocker) {
         }
     } else {
         if (gameObject.position.y > blocker.position.y) {
-            if (gameObject.velocity.y <= 0) {
+            if (gameObject.velocity.y < 0) {
                 if (blocker.bouncy) {
                     gameObject.velocity.y *= -1;
                 } else {

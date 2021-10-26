@@ -365,7 +365,8 @@ function RocketLauncher(position) {
         rocketLauncher.time += deltaTime;
         if (rocketLauncher.time >= rocketLauncher.spawTime) {
             rocketLauncher.time = 0;
-            Rocket(copyVector2D(rocketLauncher.position), 4, rocketLauncher.rocketLifetime);
+            let rocket = Rocket(copyVector2D(rocketLauncher.position), 4, rocketLauncher.rocketLifetime);
+            rocket.position.y -= 1;
         }
     };
     rocketLauncher.sybol = "l";
@@ -531,6 +532,7 @@ function ImageObject (position, scale, src) {
 
 function Goal(position) {
     let goal = GameObject(position, Vector2D(50, 300), "yellow");
+    goal.g = 0;
     goal.finishLevel = true;
     goal.getString = () => {
         return "gl " + goal.position.x + " " + goal.position.y;

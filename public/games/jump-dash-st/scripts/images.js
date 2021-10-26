@@ -8,7 +8,8 @@ var imagesNames = [
     "nine",
     "up",
     "left",
-    "right"
+    "right",
+    "pumpkin"
 ];
 
 imagesNames.forEach(name => {

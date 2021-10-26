@@ -21,8 +21,14 @@ var unlocks = {
     Skin("nine", "Get over 9000 points in one run",
         () => {
             return score > 9000;
-        })]
+        })/*,
+    Skin("pumpkin", "Get all 5 pumpkins",
+        () => {
+            return pumpkins >= 5;
+        })*/]
 };
+
+var pumpkins = 0;
 
 function Skin(name, description, condition) {
     if (!condition) condition = () => true;
