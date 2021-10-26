@@ -296,7 +296,7 @@ const levels = [
         for (let i = 0; i < 4; i++) {
             Gummy(Vector2D(3900 + 250 * i, 80 - 50 * i), Vector2D(260, 40));
         }
-        Goal(Vector2D(4850, -300));
+        Goal(Vector2D(4850, -100));
         Coin(Vector2D(5000, -300));
     },
     //updash
