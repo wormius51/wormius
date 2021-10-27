@@ -52,6 +52,9 @@ const spawables = {
                 break;
             }
         }
+    },
+    pk: params => {
+        Pumpkin(Vector2D(+params[1], +params[2]), +params[3]);
     }
 }
 

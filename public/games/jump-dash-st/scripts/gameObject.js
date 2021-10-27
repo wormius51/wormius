@@ -550,6 +550,13 @@ function Coin(position, value) {
         changeScore(coin.value);
         TextObject(copyVector2D(coin.position), coin.value, 30 + 3 * Math.log(coin.value), 1000, "green").zIndex = 10;
     };
+    coin.onCollision = other => {
+        if (other.isUpDashPickup) {
+            other.destroy = true;
+            coin.destroy = true;
+            Pumpkin(coin.position);
+        }
+    };
     coin.getString = () => {
         return "c " + coin.position.x + " " + coin.position.y;
     }
@@ -596,6 +603,28 @@ function SideDashPickup (position) {
     pickup.getString = () => {
         return "s " + pickup.position.x + " " + pickup.position.y;
     }
+    return pickup;
+}
+
+function Pumpkin (position, number) {
+    let pickup = Coin(position, 666);
+    if (number != undefined)
+        this.number = number;
+    if (this.number == undefined)
+        this.number = 0;
+    pickup.number = this.number;
+    this.number++;
+    pickup.image = images.pumpkin;
+    pickup.color = "clear";
+    pickup.scale = Vector2D(40, 40);
+    pickup.onPick = () => {
+        pumpkins[pickup.number] = true;
+    };
+    pickup.getString = () => {
+        return "pk " + pickup.position.x + " " + pickup.position.y + pickup.number;
+    };
+    if (pumpkins[pickup.number])
+        pickup.destroy = true;
     return pickup;
 }
 

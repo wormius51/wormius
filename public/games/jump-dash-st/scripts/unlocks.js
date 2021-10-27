@@ -21,14 +21,14 @@ var unlocks = {
     Skin("nine", "Get over 9000 points in one run",
         () => {
             return score > 9000;
-        })/*,
+        }),
     Skin("pumpkin", "Get all 5 pumpkins",
         () => {
-            return pumpkins >= 5;
-        })*/]
+            return pumpkins.filter(p => p).length >= pumpkins.length;
+        })]
 };
 
-var pumpkins = 0;
+const pumpkins = [false, false, false, false, false];
 
 function Skin(name, description, condition) {
     if (!condition) condition = () => true;
