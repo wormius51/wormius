@@ -25,6 +25,7 @@ const levels = [
         for (let i = 1; i < levels.length - 1; i++) {
             Door(Vector2D(-600 + 200 * i, 340), i);
         }
+        LevelPortal(Vector2D(-600 + 200 * levels.length, 340), "levels/Pumpkin.jd", images.pentagram)
     },
     //tutorial 2
     () => {

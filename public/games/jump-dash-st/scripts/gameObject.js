@@ -642,6 +642,28 @@ function EditorPortal (position) {
     return portal;
 }
 
+function LevelPortal (position, levelAddress, image) {
+    let portal = Coin(position, 69);
+    portal.scale = Vector2D(50, 50);
+    portal.color = image ? "clear" : "green";
+    portal.image = image;
+    portal.levelAddress = levelAddress;
+    portal.onCollision = other => {
+        if (other.isPlayer) {
+            const p = () => {
+                new Promise(async (resolve, reject) => {
+                    let levelText = await readTextFile(portal.levelAddress);
+                    editorLevel = JSON.parse(levelText);
+                    parseBuild(editorLevel.levelString, editorLevel.name);
+                    resolve(true);
+                });
+            }
+            Promise.resolve(p());
+        }
+    }
+    return portal;
+}
+
 function Portal (position, exitPosition) {
     let portal = Block(position, Vector2D(30, 30));
     if (!exitPosition) {
