@@ -608,8 +608,8 @@ function SideDashPickup (position) {
 
 function Pumpkin (position, number) {
     let pickup = Coin(position, 666);
-    if (number != undefined)
-        this.number = number;
+    if (number != undefined && !isNaN(number))
+        this.number = +number;
     if (this.number == undefined)
         this.number = 0;
     pickup.number = this.number;
@@ -621,7 +621,7 @@ function Pumpkin (position, number) {
         pumpkins[pickup.number] = true;
     };
     pickup.getString = () => {
-        return "pk " + pickup.position.x + " " + pickup.position.y + pickup.number;
+        return "pk " + pickup.position.x + " " + pickup.position.y + " " + pickup.number;
     };
     if (pumpkins[pickup.number])
         pickup.destroy = true;
