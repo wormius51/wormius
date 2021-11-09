@@ -5,9 +5,23 @@ const client = new Client({
 });
 
 function setup () { 
-  if (process.env.DATABASE_URL) {
-    client.connect();
+  if (!client || !client.connectionString) {
+    console.error("Not connected to a database");
+    return;
   }
+  client.connect().then(() => {
+    setupTables();
+  }).catch(err => {
+    console.error(err);
+  });
+}
+
+function setupTables () {
+  Promise.all([
+    require('./blog/blog-post').setup
+  ]).catch(err => {
+    console.error(err);
+  })
 }
 
 async function query (sql, values = [], callback = undefined) {
@@ -29,21 +43,19 @@ async function query (sql, values = [], callback = undefined) {
 /**
  * Inserts a row to the table.
  * @param {String} tableName 
- * @param {Array<{fieldName: String, value}>} params 
+ * @param {*} params An object containing all the params 
  * @param {Function} callback 
  */
-async function insertQuery(tableName, params = [], callback = undefined) {
+async function insertQuery(tableName, params = {}, callback = undefined) {
   let queryText = "";
   let paramsText = ""
   let values = [];
-  params.forEach(param => {
-    if (param.value != undefined) {
-      if (paramsText.length != 0)
-      paramsText += ", ";
-      paramsText += param.fieldName;
-      values.push(param.value);
-    }
-  });
+  for (const [key, value] of Object.entries(params)) {
+    if (paramsText.length != 0)
+        paramsText += ", ";
+    paramsText += key;
+    values.push(value);
+  }
   queryText = "INSERT INTO " + tableName + " ";
   if (values.length != 0) {
     queryText += "(" + paramsText + ") VALUES(";
@@ -63,16 +75,16 @@ async function insertQuery(tableName, params = [], callback = undefined) {
 /**
  * Returns fieldName = $x part of the query for params that are defined.
  * @param {Number} startingIndex The index at which the optional arguments start in the query
- * @param {Array<{fieldName: String, value}>} params An array of {fieldName, value}
+ * @param {*} params An object containing the params
  */
-function getOptionalParamQueryString (params = [], startingIndex = 1, seperator = ",") {
+function getOptionalParamQueryString (params = {}, startingIndex = 1, seperator = ",") {
   let s = "";
   let j = 0;
-  for (let i = 0; i < params.length; i++) {
-    if (params[i].value != undefined)  {
+  for (const [key, value] of Object.entries(params)) {
+    if (value != undefined)  {
       if (s.length != 0)
         s+= seperator + " ";
-      s += params[i].fieldName + " = $" + (startingIndex + j) + " ";
+      s += key + " = $" + (startingIndex + j) + " ";
       j++;
     }
   }
@@ -83,30 +95,27 @@ function getOptionalParamQueryString (params = [], startingIndex = 1, seperator 
  * Updates a row in the table
  * @param {String} tableName
  * @param {Number} id 
- * @param {Array<{fieldName: String, value}>} params An array of {fieldName, value}
+ * @param {*} params An object containing the params
  * @param {Function} callback 
  */
-async function updateQuery (tableName, id, params = [], callback = undefined) {
+async function updateQuery (tableName, id, params = {}, callback = undefined) {
   let queryText = 'UPDATE ' + tableName + ' SET ';
-  if (params.every(param => param.value == undefined))
+  if (Object.entries(params).length == 0)
     throw new WebException(400, "Tried to do update with no values");
   queryText += getOptionalParamQueryString(params, 2);
   queryText += 'WHERE id = $1 RETURNING *';
-  let values = [id];
-  params.forEach(param => {
-    if (param.value != undefined)
-      values.push(param.value);
-  });
+  let values = Object.values(params);
+  values.unshift = id;
   return query(queryText, values, callback);
 }
 
 /**
  * Reads rows that match the params
  * @param {String} tableName 
- * @param {Array<{fieldName, value}>} params 
+ * @param {*} params An object containing the params 
  * @param {Function} callback 
  */
-async function selectQuery (tableName, params = [], callback) {
+async function selectQuery (tableName, params = {}, callback) {
   let queryText = 'SELECT * FROM ' + tableName + ' WHERE ';
   return fillInWhere(queryText, params, callback);
 }
@@ -114,25 +123,20 @@ async function selectQuery (tableName, params = [], callback) {
 /**
  * Reads rows that match the params
  * @param {String} tableName 
- * @param {Array<{fieldName, value}>} params 
+ * @param {*} params An object containing the params 
  * @param {Function} callback 
  */
- async function countQuery (tableName, params = [], callback) {
+ async function countQuery (tableName, params = {}, callback) {
   let queryText = 'SELECT COUNT(*) FROM ' + tableName + ' WHERE ';
   return fillInWhere(queryText, params, callback);
 }
 
-async function fillInWhere (queryText, params = [], callback) {
-    if (params.every(param => param.value == undefined))
+async function fillInWhere (queryText, params = {}, callback) {
+    if (Object.entries(params).length == 0)
       queryText += "TRUE";
     else 
       queryText += getOptionalParamQueryString(params, 1, "AND");
-    let values = [];
-    params.forEach(param => {
-      if (param.value != undefined)
-        values.push(param.value);
-    });
-    return query(queryText, values, callback);
+    return query(queryText, Object.values(params), callback);
 }
 
 

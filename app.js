@@ -44,7 +44,7 @@ app.use("/",require('./routes/index'));
 
 const routes = ["games", "tutorials", "devlog", "oneDheros", 
 "food-chain-game", "button-button-button","canvas-land", 
-"king-of-the-tile", "tribute-chess", "wheel", "chess-ball"];
+"king-of-the-tile", "tribute-chess", "wheel", "chess-ball", "worm"];
 
 routes.forEach((element) => {
     app.use("/" + element,require("./routes/" + element));
@@ -72,3 +72,4 @@ server.on('listening', () => {
     console.log(`Listening at port ${PORT}`);
 });
 
+require('./scripts/db-client').setup();
