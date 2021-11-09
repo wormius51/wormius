@@ -113,11 +113,12 @@ async function updateQuery (tableName, id, params = {}, callback = undefined) {
  * Reads rows that match the params
  * @param {String} tableName 
  * @param {*} params An object containing the params 
+ * @param {{colname, acsending}} ordering 
  * @param {Function} callback 
  */
-async function selectQuery (tableName, params = {}, callback) {
+async function selectQuery (tableName, params = {}, ordering, callback) {
   let queryText = 'SELECT * FROM ' + tableName + ' WHERE ';
-  return fillInWhere(queryText, params, callback);
+  return fillInWhere(queryText, params, callback, ordering);
 }
 
 /**
@@ -131,14 +132,23 @@ async function selectQuery (tableName, params = {}, callback) {
   return fillInWhere(queryText, params, callback);
 }
 
-async function fillInWhere (queryText, params = {}, callback) {
+async function fillInWhere (queryText, params = {}, callback, ordering) {
     if (Object.entries(params).length == 0)
       queryText += "TRUE";
     else 
       queryText += getOptionalParamQueryString(params, 1, "AND");
-    return query(queryText, Object.values(params), callback);
+    let values = Object.values(params);
+    if (ordering && ordering.colname) {
+      queryText += " ORDER BY " + ordering.colname + " ";
+      queryText += ordering.acsending ? "ACS" : "DESC";
+    }
+    return query(queryText, values, callback);
 }
 
+async function deleteQuary (tableName, id, callback) {
+  let queryText = `DELETE FROM ${tableName} WHERE id = $1`;
+  return query(queryText, [id], callback);
+}
 
 module.exports.setup = setup;
 module.exports.query = query;
@@ -146,3 +156,4 @@ module.exports.insertQuery = insertQuery;
 module.exports.updateQuery = updateQuery;
 module.exports.selectQuery = selectQuery;
 module.exports.countQuery = countQuery;
+module.exports.deleteQuary = deleteQuary;
