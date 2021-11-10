@@ -22,6 +22,7 @@ router.post('/submit-password', (req, res) => {
         } else {
             if (same) {
                 req.session.worm_approved = true;
+                req.session.save();
                 res.redirect('./dashboard');
             }
             else {
