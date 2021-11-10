@@ -8,7 +8,8 @@ router.get("/", (req, res, next) => {
             gameLinks: [
                 GameLink("Chess Ball", 
                     "/chess-ball", "/images/gameLinks/chess-ball.png", 
-                    "A chess variant where you kick the ball with your pieces"),
+                    `A chess variant where you kick the ball with your pieces.
+                    (This position is a puzzle by jacobdk)`),
                 GameLink("Pipe Pop",
                     "https://wormius51.itch.io/pipe-pop", "/images/gameLinks/pipe-pop.png",
                     "Rotate pipes to connect and pop them to win score."),
