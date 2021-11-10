@@ -23,7 +23,8 @@ router.post('/submit-password', (req, res) => {
             if (same) {
                 req.session.worm_approved = true;
                 req.session.save();
-                res.redirect('./dashboard');
+                let backURL=req.header('Referer') || './dashboard';
+                res.redirect(backURL);
             }
             else {
                 console.log("worm attempt with worng password");
@@ -45,8 +46,6 @@ router.get('/dashboard', autherizeMidware, (req, res) => {
 });
 
 router.get('/login', (req, res) => {
-    console.log("something = " + req.session.something);
-    req.session.something = 1;
     res.render('worm/worm-login', {title: "Worm Login"});
 });
 
