@@ -8,6 +8,8 @@ const session = require('express-session');
 const app = express();
 
 var whitelist = ['https://game313569.konggames.com', 'https://game313569.konggames.com','https://v6p9d9t4.ssl.hwcdn.net']
+if (!process.env.PORT)
+  whitelist.push('http://localhost:8000');
 var corsOptions = {
     origin: function (origin, callback) {
       if (!origin || whitelist.indexOf(origin) !== -1) {

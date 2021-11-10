@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
 
-router.post('/login', (req, res) => {
+router.post('/submit-password', (req, res) => {
     const hash = process.env.WORM_PASSWORD;
     if (!hash) {
         res.status(500).send("There was a problem proccessing the request");
@@ -22,7 +22,7 @@ router.post('/login', (req, res) => {
         } else {
             if (same) {
                 req.session.worm_approved = true;
-                res.render('worm-dashboard', {title: "Worm Dashboard"});
+                res.redirect('./dashboard');
             }
             else {
                 console.log("worm attempt with worng password");
@@ -30,6 +30,21 @@ router.post('/login', (req, res) => {
             }
         }
     })
+});
+
+function autherizeMidware (req, res, next) {
+    if (req.session.worm_approved || !process.env.WORM_PASSWORD)
+        next();
+    else
+        res.redirect('./login');
+}
+
+router.get('/dashboard', autherizeMidware, (req, res) => {
+    res.render('worm/worm-dashboard', {title: "Worm Dashboard"})
+});
+
+router.get('/login', (req, res) => {
+    res.render('worm/worm-login', {title: "Worm Login"});
 });
 
 
