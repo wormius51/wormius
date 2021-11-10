@@ -45,6 +45,8 @@ router.get('/dashboard', autherizeMidware, (req, res) => {
 });
 
 router.get('/login', (req, res) => {
+    console.log("something = " + req.session.something);
+    req.session.something = 1;
     res.render('worm/worm-login', {title: "Worm Login"});
 });
 

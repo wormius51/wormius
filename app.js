@@ -40,7 +40,7 @@ function makeSecret(length) {
     return result;
  }
 
-app.use(session({secret: makeSecret(20), resave: false, saveUninitialized: true, cookie: {secure: true}}));
+app.use(session({secret: makeSecret(20), resave: false, saveUninitialized: true, cookie: { secure: app.get('env') === 'production' }}));
 
 app.use("/",require('./routes/index'));
 
