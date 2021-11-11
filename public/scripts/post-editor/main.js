@@ -1,8 +1,23 @@
 
+const main = document.getElementsByTagName('main')[0];
+const editorButtonsDiv = document.getElementById('editorButtons');
+
 let selectedElement = undefined;
 let selectionInputField = document.createElement('textarea');
 
 window.addEventListener('dblclick', deselectElement);
+
+window.addEventListener('keydown', function(e) {
+    if (e.key == 'Tab') {
+        e.preventDefault();
+        var start = selectionInputField.selectionStart;
+        var end = selectionInputField.selectionEnd;
+        selectionInputField.value = selectionInputField.value.substring(0, start) +
+        "\t" + selectionInputField.value.substring(end);
+        selectionInputField.selectionStart =
+            selectionInputField.selectionEnd = start + 1;
+    }
+  });
 
 window.addEventListener('load', () => {
     const editables = $('.editable');
@@ -11,22 +26,77 @@ window.addEventListener('load', () => {
             selectElement(element);
         });
     }
+    setEditorButtons();
 });
 
 function selectElement (element) {
     deselectElement();
-    const parent = element.parentNode;
     selectionInputField.type = 'text';
-    parent.replaceChild(selectionInputField, element);
+    main.replaceChild(selectionInputField, element);
     selectedElement = element;
-    selectionInputField.value = element.innerHTML;
+    if (element.tagName == "PRE") {
+        selectionInputField.value = element.children[0].children[0].innerHTML
+    } else {
+        selectionInputField.value = element.innerHTML;
+    }
 }
 
 function deselectElement () {
     if (!selectedElement)
         return;
-    const parent = selectionInputField.parentNode;
-    parent.replaceChild(selectedElement, selectionInputField);
-    selectedElement.innerHTML = selectionInputField.value;
+    main.replaceChild(selectedElement, selectionInputField);
+    if (selectedElement.tagName == "PRE")
+        selectedElement.children[0].children[0].innerHTML = selectionInputField.value;
+    else
+        selectedElement.innerHTML = selectionInputField.value;
+    if (selectionInputField.value == "")
+        main.removeChild(selectedElement);
     selectedElement = undefined;
+}
+
+function setEditorButtons () {
+    const buttons = [
+        EditorButton('h1', 'primaryText', 'Title'),
+        EditorButton('h4', 'primaryText', 'Sub Title'),
+        EditorButton('p', 'lead', 'Paragraph'),
+        EditorButton('pre', ['lead', 'rounded'], 'Code')
+    ];
+    buttons.forEach(button => {
+        editorButtonsDiv.appendChild(button);
+    });
+}
+
+function EditorButton (tagName, className, text) {
+    const button = document.createElement('button');
+    button.innerHTML = text;
+    button.addEventListener('click', () => {
+        addElement(tagName, className);
+    });
+    return button;
+}
+
+function addElement (tagName, className) {
+    const element = document.createElement(tagName);
+    if (typeof className == 'string') {
+        element.classList.add(className);
+    } else {
+        className.forEach(c => {
+            element.classList.add(c);
+        });
+    }
+    element.classList.add('editable');
+    element.addEventListener('click', () => {
+        selectElement(element);
+    });
+    main.replaceChild(element, editorButtonsDiv);
+    main.appendChild(editorButtonsDiv);
+    if (element.tagName == "PRE") {
+        const codeElement = document.createElement('code');
+        const scriptElement = document.createElement('script');
+        element.appendChild(codeElement);
+        codeElement.appendChild(scriptElement);
+        scriptElement.type = "text";
+        scriptElement.classList.add('rounded');
+    }
+    selectElement(element);
 }
