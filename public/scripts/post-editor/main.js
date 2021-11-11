@@ -1,5 +1,6 @@
 
 const main = document.getElementsByTagName('main')[0];
+const postDiv = document.getElementById('postDiv');
 const editorButtonsDiv = document.getElementById('editorButtons');
 
 let selectedElement = undefined;
@@ -32,7 +33,7 @@ window.addEventListener('load', () => {
 function selectElement (element) {
     deselectElement();
     selectionInputField.type = 'text';
-    main.replaceChild(selectionInputField, element);
+    postDiv.replaceChild(selectionInputField, element);
     selectedElement = element;
     if (element.tagName == "PRE") {
         selectionInputField.value = element.children[0].children[0].innerHTML
@@ -44,13 +45,13 @@ function selectElement (element) {
 function deselectElement () {
     if (!selectedElement)
         return;
-    main.replaceChild(selectedElement, selectionInputField);
+    postDiv.replaceChild(selectedElement, selectionInputField);
     if (selectedElement.tagName == "PRE")
         selectedElement.children[0].children[0].innerHTML = selectionInputField.value;
     else
         selectedElement.innerHTML = selectionInputField.value;
     if (selectionInputField.value == "")
-        main.removeChild(selectedElement);
+        postDiv.removeChild(selectedElement);
     selectedElement = undefined;
 }
 
@@ -88,8 +89,7 @@ function addElement (tagName, className) {
     element.addEventListener('click', () => {
         selectElement(element);
     });
-    main.replaceChild(element, editorButtonsDiv);
-    main.appendChild(editorButtonsDiv);
+    postDiv.appendChild(element);
     if (element.tagName == "PRE") {
         const codeElement = document.createElement('code');
         const scriptElement = document.createElement('script');

@@ -49,8 +49,6 @@ router.get('/login', (req, res) => {
     res.render('worm/worm-login', {title: "Worm Login"});
 });
 
-router.get('/post-editor', autherizeMidware, (req, res) => {
-    res.render('worm/post-editor', {title: "Post Editor"});
-});
+router.use('/post', autherizeMidware, require('./post'));
 
 module.exports = router;

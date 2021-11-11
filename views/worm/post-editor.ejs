@@ -5,13 +5,22 @@
 </head>
 
 <body>
+    <div id = "postId" class="data"><%= postId %></div>
     <div class="container-fluid">
         <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content rounded container-fluid" role="main">
-        <h1 class="primaryText editable" name = "title">New Post</h1>
+        <div id = "postDiv">
+            <h1 class="primaryText editable" name = "title">New Post</h1>
+        </div>
         <div id = "editorButtons"></div>
-        <script src="/scripts/post-editor/main.js"></script>
+        <div id = "dataButtons">
+            <button id = "saveButton">Save</button>
+            <button id = "publishButton">Publish</button>
+            <button id = "deleteButton">Delete</button>
+        </div>
         </main>
     </div>
+    <script src="/scripts/post-editor/save.js"></script>
+    <script src="/scripts/post-editor/main.js"></script>
     <% include ../includes/footer.ejs %>
 </body>
 

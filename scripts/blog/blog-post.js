@@ -8,7 +8,8 @@ async function setup () {
         coverimage VARCHAR(40) NOT NULL DEFAULT '/images/worm.png',
         content VARCHAR(80000) NOT NULL,
         status VARCHAR(10) NOT NULL DEFAULT 'draft',
-        creationdate DATE DEFAULT CURRENT_DATE
+        creationdate DATE NOT NULL DEFAULT CURRENT_DATE,
+        publishdate DATE
     )`);
 }
 

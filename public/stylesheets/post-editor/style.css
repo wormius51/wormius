@@ -2,3 +2,19 @@
 textarea {
     width: 95%;
 }
+
+.data {
+    display: none;
+}
+
+#saveButton {
+    background-color: darkorange;
+}
+
+#publishButton {
+    background-color: forestgreen;
+}
+
+#deleteButton {
+    background-color: brown;
+}
