@@ -6,6 +6,10 @@ const editorButtonsDiv = document.getElementById('editorButtons');
 let selectedElement = undefined;
 let selectionInputField = document.createElement('textarea');
 
+window.addEventListener('load', () => {
+    postDiv.innerHTML = decodeURI(postDiv.innerHTML);
+})
+
 window.addEventListener('dblclick', deselectElement);
 
 window.addEventListener('keydown', function(e) {
