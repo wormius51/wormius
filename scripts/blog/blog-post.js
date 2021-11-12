@@ -38,7 +38,7 @@ async function read (params, ordering) {
  */
 async function update (params) {
     let id = params.id;
-    params.id = undefined;
+    delete params.id;
     return client.updateQuery("blogpost", id ,params);
 }
 
