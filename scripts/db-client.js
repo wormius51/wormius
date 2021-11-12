@@ -30,17 +30,21 @@ function setupTables () {
 
 async function query (sql, values = [], callback = undefined) {
   return new Promise((resolve, reject) => {
-    client.query(sql, values, (err, res) => {
-        if (err) {
-          console.log(err.message);
-          reject(err.message);
-        } else {
-          if (callback) {
-            callback(res);
+    try {
+      client.query(sql, values, (err, res) => {
+          if (err) {
+            console.log(err.message);
+            reject(err.message);
+          } else {
+            if (callback) {
+              callback(res);
+            }
+            resolve(res);
           }
-          resolve(res);
-        }
-    });
+      });
+    } catch (err) {
+      reject(err);
+    }
   }); 
 }
 
