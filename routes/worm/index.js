@@ -23,7 +23,7 @@ router.post('/submit-password', (req, res) => {
             if (same) {
                 req.session.worm_approved = true;
                 req.session.save();
-                let backURL = './dashboard';
+                let backURL = '/worm/dashboard';
                 res.redirect(backURL);
             }
             else {

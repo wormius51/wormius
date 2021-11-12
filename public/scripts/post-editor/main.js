@@ -7,8 +7,13 @@ let selectedElement = undefined;
 let selectionInputField = document.createElement('textarea');
 
 window.addEventListener('load', () => {
-    postDiv.innerHTML = decodeURI(postDiv.innerHTML);
-})
+    postDiv.innerHTML = decodeURI(postDiv.innerText);
+    postDiv.children.forEach(element => {
+        element.addEventListener('click', () => {
+            selectElement(element);
+        });
+    });
+});
 
 window.addEventListener('dblclick', deselectElement);
 

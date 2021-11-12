@@ -6,7 +6,7 @@ async function setup () {
         id SERIAL PRIMARY KEY,
         title VARCHAR(50) NOT NULL DEFAULT 'New Post',
         coverimage VARCHAR(40) NOT NULL DEFAULT '/images/worm.png',
-        content VARCHAR(80000) NOT NULL DEFAULT '<h1 class = "primaryText">New Post</h1>',
+        content VARCHAR(80000) NOT NULL DEFAULT '<h1 class = "primaryText editable">New Post</h1>',
         status VARCHAR(10) NOT NULL DEFAULT 'draft',
         creationdate DATE NOT NULL DEFAULT CURRENT_DATE,
         publishdate DATE
