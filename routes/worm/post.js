@@ -2,14 +2,19 @@ const router = require('express').Router();
 const post = require('../../scripts/blog/blog-post');
 
 router.get('/editor', (req, res) => {
-    res.render('worm/post-editor', {title: "Post Editor", postId: req.query.id});
+    post.read(req.body).then (data => {
+        res.render('worm/post-editor', 
+        {title: "Post Editor", postId: req.query.id, content: data.rows[0].content});
+    }).catch (err => {
+        res.send(err.message).status(err.code? err.code : 500);
+    });
 });
 
 router.post('/create', (req, res) => {
     post.create(req.body).then(data => {
         res.redirect(`./editor?id=${data.rows[0].id}`);
     }).catch (err => {
-        res.send(err.message).status(err.code);
+        res.send(err.message).status(err.code? err.code : 500);
     });
 });
 
@@ -17,7 +22,7 @@ router.put('/update', (req, res) => {
     post.update(req.body).then(() => {
         res.send("post updated").status(200);
     }).catch (err => {
-        res.send(err.message).status(err.code);
+        res.send(err.message).status(err.code? err.code : 500);
     });
 });
 
@@ -28,7 +33,7 @@ router.put('/publish', (req, res) => {
         else
             res.send("post published").status(200);
     }).catch (err => {
-        res.send(err.message).status(err.code);
+        res.send(err.message).status(err.code? err.code : 500);
     });
 });
 
@@ -36,7 +41,7 @@ router.delete('/delete', (req, res) => {
     post.delete(req.body.id).then(() => {
         res.send("post deleted").status(200);
     }).catch (err => {
-        res.send(err.message).status(err.code);
+        res.send(err.message).status(err.code? err.code : 500);
     });
 });
 

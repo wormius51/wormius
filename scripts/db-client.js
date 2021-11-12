@@ -117,8 +117,6 @@ async function updateQuery (tableName, id, params = {}, callback = undefined) {
   queryText += 'WHERE id = $1 RETURNING *';
   let values = Object.values(params);
   values.unshift(id);
-  console.log(queryText);
-  console.log(values);
   return query(queryText, values, callback);
 }
 
