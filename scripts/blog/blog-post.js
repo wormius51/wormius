@@ -56,7 +56,7 @@ async function publish (id) {
     status = 'published', 
     publishdate = CURRENT_DATE
     WHERE id = $1
-    AND state != 'published'
+    AND status != 'published'
     RETURNING *`, [id]);
 }
 
