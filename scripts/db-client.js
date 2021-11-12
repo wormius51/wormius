@@ -43,7 +43,8 @@ async function query (sql, values = [], callback = undefined) {
           }
       });
     } catch (err) {
-      reject(err);
+      console.log(err);
+      reject(new WebException(500, err));
     }
   }); 
 }
