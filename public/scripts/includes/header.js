@@ -11,8 +11,12 @@ window.addEventListener('load', makeDropdown);
 function makeDropdown () {
     let h4s = $("h4.primaryText");
     if (h4s.length > 0) {
+        let previousDropdown = document.getElementById("content-dropdown");
+        if (previousDropdown)
+            $('header')[0].removeChild(previousDropdown);
         let dropdown = document.createElement('div');
         dropdown.className = "dropdown nav-item bg-light rounded border ml-1";
+        dropdown.id = "content-dropdown";
         let button = document.createElement('button');
         button.innerText = "Content";
         button.className = "btn dropdown-toggle";
