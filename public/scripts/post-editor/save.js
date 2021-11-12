@@ -9,6 +9,7 @@ publishButton.addEventListener('click', publishPost);
 deleteButton.addEventListener('click', deletePost);
 
 function savePost () {
+    deselectElement();
     updatePostObject();
     postFunction('update', 'PUT');
 }

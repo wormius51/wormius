@@ -13,6 +13,7 @@ window.addEventListener('load', () => {
             selectElement(element);
         });
     }
+    makeDropdown();
 });
 
 window.addEventListener('dblclick', deselectElement);
@@ -62,6 +63,7 @@ function deselectElement () {
     if (selectionInputField.value == "")
         postDiv.removeChild(selectedElement);
     selectedElement = undefined;
+    makeDropdown();
 }
 
 function setEditorButtons () {

@@ -6,7 +6,9 @@ function gameFullScreen() {
 }
 
 
-window.addEventListener('load', () => {
+window.addEventListener('load', makeDropdown);
+
+function makeDropdown () {
     let h4s = $("h4.primaryText");
     if (h4s.length > 0) {
         let dropdown = document.createElement('div');
@@ -36,4 +38,4 @@ window.addEventListener('load', () => {
         dropdown.appendChild(dropdownMenu);
         $('header')[0].appendChild(dropdown);
     }
-});
+}
