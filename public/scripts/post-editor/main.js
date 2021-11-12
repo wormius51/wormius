@@ -46,9 +46,9 @@ function selectElement (element) {
     postDiv.replaceChild(selectionInputField, element);
     selectedElement = element;
     if (element.tagName == "PRE") {
-        selectionInputField.value = element.children[0].children[0].innerHTML
+        selectionInputField.value = element.children[0].children[0].innerHTML;
     } else {
-        selectionInputField.value = element.innerHTML;
+        selectionInputField.value = element.innerHTML.replace(/<br>/g, '\n');
     }
 }
 
@@ -57,9 +57,9 @@ function deselectElement () {
         return;
     postDiv.replaceChild(selectedElement, selectionInputField);
     if (selectedElement.tagName == "PRE")
-        selectedElement.children[0].children[0].innerHTML = selectionInputField.value.replace(/\n/g, '<br>');
+        selectedElement.children[0].children[0].innerHTML = selectionInputField.value;
     else
-        selectedElement.innerHTML = selectionInputField.value;
+        selectedElement.innerHTML = selectionInputField.value.replace(/\n/g, '<br>');
     if (selectionInputField.value == "")
         postDiv.removeChild(selectedElement);
     selectedElement = undefined;
