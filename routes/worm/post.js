@@ -7,7 +7,7 @@ router.get('/editor', (req, res) => {
 
 router.post('/create', (req, res) => {
     post.create(req.body).then(data => {
-        res.redirect(`./editor?id=${data.id}`);
+        res.redirect(`./editor?id=${data.rows[0].id}`);
     }).catch (err => {
         res.status(500).send(err);
     });
