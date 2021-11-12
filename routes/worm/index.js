@@ -38,7 +38,7 @@ function autherizeMidware (req, res, next) {
     if (req.session.worm_approved || !process.env.WORM_PASSWORD)
         next();
     else
-        res.redirect('./login');
+        res.redirect('/worm/login');
 }
 
 router.get('/dashboard', autherizeMidware, (req, res) => {
