@@ -5,7 +5,7 @@ const client = new Client({
 });
 
 function setup () { 
-  if (!client || !client.connectionString) {
+  if (!client || !process.env.DATABASE_URL) {
     console.error("Not connected to a database");
     return;
   }
@@ -21,7 +21,7 @@ function setupTables () {
     require('./blog/blog-post').setup()
   ]).catch(err => {
     console.error(err);
-  })
+  });
 }
 
 async function query (sql, values = [], callback = undefined) {
