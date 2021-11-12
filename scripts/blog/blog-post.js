@@ -2,7 +2,7 @@ const client = require('../db-client');
 
 async function setup () {
     return client.query(`
-    CREATE TABLE IF NOT EXIST blogpost(
+    CREATE TABLE IF NOT EXISTS blogpost(
         id SERIAL PRIMARY KEY,
         title VARCHAR(50) NOT NULL DEFAULT 'New Post',
         coverimage VARCHAR(40) NOT NULL DEFAULT '/images/worm.png',
