@@ -1,6 +1,6 @@
 
 class WebException {
-    constructor (code, message) {
+    constructor (code = 500, message) {
         this.code = code;
         this.message = message;
     }

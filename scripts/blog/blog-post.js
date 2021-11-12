@@ -53,8 +53,8 @@ async function deletePost (id) {
 async function publish (id) {
     return client.query(`
     UPDATE blogpost SET 
-    status = 'published' 
-    publishdate = CURRENT_DATE 
+    status = 'published', 
+    publishdate = CURRENT_DATE
     WHERE id = $1
     AND state != 'published'
     RETURNING *`, [id]);
