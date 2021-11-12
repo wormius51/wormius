@@ -1,4 +1,5 @@
 const Client = require('pg').Client;
+const {WebException} = require('./web-exception');
 
 const client = new Client({
   ssl: {
@@ -102,6 +103,8 @@ function getOptionalParamQueryString (params = {}, startingIndex = 1, seperator 
  * @param {Function} callback 
  */
 async function updateQuery (tableName, id, params = {}, callback = undefined) {
+  if (id == undefined)
+    throw new WebException(403, "Tried to update without id");
   let queryText = 'UPDATE ' + tableName + ' SET ';
   if (Object.entries(params).length == 0)
     throw new WebException(400, "Tried to do update with no values");

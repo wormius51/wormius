@@ -9,15 +9,15 @@ router.post('/create', (req, res) => {
     post.create(req.body).then(data => {
         res.redirect(`./editor?id=${data.rows[0].id}`);
     }).catch (err => {
-        res.status(500).send(err);
+        res.send(err.message).status(err.code);
     });
 });
 
 router.put('/update', (req, res) => {
     post.update(req.body).then(() => {
-        res.status(200).send("post updated");
+        res.send("post updated").status(200);
     }).catch (err => {
-        res.send(err).status(500);
+        res.send(err.message).status(err.code);
     });
 });
 
@@ -28,7 +28,7 @@ router.put('/publish', (req, res) => {
         else
             res.send("post published").status(200);
     }).catch (err => {
-        res.send(err).status(500);
+        res.send(err.message).status(err.code);
     });
 });
 
@@ -36,7 +36,7 @@ router.delete('/delete', (req, res) => {
     post.delete(req.body.id).then(() => {
         res.send("post deleted").status(200);
     }).catch (err => {
-        res.send(err).status(500);
+        res.send(err.message).status(err.code);
     });
 });
 

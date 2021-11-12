@@ -37,7 +37,9 @@ async function read (params, ordering) {
  * @param {{title, coverimage, content, status}} params An object containing the params
  */
 async function update (params) {
-    return client.updateQuery("blogpost", params);
+    let id = params.id;
+    params.id = undefined;
+    return client.updateQuery("blogpost", id ,params);
 }
 
 /**
