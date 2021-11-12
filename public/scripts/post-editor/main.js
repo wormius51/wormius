@@ -57,7 +57,7 @@ function deselectElement () {
         return;
     postDiv.replaceChild(selectedElement, selectionInputField);
     if (selectedElement.tagName == "PRE")
-        selectedElement.children[0].children[0].innerHTML = selectionInputField.value;
+        selectedElement.children[0].children[0].innerHTML = selectionInputField.value.replace('\n', '<br>');
     else
         selectedElement.innerHTML = selectionInputField.value;
     if (selectionInputField.value == "")
