@@ -10,6 +10,23 @@ deleteButton.addEventListener('click', deletePost);
 
 function savePost () {
     updatePostObject();
+    postFunction('update', 'PUT');
+}
+
+function publishPost () {
+    if (confirm("Are you sure you want to publish this post?")) {
+        savePost();
+        postFunction('publish', 'PUT');
+    }
+}
+
+function deletePost () {
+    if (confirm("Are you sure you want to delete this post?")) {
+        postFunction('delete', 'DELETE');
+    }
+}
+
+function postFunction (path, method) {
     const xhttp = new XMLHttpRequest();
     xhttp.onload = () => {
         console.log(this.responseText);
@@ -17,31 +34,9 @@ function savePost () {
     xhttp.onerror = () => {
         console.error(this.responseText);
     };
-    xhttp.open("PUT", "./update", true);
+    xhttp.open(method, `./${path}`, true);
     xhttp.setRequestHeader('content-type', 'application/json');
     xhttp.send(JSON.stringify(postObject));
-}
-
-function publishPost () {
-    if (confirm("Are you sure you want to publish this post?")) {
-        postObject.status = "published";
-        savePost();
-    }
-}
-
-function deletePost () {
-    if (confirm("Are you sure you want to delete this post?")) {
-        const xhttp = new XMLHttpRequest();
-        xhttp.onload = () => {
-            console.log(this.responseText);
-        };
-        xhttp.onerror = () => {
-            console.error(this.responseText);
-        };
-        xhttp.open("DELETE", "./delete", true);
-        xhttp.setRequestHeader('content-type', 'application/json');
-        xhttp.send(JSON.stringify(postObject));
-    }
 }
 
 function pageToObject () {

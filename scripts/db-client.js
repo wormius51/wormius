@@ -18,7 +18,7 @@ function setup () {
 
 function setupTables () {
   Promise.all([
-    require('./blog/blog-post').setup
+    require('./blog/blog-post').setup()
   ]).catch(err => {
     console.error(err);
   })

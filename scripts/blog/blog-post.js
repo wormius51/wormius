@@ -48,8 +48,19 @@ async function deletePost (id) {
     return client.deleteQuary("blogpost", id);
 }
 
+async function publish (id) {
+    return client.query(`
+    UPDATE blogpost SET 
+    status = 'published' 
+    publishdate = CURRENT_DATE 
+    WHERE id = $1
+    AND state != 'published'
+    RETURNING *`, [id]);
+}
+
 module.exports.setup = setup;
 module.exports.create = create;
 module.exports.read = read;
 module.exports.update = update;
 module.exports.delete = deletePost;
+module.exports.publish = publish;
