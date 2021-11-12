@@ -8,11 +8,11 @@ let selectionInputField = document.createElement('textarea');
 
 window.addEventListener('load', () => {
     postDiv.innerHTML = decodeURI(postDiv.innerText);
-    postDiv.children.forEach(element => {
+    for (const element of postDiv.children) {
         element.addEventListener('click', () => {
             selectElement(element);
         });
-    });
+    }
 });
 
 window.addEventListener('dblclick', deselectElement);
