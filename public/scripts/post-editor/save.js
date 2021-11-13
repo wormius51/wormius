@@ -44,7 +44,7 @@ function pageToObject () {
     return {
         id: getPostId(),
         title: getTitle(),
-        description: getDescription(),
+        preview: getpreview(),
         content: postDiv.innerHTML
     }
 }
@@ -66,7 +66,7 @@ function getPostId () {
     return document.getElementById('postId').innerHTML;
 }
 
-function getDescription () {
+function getpreview () {
     const texts = postDiv.getElementsByTagName("p");
     if (texts.length > 0) {
         if (texts[0].innerHTML.length <= 300)
