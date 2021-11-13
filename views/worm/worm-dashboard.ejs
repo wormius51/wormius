@@ -6,14 +6,14 @@
         <form action="./post/create" method="post">
             <h1 class="primaryText">Dashboard</h1>
             <button type="submit">Create Post</button>
-            <div class="container">
-                <div class="row">
-                    <% posts.forEach( post => { %>
-                    <%- include('./post-button.ejs', post) %>
-                    <% }) %>
-                </div>
-            </div>
         </form>
+        <div class="container">
+            <div class="row">
+                <% posts.forEach( post => { %>
+                <%- include('./post-button.ejs', post) %>
+                <% }) %>
+            </div>
+        </div>
         </main>
     </div>
     <% include ../includes/footer.ejs %>
