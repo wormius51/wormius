@@ -67,7 +67,7 @@ function getPostId () {
 }
 
 function getDescription () {
-    const texts = postDiv.getElementsByClassName('lead');
+    const texts = postDiv.getElementsByTagName("p");
     if (texts.length > 0) {
         if (texts[0].innerHTML.length <= 300)
             return texts[0].innerHTML;
