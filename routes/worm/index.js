@@ -53,7 +53,7 @@ router.get('/dashboard', autherizeMidware, (req, res) => {
         });
         return;
     }
-    post.read({}, {colname: "creationdate", acsending: false}).then(data => {
+    post.read({}, ["id", "title", "preview"], {colname: "creationdate", acsending: false}).then(data => {
         res.render('worm/worm-dashboard', {title: "Worm Dashboard", posts: data.rows});
     }).catch(err => {
         res.send(err.message).status(err.code? err.code : 500);

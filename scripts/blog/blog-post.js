@@ -29,8 +29,8 @@ async function create (params) {
  * @param {{id, title, status}} params An object containing the params
  * @param {{colname, acsending}} ordering 
  */
-async function read (params, ordering) {
-    return client.selectQuery("blogpost", params, ordering);
+async function read (params, colnames, ordering) {
+    return client.selectQuery("blogpost", params, colnames, ordering);
 }
 
 /**

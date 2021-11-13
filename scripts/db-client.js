@@ -127,7 +127,8 @@ async function updateQuery (tableName, id, params = {}, callback = undefined) {
  * @param {{colname, acsending}} ordering 
  * @param {Function} callback 
  */
-async function selectQuery (tableName, params = {}, ordering, callback) {
+async function selectQuery (tableName, params = {}, colnames, ordering, callback) {
+  let colnamesString =  colnames? colnames.join(',') : "*";
   let queryText = 'SELECT * FROM ' + tableName + ' WHERE ';
   return fillInWhere(queryText, params, callback, ordering);
 }
