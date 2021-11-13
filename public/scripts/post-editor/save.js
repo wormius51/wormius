@@ -44,6 +44,7 @@ function pageToObject () {
     return {
         id: getPostId(),
         title: getTitle(),
+        description: getDescription(),
         content: postDiv.innerHTML
     }
 }
