@@ -62,7 +62,7 @@ function getpreview () {
     const texts = postDiv.getElementsByTagName("p");
     if (texts.length > 0) {
         const inner = texts[0].innerHTML.replace(/<br>/g, " ");
-        if (inner <= 300)
+        if (inner.length <= 300)
             return inner;
         else
             return inner.substr(0, 298) + "..";
