@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
+const post = require('../../scripts/blog/blog-post');
 
 router.post('/submit-password', (req, res) => {
     const hash = process.env.WORM_PASSWORD;
@@ -42,7 +43,12 @@ function autherizeMidware (req, res, next) {
 }
 
 router.get('/dashboard', autherizeMidware, (req, res) => {
-    res.render('worm/worm-dashboard', {title: "Worm Dashboard"})
+    post.read({}, {colname: "creationdate", acsending: false}).then(data => {
+        res.render('worm/worm-dashboard', {title: "Worm Dashboard", posts: data.rows});
+    }).catch(err => {
+        res.send(err.message).status(err.code? err.code : 500);
+    });
+    
 });
 
 router.get('/login', (req, res) => {

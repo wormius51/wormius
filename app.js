@@ -3,7 +3,8 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const PORT = process.env.PORT || '8000';
 const cors = require('cors');
-const session = require('express-session');
+//const session = require('express-session');
+const session = require('cookie-session');
 
 const app = express();
 
@@ -41,8 +42,9 @@ function makeSecret(length) {
  }
 
 app.use(session({secret: makeSecret(20), resave: false, saveUninitialized: true, 
-  cookie: { secure: app.get('env') === 'production' }, 
-  proxy: app.get('env') === 'production'
+  /*cookie: { secure: app.get('env') === 'production' }, 
+  proxy: app.get('env') === 'production'*/
+  cookie: {secureProxy: true}
 }));
 
 app.use("/",require('./routes/index'));
