@@ -1,6 +1,4 @@
 
-const postObject = pageToObject();
-
 const saveButton = document.getElementById('saveButton');
 const publishButton = document.getElementById('publishButton');
 const deleteButton = document.getElementById('deleteButton');
@@ -37,7 +35,7 @@ function postFunction (path, method) {
     };
     xhttp.open(method, `./${path}`, true);
     xhttp.setRequestHeader('content-type', 'application/json');
-    xhttp.send(JSON.stringify(postObject));
+    xhttp.send(JSON.stringify(pageToObject()));
 }
 
 function pageToObject () {
@@ -47,11 +45,6 @@ function pageToObject () {
         preview: getpreview(),
         content: postDiv.innerHTML
     }
-}
-
-function updatePostObject () {
-    postObject.title = getTitle();
-    postObject.content = postDiv.innerHTML;
 }
 
 function getTitle () {

@@ -51,6 +51,7 @@ router.get('/dashboard', autherizeMidware, (req, res) => {
                 {id: 2, title: "Apple"}
             ]
         });
+        return;
     }
     post.read({}, {colname: "creationdate", acsending: false}).then(data => {
         res.render('worm/worm-dashboard', {title: "Worm Dashboard", posts: data.rows});

@@ -2,6 +2,11 @@ const router = require('express').Router();
 const post = require('../../scripts/blog/blog-post');
 
 router.get('/editor', (req, res) => {
+    // On localhost try with dummy data
+    if (!process.env.DATABASE_URL) {
+        res.render('worm/post-editor', 
+        {title: "Post Editor", postId: req.query.id, content: '<h1 class = "primaryText editable">Dummy</h1>'});
+    }
     post.read({id: req.query.id}).then (data => {
         res.render('worm/post-editor', 
         {title: "Post Editor", postId: req.query.id, content: data.rows[0].content});

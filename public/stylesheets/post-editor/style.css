@@ -18,3 +18,7 @@ textarea {
 #deleteButton {
     background-color: brown;
 }
+
+#postDiv {
+    display: none;
+}

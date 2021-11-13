@@ -13,6 +13,7 @@ window.addEventListener('load', () => {
             selectElement(element);
         });
     }
+    postDiv.style.display = 'block';
     makeDropdown();
 });
 
