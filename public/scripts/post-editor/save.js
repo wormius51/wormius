@@ -61,7 +61,7 @@ function getPostId () {
 function getpreview () {
     const texts = postDiv.getElementsByTagName("p");
     if (texts.length > 0) {
-        const inner = texts[0].innerHTML.replace(/<br>/g, "");
+        const inner = texts[0].innerHTML.replace(/<br>/g, " ");
         if (inner <= 300)
             return inner;
         else
