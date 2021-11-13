@@ -61,10 +61,11 @@ function getPostId () {
 function getpreview () {
     const texts = postDiv.getElementsByTagName("p");
     if (texts.length > 0) {
-        if (texts[0].innerHTML.length <= 300)
-            return texts[0].innerHTML;
+        const inner = texts[0].innerHTML.replace(/<br>/g, "");
+        if (inner <= 300)
+            return inner;
         else
-            return text[0].innerHTML.substr(0, 298) + "..";
+            return inner.substr(0, 298) + "..";
     } else
         return "";
 }
