@@ -65,6 +65,18 @@ function getPostId () {
     return document.getElementById('postId').innerHTML;
 }
 
+function getDescription () {
+    const texts = postDiv.getElementsByClassName('lead');
+    if (texts.length > 0) {
+        if (texts[0].innerHTML.length <= 300)
+            return texts[0].innerHTML;
+        else
+            return text[0].innerHTML.substr(0, 298) + "..";
+    } else
+        return "";
+}
+
 function objectToPage (object) {
     postDiv.innerHTML = object.content;
 }
+
