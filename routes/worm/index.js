@@ -43,6 +43,15 @@ function autherizeMidware (req, res, next) {
 }
 
 router.get('/dashboard', autherizeMidware, (req, res) => {
+    // On localhost try with dummy data
+    if (!process.env.DATABASE_URL) {
+        res.render('worm/worm-dashboard', {title: "Worm Dashboard", posts: 
+            [
+                {id: 1, title: "Banana"},
+                {id: 2, title: "Apple"}
+            ]
+        });
+    }
     post.read({}, {colname: "creationdate", acsending: false}).then(data => {
         res.render('worm/worm-dashboard', {title: "Worm Dashboard", posts: data.rows});
     }).catch(err => {
