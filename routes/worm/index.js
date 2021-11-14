@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const post = require('../../scripts/blog/blog-post');
+const catchWebException = require('../../scripts/web-exception').catchWebException;
 
 router.post('/submit-password', (req, res) => {
     const hash = process.env.WORM_PASSWORD;
@@ -47,18 +48,17 @@ router.get('/dashboard', autherizeMidware, (req, res) => {
     if (!process.env.DATABASE_URL) {
         res.render('worm/worm-dashboard', {title: "Worm Dashboard", posts: 
             [
-                {id: 1, title: "Banana"},
-                {id: 2, title: "Apple"}
+                {id: 1, title: "Banana", preview: "whatever", status: "draft"},
+                {id: 2, title: "Apple",preview: "whatever", status: "published"}
             ]
         });
         return;
     }
-    post.read({}, ["id", "title", "preview"], {colname: "creationdate", acsending: false}).then(data => {
+    post.read({}, ["id", "title", "status", "preview"], {colname: "creationdate", acsending: false}).then(data => {
         res.render('worm/worm-dashboard', {title: "Worm Dashboard", posts: data.rows});
     }).catch(err => {
-        res.send(err.message).status(err.code? err.code : 500);
+        catchWebException(res, err);
     });
-    
 });
 
 router.get('/login', (req, res) => {

@@ -7,13 +7,11 @@ let selectedElement = undefined;
 let selectionInputField = document.createElement('textarea');
 
 window.addEventListener('load', () => {
-    postDiv.innerHTML = decodeURI(postDiv.innerText);
     for (const element of postDiv.children) {
         element.addEventListener('click', () => {
             selectElement(element);
         });
     }
-    postDiv.style.display = 'block';
     makeDropdown();
 });
 

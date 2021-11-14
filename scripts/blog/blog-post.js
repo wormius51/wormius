@@ -25,8 +25,8 @@ async function create (params) {
 
 /**
  * Reads posts that match the params.
- * Initially in draft status.
  * @param {{id, title, status}} params An object containing the params
+ * @param {String[]} colnames What columns to get
  * @param {{colname, acsending}} ordering 
  */
 async function read (params, colnames, ordering) {

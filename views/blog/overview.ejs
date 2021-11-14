@@ -1,0 +1,18 @@
+<% include ../includes/header.ejs %>
+
+<body>
+    <div class="container-fluid">
+        <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content rounded container-fluid" role="main">
+            <h1 class="primaryText"><%= title %></h1>
+            <div class="container">
+                <div class="row">
+                    <% posts.forEach( post => { %>
+                    <%- include('post-link.ejs', post) %>
+                    <% }) %>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <% include ../includes/footer.ejs %>
+</body>
