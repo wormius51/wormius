@@ -7,7 +7,7 @@ router.get("/", (req, res, next) => {
             title: "Games",
             gameLinks: [
                 GameLink("Chess Ball", 
-                    "/chess-ball", "/images/gameLinks/chess-ball.png", 
+                    "/games/chess-ball", "/images/gameLinks/chess-ball.png", 
                     `A chess variant where you kick the ball with your pieces.
                     (This position is a puzzle by jacobdk)`),
                 GameLink("Pipe Pop",
@@ -125,15 +125,6 @@ router.get("/really-bad-flying-machine", (req, res, next) => {
         });
 });
 
-router.get('/chess-ball', (req, res) => {
-    res.render('chess-ball', {
-        matchId: req.query.mi,
-        startPosition: req.query.pos,
-        matchData: req.query.md,
-        title: "Chess Ball",
-        description: "Chess where you kick the ball with your pieces.",
-        keyWords: ["multiplayer","chess"]
-    });
-});
+router.use('/chess-ball', require('./chess-ball'));
 
 module.exports = router;
