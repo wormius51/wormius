@@ -104,7 +104,7 @@ function selectSquare (file, rank, xInSquare, yInSquare, isDrag) {
         m.xInSquare <= xInSquare &&
         m.xInSquare > xInSquare - 0.5 &&
         m.yInSquare <= yInSquare &&
-        m.yInSquare > yInSquare - 0.5))
+        m.yInSquare > yInSquare - 0.5));
     });
     if (move) {
         if (!move.ballMoves && !move.promotions) {
