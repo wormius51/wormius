@@ -3,6 +3,7 @@ var matchData = undefined;
 const offlineUI = document.getElementById("offlineUI");
 const randomMatchButton = document.getElementById("randomMatchButton");
 const friendMatchButton = document.getElementById("friendMatchButton");
+const fromPositionButton = document.getElementById("fromPositionButton")
 const matchLinkField = document.getElementById("matchLink");
 const copyMatchLinkButton = document.getElementById("copyMatchLinkButton");
 const matchLinkDiv = document.getElementById("matchLinkDiv");
@@ -39,6 +40,11 @@ friendMatchButton.addEventListener('click', () => {
     matchLinkDiv.style.display = "block";
 });
 
+fromPositionButton.addEventListener('click', () => {
+    socket.emit("makeMatch", positionFen(position));
+    matchLinkDiv.style.display = "block";
+});
+
 socket.on("player-added", avatar => {
     if (linkMatchId)
         socket.emit("join", linkMatchId);
@@ -57,7 +63,7 @@ socket.on('matchId', data => {
 });
 
 socket.on('start', data => {
-    startPosition = defaultStartingPosition;
+    startPosition = data.startFen ? fenToPosition(data.startFen) : defaultStartingPosition;
     myColor = data.youAre;
     matchData = data;
     if ((myColor == "white") == flippedBoard)

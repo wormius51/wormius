@@ -3,7 +3,7 @@ const position = require('./position');
 
 var matches = [];
 
-function Match (player, private) {
+function Match (player, private, fen) {
     let match = {};
     if ((player.lastColor == undefined && Math.random() > 0.5) ||
         player.lastColor == "black")
@@ -12,7 +12,9 @@ function Match (player, private) {
         match.black = player;
     match.moves = [];
     match.id = shortid.generate();
-    match.position = position.getStartingPosition();
+    match.position = fen ? position.fenToPosition(fen) : position.getStartingPosition();
+    if (fen)
+        match.startFen = fen;
     match.spectators = [];
     match.state = "looking";
     match.private = private;
@@ -85,6 +87,7 @@ function startMatch (match) {
     match.state = "playing";
     let data = {
         matchId: match.id,
+        startFen: match.startFen,
         white: match.white.avatar,
         black: match.black.avatar,
         moves: []

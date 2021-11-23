@@ -43,7 +43,7 @@ function start () {
         let player = Player.getPlayerById(socket.id);
         if (!player)
             player = Player(socket);
-        Match(player, true);
+        Match(player, true, data);   
     });
 
     socketer.addListener(namespace, "join", (data, socket, nsp) => {

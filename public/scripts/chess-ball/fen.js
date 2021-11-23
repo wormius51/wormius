@@ -131,9 +131,12 @@ function fenToPosition (fen) {
             file += +c;
     }
     if (strings.length < 2)
+        return;
+    position.turn = (strings[1] == "b") ? "black" : "white";
+    if (strings.length < 3)
         return position;
     for (let charIndex = 0; charIndex < strings[1].length; charIndex++) {
-        switch (strings[1][charIndex]) {
+        switch (strings[2][charIndex]) {
             case "K":
                 position.castling.white.short = true;
                 break;
@@ -150,7 +153,7 @@ function fenToPosition (fen) {
     }
     if (strings.length < 3)
         return position;
-    if (strings[2] != "-") {
+    if (strings[3] != "-") {
         let file = strings[2].charCodeAt(0) - "a".charCodeAt(0);
         let rank = +strings[2][1];
         position.enpassant = {x: file, y: rank};
