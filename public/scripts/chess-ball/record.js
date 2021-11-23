@@ -21,12 +21,18 @@ function matchString () {
         movesString += moveMinString(move) + ",";
     });
     movesString = movesString.substr(0, movesString.length - 1);
-    return movesString;
+    return movesString + "|" + positionFen(getStartPosition());
 }
 
 function decodeMatchString (string) {
-    let movesChars = string.split(",");
+    let movesAndPosition = string.split("|");
+    let movesChars = movesAndPosition[0].split(",");
     moves = [];
+    console.log(movesAndPosition);
+    if (movesAndPosition[1])
+        startPosition = fenToPosition(movesAndPosition[1]);
+    else
+        startPosition = defaultStartingPosition;
     rollPositionToMove(-1);
     movesChars.forEach(s => {
         let move = stringToMove(s);

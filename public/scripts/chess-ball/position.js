@@ -10,6 +10,27 @@ function setStartingPosition () {
         position.ball = position[3][4];
 }
 
+function getStartPosition () {
+    let position = copyPosition(startPosition);
+    if (!position.turn)
+        position.turn = "white";
+    if (!position.castling)
+        position.castling = {white: {short: true, long: true}, black: {short: true, long: true}};
+    if (!position.ball)
+        position.ball = getBall(position);
+    return position;
+}
+
+function getBall (position) {
+    for (let y = 0; y < position.length; y++) {
+        for (let x = 0; x < position[y].length; x++) {
+            let piece = position[y][x];
+            if (piece.type == "ball")
+                return piece;
+        }
+    }
+}
+
 const emptyPosition = [
     [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
