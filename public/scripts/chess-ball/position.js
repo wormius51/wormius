@@ -1,13 +1,7 @@
 var position = [];
 
 function setStartingPosition () {
-    position = copyPosition(startPosition);
-    if (!position.turn)
-        position.turn = "white";
-    if (!position.castling)
-        position.castling = {white: {short: true, long: true}, black: {short: true, long: true}};
-    if (!position.ball)
-        position.ball = position[3][4];
+    position = getStartPosition();
 }
 
 function getStartPosition () {

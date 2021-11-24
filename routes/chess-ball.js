@@ -13,6 +13,7 @@ router.get("/", (req, res) => {
 
 router.get("/editor", (req, res) => {
     res.render('chess-ball-editor', {
+        startPosition: req.query.pos,
         title: "Chess Ball Editor",
         description: "Chess where you kick the ball with your pieces.",
         keyWords: ["multiplayer","chess"]

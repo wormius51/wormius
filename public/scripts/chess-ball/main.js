@@ -42,6 +42,10 @@ const flipButton = document.getElementById("flipBoardButton");
 flipButton.addEventListener('click', flipBoard);
 const restartButton = document.getElementById("restartButton");
 restartButton.addEventListener('click', restart);
+const editorButton = document.getElementById("editorButton");
+editorButton.addEventListener('click', () => {
+    window.open(`./chess-ball/editor?pos=${positionFen(position)}`);
+});
 
 var possibleMoves = [];
 

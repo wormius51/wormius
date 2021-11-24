@@ -8,6 +8,7 @@ const piecesCanvas = document.getElementById("piecesCanvas");
 const piecesContext = piecesCanvas.getContext("2d");
 const posLink = document.getElementById("posLink");
 const copyPosLinkButton = document.getElementById("copyPosLinkButton");
+const startPositionFen = document.getElementById("startPosition").innerHTML;
 
 const editorPieces = [
     [Piece("white", "pawn"), Piece("black", "pawn")],
@@ -16,7 +17,7 @@ const editorPieces = [
     [Piece("white", "rook"), Piece("black", "rook")],
     [Piece("white", "queen"), Piece("black", "queen")],
     [Piece("white", "king"), Piece("black", "king")],
-    [Piece("nan", "ball"), undefined]
+    [Piece("non", "ball"), undefined]
 ];
 
 var editorSelection = undefined;
@@ -24,12 +25,20 @@ var editorSelectionColor = "#01a410";
 
 window.addEventListener('load', setUpEditor);
 
+function loadFen (fen) {
+    if (!fen)
+        return;
+    fen = decodeURI(fen);
+    startPosition = fenToPosition(fen);
+}
+
 function setUpEditor () {
     startPosition = emptyPosition;
+    loadFen(startPositionFen);
     setStartingPosition();
-    position.castling.white = false;
-    position.castling.black = false;
+    drawBoard();
     drawPiecesCanvas();
+    setPosLinkValue();
 }
 
 function drawPiecesCanvas () {
@@ -120,7 +129,7 @@ function placePiece (file, rank) {
 
 function setPosLinkValue () {
     posLink.value = window.location.href;
-    posLink.value = posLink.value.replace("/editor", "");
+    posLink.value = posLink.value.replace(/\/editor.*/, "");
     let fen = positionFen(position);
     fen = encodeURI(fen);
     posLink.value += `?pos=${fen}`;

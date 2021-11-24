@@ -112,8 +112,8 @@ function moveString (position, move) {
                         position[m.sy][m.sx].type &&
                         move.x == m.x &&
                         move.y == m.y &&
-                        move.bx == m.bx &&
-                        move.by == m.by) {
+                        !(move.sx == m.sx &&
+                        move.sy == m.sy)) {
                         if (move.sx == m.sx)
                             finalSourceRankString = sourceRankString;
                         else
