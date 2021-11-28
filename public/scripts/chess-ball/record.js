@@ -28,7 +28,6 @@ function decodeMatchString (string) {
     let movesAndPosition = string.split("|");
     let movesChars = movesAndPosition[0].split(",");
     moves = [];
-    console.log(movesAndPosition);
     if (movesAndPosition[1])
         startPosition = fenToPosition(movesAndPosition[1]);
     else

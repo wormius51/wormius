@@ -19,7 +19,7 @@ function getBall (position) {
     for (let y = 0; y < position.length; y++) {
         for (let x = 0; x < position[y].length; x++) {
             let piece = position[y][x];
-            if (piece.type == "ball")
+            if (piece && piece.type == "ball")
                 return piece;
         }
     }

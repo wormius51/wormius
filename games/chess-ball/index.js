@@ -43,6 +43,7 @@ function start () {
         let player = Player.getPlayerById(socket.id);
         if (!player)
             player = Player(socket);
+        Match.cancleRematch(player);
         Match(player, true, data);   
     });
 
@@ -50,7 +51,14 @@ function start () {
         let player = Player.getPlayerById(socket.id);
         if (!player)
             player = Player(socket);
+        Match.cancleRematch(player);
         Match.join(data, player);
+    });
+
+    socketer.addListener(namespace, "rematch", (data, socket, nsp) => {
+        let player = Player.getPlayerById(socket.id);
+            if (player)
+                Match.rematch(player);
     });
 
     socketer.addListener(namespace, "quickMatch", (data, socket, nsp) => {

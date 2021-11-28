@@ -2,6 +2,7 @@ const socket = io('/chess-ball');
 var matchData = undefined;
 const offlineUI = document.getElementById("offlineUI");
 const randomMatchButton = document.getElementById("randomMatchButton");
+const rematchButton = document.getElementById("rematchButton");
 const friendMatchButton = document.getElementById("friendMatchButton");
 const fromPositionButton = document.getElementById("fromPositionButton")
 const matchLinkField = document.getElementById("matchLink");
@@ -33,6 +34,10 @@ copyMatchLinkButton.addEventListener('click', () => {
 
 randomMatchButton.addEventListener('click', () => {
     socket.emit("quickMatch");
+});
+
+rematchButton.addEventListener('click', () => {
+    socket.emit("rematch");
 });
 
 friendMatchButton.addEventListener('click', () => {

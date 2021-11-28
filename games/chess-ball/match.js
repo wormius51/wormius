@@ -25,6 +25,25 @@ function Match (player, private, fen) {
     return match;
 }
 
+function rematch (player) {
+    if (!player.pastMatch)
+        return;
+    let playerColor = player == player.pastMatch.white ? "white" : "black";
+    let opponentColor = playerColor == "white" ? "black" : "white";
+    player.pastMatch[playerColor + " rematch"] = true;
+    if (player.pastMatch[opponentColor + " rematch"]) {
+        let newMatch = Match(player, true, player.pastMatch.startFen);
+        joinMatch(newMatch, player.pastMatch[opponentColor]);
+    }
+}
+
+function cancleRematch (player) {
+    if (!player.pastMatch)
+        return;
+    let playerColor = player == player.pastMatch.white ? "white" : "black";
+    player.pastMatch[playerColor + " rematch"] = false;
+}
+
 function getMatchById (id) {
     return matches.find(m => m.id == id);
 }
@@ -103,11 +122,13 @@ function endMatch (match, reason) {
     if (match.white) {
         match.white.room = "lobby";
         match.white.match = undefined;
+        match.white.pastMatch = match;
         match.white.socket.emit("end", reason);
     }
     if (match.black) {
         match.black.room = "lobby";
         match.black.match = undefined;
+        match.black.pastMatch = match;
         match.black.socket.emit("end", reason);
     }
     match.spectators.forEach(s => {
@@ -174,3 +195,5 @@ module.exports.joinMatchOrStart = joinMatchOrStart;
 module.exports.playMove = playMove;
 module.exports.endMatch = endMatch;
 module.exports.sendData = sendData;
+module.exports.rematch = rematch;
+module.exports.cancleRematch = cancleRematch;
