@@ -135,7 +135,7 @@ function fenToPosition (fen) {
     position.turn = (strings[1] == "b") ? "black" : "white";
     if (strings.length < 3)
         return position;
-    for (let charIndex = 0; charIndex < strings[1].length; charIndex++) {
+    for (let charIndex = 0; charIndex < strings[2].length; charIndex++) {
         switch (strings[2][charIndex]) {
             case "K":
                 position.castling.white.short = true;

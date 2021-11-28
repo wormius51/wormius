@@ -1,12 +1,25 @@
+importScripts(
+    "piece.js",
+    "position.js"
+);
+
+onmessage = event => {
+    if (event.data.command == "move") {
+        let move = aiMove(event.data.position);
+        postMessage({
+            responseType: "move",
+            move: move
+        });
+    }
+};
+
+
 const aiParams = {
     ballRankWeight: 1,
     materialWeight: 1,
     movesCountWeight: 0.01,
-    aiColor: "black",
     depth: 2
 };
-
-let aiTimeout = undefined;
 
 function evaluatePosition (position) {
     let result = positionResult(position);
@@ -105,29 +118,4 @@ function aiMove (position, depth, alpha, beta) {
     }
     bestMove.eval = bestEval;
     return bestMove;
-}
-
-function ExecuteAiMove () {
-    rollPositionToMove(Infinity);
-    if (position.turn != aiParams.aiColor)
-        return;
-    let posCopy = copyPosition(position);
-    let move = aiMove(position);
-    move.string = moveString(position, move);
-    if (!matchData && isLegalMove(posCopy, move)) {
-        moves.push(move);
-        rollPositionToMove(Infinity);
-        updateInfo();
-    }
-    mostRecentMove = move;
-    drawBoard();
-    if (aiTimeout)
-        clearTimeout(aiTimeout);
-}
-
-function nonBlockAiMove () {
-    if (aiTimeout)
-        clearTimeout(aiTimeout);
-    if (positionResult(position) == "playing")
-        aiTimeout = setTimeout(ExecuteAiMove, 0);
 }
