@@ -279,6 +279,8 @@ function isTheSameMove (a, b) {
 }
 
 function isLegalMove (position, move) {
+    if (positionResult(position) != "playing")
+        return false;
     for (let rank = 0; rank < position.length; rank++) {
         for (let file = 0; file < position[rank].length; file++) {
             let moves = getMovesOfPiece(position, file, rank);
