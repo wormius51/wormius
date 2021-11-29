@@ -4,15 +4,29 @@ importScripts(
 );
 
 onmessage = event => {
-    if (event.data.command == "move") {
-        let move = aiMove(event.data.position);
-        postMessage({
-            responseType: "move",
-            move: move
-        });
+    switch (event.data.command) {
+        case "move":
+            postMove(event.data.position, event.data.devideTask);
+            break;
+        case "depth":
+            changeDepth(event.data.depth);
+            break;
     }
 };
 
+function postMove (position, devideTask) {
+    // Next time do async promise all to start a worker for each candidate move.
+    let move = aiMove(position);
+    postMessage({
+        responseType: "move",
+        move: move
+    });
+}
+
+function changeDepth (depth) {
+    if (!isNaN(depth))
+        aiParams.depth = depth;
+}
 
 const aiParams = {
     ballRankWeight: 1,
