@@ -13,7 +13,8 @@ router.get("/", (req, res) => {
         The ball moves as the piece that kicks it to an empty square.
         You can leave your king in check (or mate) if you score a goal at the same move.`,
         keyWords: ["multiplayer","chess"],
-        image: "/images/gameLinks/chess-ball.png"
+        image: "/images/gameLinks/chess-ball.png",
+        icon: "/images/chess-ball/ball.png"
     });
 });
 
@@ -24,7 +25,8 @@ router.get("/editor", (req, res) => {
         title: "Chess Ball Editor",
         description: "Set up a board for chess ball. Go wild and make creazy puzzles!",
         keyWords: ["multiplayer","chess"],
-        image: "/images/gameLinks/chess-ball.png"
+        image: "/images/gameLinks/chess-ball.png",
+        icon: "/images/chess-ball/ball.png"
     });
 });
 

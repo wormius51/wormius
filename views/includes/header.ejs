@@ -18,7 +18,7 @@
         <% } %></title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="shortcut icon" href="/images/worm.png" type="images/x-icon">
+    <link rel="shortcut icon" href="<%if (locals.icon) { %><%= icon %><% } else { %>/images/worm.png<% } %>" type="images/x-icon">
     <link rel="stylesheet" href="/stylesheets/includes/header.css">
     <link rel="stylesheet" href="/stylesheets/includes/footer.css">
     <!-- Global site tag (gtag.js) - Google Analytics -->

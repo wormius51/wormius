@@ -91,7 +91,8 @@ router.get("/jump-dash", (req, res, next) => {
             title: "Jump Dash",
             description: "A game where you jump, and then you dash.",
             keywords: ["game", "platformer", "webgame"],
-            image: "/images/gameLinks/jump-dash.png"
+            image: "/images/gameLinks/jump-dash.png",
+            icon: "/games/jump-dash-st/images/dash.png"
         });
 });
 
