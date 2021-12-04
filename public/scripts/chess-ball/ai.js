@@ -11,15 +11,63 @@ onmessage = event => {
         case "depth":
             changeDepth(event.data.depth);
             break;
+        case "log":
+            console.log("I am here");
+            break;
     }
 };
 
-function postMove (position, devideTask) {
-    // Next time do async promise all to start a worker for each candidate move.
-    let move = aiMove(position);
+async function postMove (position, devideTask) {
+    let move = undefined;
+    if (devideTask)
+        move = await splitMoveTask(position);
+    else 
+        move = aiMove(position);
     postMessage({
         responseType: "move",
         move: move
+    });
+}
+
+async function splitMoveTask (position) {
+    const moves = getMovesOfPosition(position);
+    const workersAndMoves = [];
+    for (const move of moves) {
+        const worker = new Worker("ai.js");
+        workersAndMoves.push({
+            worker: worker,
+            move: move
+        });
+        worker.postMessage({
+            command: "depth",
+            depth: aiParams.depth - 1
+        });
+        const subPosition = positionAfterMove(position, move);
+        worker.postMessage({
+            command: "move",
+            position: subPosition
+        });
+    }
+    const move = await Promise.all(workersAndMoves.map(subWorkerPromise)).then(moves => {
+        let colorSign = position.turn == "white" ? 1 : -1;
+        let bestMove = undefined;
+        for (const move of moves) {
+            if (bestMove == undefined ||
+                move.eval * colorSign > bestMove.eval * colorSign)
+                bestMove = move;
+        }
+        return bestMove;
+    });
+    return move;
+}
+
+async function subWorkerPromise (workersAndMove) {
+    return new Promise((resolve, reject) => {
+        workersAndMove.worker.onmessage = event => {
+            workersAndMove.worker.terminate();
+            workersAndMove.move.eval = event.data.move.eval;
+            resolve(workersAndMove.move);
+        };
     });
 }
 
@@ -102,7 +150,7 @@ function aiMove (position, depth, alpha, beta) {
         alpha = -Infinity;
     if (beta == undefined)
         beta = Infinity;
-    let moves = getMovesOfPosition(position);
+    let moves = getMovesOfPosition(position);//.sort(heuristic(position));//.slice(0, 4);
     let bestMove = moves[0];
     let colorSign = position.turn == "white" ? 1 : -1;
     let bestEval = -Infinity * colorSign;
@@ -132,4 +180,14 @@ function aiMove (position, depth, alpha, beta) {
     }
     bestMove.eval = bestEval;
     return bestMove;
+}
+
+
+function heuristic (position) {
+    let colorSign = position.turn == "white" ? 1 : -1;
+    return (moveA, moveB) => {
+        return evaluatePosition(positionAfterMove(position, moveA)) * colorSign > 
+            evaluatePosition(positionAfterMove(position, moveB)) * colorSign
+            ? -1 : 1;
+    };
 }

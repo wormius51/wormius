@@ -7,7 +7,7 @@ const boardHeight = 8;
 const boardWidth = 8;
 
 let squareEdgeLength = 70;
-let minimumEdgeLength = 40;
+let minimumEdgeLength = 30;
 const pieceEdgeLength = 320;
 const pieceOutlineSize = 0.1;
 const moveOptionRadius = 0.4;

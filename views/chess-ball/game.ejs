@@ -1,0 +1,96 @@
+<% include ../includes/header.ejs %>
+<head>
+    <link rel="stylesheet" href="/stylesheets/chess-ball/style.css">
+    <link rel="shortcut icon" href="/images/chess-ball/ball.png" type="image/x-icon">
+    <meta name="og:image" content="/images/gameLinks/chess-ball.png">
+    <meta name="description" content="Win by kicking the ball to the opponents back rank
+    or by checkmating (scoring a goal beats checkmate).
+    Kick the ball by making a capture move to it.
+    The ball moves as the piece that kicks it to an empty square.
+    You can leave your king in check (or mate) if you score a goal at the same move.">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content rounded container-fluid" role="main">
+            <h1 class="primaryText">Chess Ball</h1>
+            <h6 id = "playerCount"></h4>
+            <div class="data">
+                <div id = "matchId"><%= matchId %></div>
+                <div id = "startPosition"><%= startPosition %></div>
+                <div id = "matchData"><%= matchData %></div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <canvas id = "boardCanvas"></canvas>
+                        <br>
+                        <h2>Board background by Clyde</h2>
+                    </div>
+                    <div class="col">
+                        <h2 id = "resaltText"></h2>
+                        <div id = "movesDiv">
+                            <table id = "movesTable"></table>
+                        </div>
+                        <br>
+                        <button id = "flipBoardButton">Flip Board</button>
+                        <input type="text" id="nameField" placeholder="Name...">
+                        <div id = "matchInfoDiv">
+                            <h3 id = "namesText"></h3>
+                        </div>
+                        <div id = "offlineUI">
+                            <button id = "restartButton">Solo</button>
+                            <button id = "saveGameButton">Save Game</button>
+                            <button id = "loadGameButton">Load Game</button>
+                            <button id = "editorButton">Editor</button>
+                            <br>
+                            <button id = "randomMatchButton">Random Match</button>
+                            <button id = "rematchButton">Rematch</button>
+                            <br>
+                            <button id = "friendMatchButton">Play With A Friend</button>
+                            <button id = "fromPositionButton">Play From Position</button>
+                            <br>
+                            <div id = "matchLinkDiv">
+                                Send this link to your friend<br>
+                                <input type="text" id="matchLink" readonly>
+                                <button id = "copyMatchLinkButton" class="copyButton">
+                                    <img src="/images/chess-ball/clipboard.png" alt="Copy link">
+                                </button>
+                            </div>
+                        </div>
+                        
+                        </div>
+                </div>
+            </div>
+            <p id = "infoText">
+                <h4 class="primaryText">Chess Ball by Eyal Hazor</h4>
+                Win by kicking the ball to the opponents back rank
+                or by checkmating (scoring a goal beats checkmate).
+                Kick the ball by making a capture move to it.
+                The ball moves as the piece that kicks it to an empty square.
+                You can leave your king in check (or mate) if you score a goal at the same move.
+            </p>
+            <a href="https://www.reddit.com/r/chessball/" target="_blank">
+                <img src="/images/chess-ball/reddit.png" alt="Reddit" height="50px">
+            </a>
+            <script src="/scripts/chess-ball/util.js"></script> 
+            <script src="/scripts/chess-ball/piece.js"></script>
+            <script src="/scripts/chess-ball/images.js"></script>
+            <script src="/scripts/chess-ball/canvas.js"></script>
+            <script src="/scripts/chess-ball/position.js"></script>
+            <script src="/scripts/chess-ball/multiplayer.js"></script>
+            <script src="/scripts/chess-ball/info.js"></script>
+            <script src="/scripts/chess-ball/ai-controller.js"></script>
+            <script src="/scripts/chess-ball/cookie.js"></script>
+            <script src="/scripts/chess-ball/fen.js"></script>
+            <script src="/scripts/chess-ball/puzzle.js"></script>
+            <script src="/scripts/chess-ball/record.js"></script>
+            <script src="/scripts/chess-ball/main.js"></script>
+        </main>
+    </div>
+
+    <% include ../includes/footer.ejs %>
+</body>
+
+</html>

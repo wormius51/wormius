@@ -125,6 +125,11 @@ router.get("/really-bad-flying-machine", (req, res, next) => {
         });
 });
 
-router.use('/chess-ball', require('./chess-ball'));
+router.use('/chess-ball', gamesMidwere, require('./chess-ball'));
+
+function gamesMidwere (req, res, next) {
+    req.throughGames = true;
+    next();
+}
 
 module.exports = router;

@@ -209,7 +209,7 @@ function setUpUi() {
     ];
     if (!isMobile) {
         optionsPannel.children.push(UiElement(400, 100, 200, 50, "Controls", { color: "white" }, setControls));
-        UiElement(20, 560, 100, 50, "Version: " + version, { color: "white" });
+        //UiElement(20, 560, 100, 50, "Version: " + version, { color: "white" });
     } else {
         makeMobileButtons();
     }

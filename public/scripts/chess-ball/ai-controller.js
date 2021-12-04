@@ -1,4 +1,6 @@
 
+let aiStartTime = 0;
+
 const aiWorker = new Worker("/scripts/chess-ball/ai.js");
 
 function ExecuteAiMove (move) {
@@ -17,6 +19,7 @@ function ExecuteAiMove (move) {
 }
 
 function nonBlockAiMove () {
+    aiStartTime = Date.now();
     aiWorker.postMessage({
         command: "move",
         position: position
@@ -24,7 +27,10 @@ function nonBlockAiMove () {
 }
 
 aiWorker.onmessage = event => {
+    
     if (event.data && event.data.responseType == "move") {
+        console.log(`AI eval: ${event.data.move.eval}
+        AI move time: ${(Date.now() - aiStartTime) / 1000}`);
         ExecuteAiMove(event.data.move);
     }
 };

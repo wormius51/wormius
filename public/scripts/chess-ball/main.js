@@ -1,4 +1,4 @@
-function isMobile () {
+function chessIsMobile () {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
 
@@ -54,14 +54,14 @@ var myColor = "both";
 function calculateX (clientX) {
     let offset = offsetofElement(canvas);
     let x = clientX - offset.left;
-    if (!isMobile())
+    if (!chessIsMobile())
         x += window.scrollX;
     return x;
 }
 function calculateY (clientY) {
     let offset = offsetofElement(canvas);
     let y = clientY - offset.top;
-    if (!isMobile())
+    if (!chessIsMobile())
         y += window.scrollY;
     return y;
 }
@@ -154,7 +154,7 @@ function applyMove (move) {
     kickingPiece = undefined;
     draggedPiece = undefined;
     mostRecentMove = move;
-    if (!matchData) {
+    if (!matchData && positionResult(position) == "playing") {
         nonBlockAiMove();
     }
     sendMove(move);

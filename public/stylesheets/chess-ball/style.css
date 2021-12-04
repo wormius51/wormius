@@ -1,7 +1,11 @@
-body {
+/*body {
     font-size: x-large;
     background-color: white;
 }
+
+input {
+    width: 100%;
+}*/
 
 #boardCanvas {
     background-color: white;

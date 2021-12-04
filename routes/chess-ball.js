@@ -1,7 +1,8 @@
 const router = require('express').Router();
 
 router.get("/", (req, res) => {
-    res.render('chess-ball', {
+    const templateName = req.throughGames ? 'chess-ball/game' : 'chess-ball';
+    res.render(templateName, {
         matchId: req.query.mi,
         startPosition: req.query.pos,
         matchData: req.query.md,
