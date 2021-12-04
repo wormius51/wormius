@@ -8,7 +8,8 @@ router.get("/", (req, res) => {
         matchData: req.query.md,
         title: "Chess Ball",
         description: "Chess where you kick the ball with your pieces.",
-        keyWords: ["multiplayer","chess"]
+        keyWords: ["multiplayer","chess"],
+        image: "/images/gameLinks/chess-ball.png"
     });
 });
 
@@ -17,7 +18,8 @@ router.get("/editor", (req, res) => {
         startPosition: req.query.pos,
         title: "Chess Ball Editor",
         description: "Chess where you kick the ball with your pieces.",
-        keyWords: ["multiplayer","chess"]
+        keyWords: ["multiplayer","chess"],
+        image: "/images/gameLinks/chess-ball.png"
     });
 });
 
