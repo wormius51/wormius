@@ -1,0 +1,47 @@
+<% include ../includes/header.ejs %>
+<head>
+    <link rel="stylesheet" href="/stylesheets/chess-ball/style.css">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content rounded container-fluid" role="main">
+            <h1 class="primaryText">Chess Ball Editor</h1>
+            <div id = "startPosition" class="data"><%= startPosition %></div>
+            <table id = "layoutTable">
+                <tr>
+                    <td>
+                        <canvas id = "boardCanvas"></canvas>
+                        <br>
+                        <input type="text" id="posLink" readonly>
+                        <button id = "copyPosLinkButton" class="copyButton">Copy Link</button>
+                    </td>
+                    <td>
+                        <canvas id = "piecesCanvas"></canvas>
+                    </td>
+                </tr>
+            </table>
+            <h4 class="primaryText">Chess Ball by Eyal Hazor</h4>
+            <p id = "infoText" class="lead">
+                Click on a piece and then on the board to place it on the board.
+                Click the empty spot to delete.
+                Copy the url in the field to share the position with your friends.
+            </p>
+            <a href="https://www.reddit.com/r/chessball/" target="_blank">
+                <img src="/images/chess-ball/reddit.png" alt="Reddit" height="50px">
+            </a>
+            <script src="/scripts/chess-ball/util.js"></script> 
+            <script src="/scripts/chess-ball/images.js"></script> 
+            <script src="/scripts/chess-ball/piece.js"></script>
+            <script src="/scripts/chess-ball/position.js"></script>
+            <script src="/scripts/chess-ball/canvas.js"></script>
+            <script src="/scripts/chess-ball/fen.js"></script>
+            <script src="/scripts/chess-ball/editor.js"></script>
+        </main>
+    </div>
+
+    <% include ../includes/footer.ejs %>
+</body>
+
+</html>

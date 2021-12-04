@@ -7,7 +7,7 @@ const movesTable = document.getElementById("movesTable");
 let isFreeScrolling = false;
 let currentMoveIndex = 0;
 
-movesDiv.addEventListener('scroll', () => {
+movesDiv.addEventListener('scroll', event => {
     let scrollValue = movesDiv.scrollHeight - Math.floor(movesDiv.scrollTop);
     isFreeScrolling = scrollValue != movesDiv.clientHeight && scrollValue != movesDiv.clientHeight + 1;
 });
@@ -218,5 +218,6 @@ window.addEventListener('keydown', event => {
 });
 
 canvas.addEventListener('mousewheel', event => {
+    event.preventDefault();
     scrollMoves(event.deltaY > 0);
 });

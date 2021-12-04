@@ -1,4 +1,4 @@
-function isMobile () {
+function chessIsMobile () {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
 
@@ -68,14 +68,14 @@ copyPosLinkButton.addEventListener('click', () => {
 function calculateX (clientX, ca) {
     let offset = offsetofElement(ca);
     let x = clientX - offset.left;
-    if (!isMobile())
+    if (!chessIsMobile())
         x += window.scrollX;
     return x;
 }
 function calculateY (clientY, ca) {
     let offset = offsetofElement(ca);
     let y = clientY - offset.top;
-    if (!isMobile())
+    if (!chessIsMobile())
         y += window.scrollY;
     return y;
 }

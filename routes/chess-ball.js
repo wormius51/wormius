@@ -18,10 +18,11 @@ router.get("/", (req, res) => {
 });
 
 router.get("/editor", (req, res) => {
-    res.render('chess-ball-editor', {
+    const templateName = req.throughGames ? 'chess-ball/editor' : 'chess-ball-editor';
+    res.render(templateName, {
         startPosition: req.query.pos,
         title: "Chess Ball Editor",
-        description: "Chess where you kick the ball with your pieces.",
+        description: "Set up a board for chess ball. Go wild and make creazy puzzles!",
         keyWords: ["multiplayer","chess"],
         image: "/images/gameLinks/chess-ball.png"
     });
