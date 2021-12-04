@@ -7,7 +7,11 @@ router.get("/", (req, res) => {
         startPosition: req.query.pos,
         matchData: req.query.md,
         title: "Chess Ball",
-        description: "Chess where you kick the ball with your pieces.",
+        description: `Win by kicking the ball to the opponents back rank
+        or by checkmating (scoring a goal beats checkmate).
+        Kick the ball by making a capture move to it.
+        The ball moves as the piece that kicks it to an empty square.
+        You can leave your king in check (or mate) if you score a goal at the same move.`,
         keyWords: ["multiplayer","chess"],
         image: "/images/gameLinks/chess-ball.png"
     });
