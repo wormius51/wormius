@@ -16,6 +16,7 @@ function ExecuteAiMove (move) {
     updateInfo();
     mostRecentMove = move;
     drawBoard();
+    window.dispatchEvent(new Event("my-turn"));
 }
 
 function nonBlockAiMove () {

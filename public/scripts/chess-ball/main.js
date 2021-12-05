@@ -49,7 +49,7 @@ editorButton.addEventListener('click', () => {
 
 var possibleMoves = [];
 
-var myColor = "both";
+var myColor = "white";
 
 function calculateX (clientX) {
     let offset = offsetofElement(canvas);
@@ -76,8 +76,8 @@ function setMouseXY (event) {
 
 function selectCanvas (event, isDrag) {
     rollPositionToMove(Infinity);
-    if (myColor != "both" && myColor != position.turn)
-        return;
+    /*if (myColor != "both" && myColor != position.turn)
+        return;*/
     let x = calculateX(event.clientX);
     let y = calculateY(event.clientY);
     let file = Math.floor(x / squareEdgeLength);
@@ -87,10 +87,10 @@ function selectCanvas (event, isDrag) {
     selectSquare(file, rank, xInSquare, yInSquare, isDrag);
 }
 
-function selectSquare (file, rank, xInSquare, yInSquare, isDrag) {
+function selectSquare (file, rank, xInSquare, yInSquare, isDrag, isPremove) {
     if (positionResult(position) != "playing")
         return;
-    if (flippedBoard) {
+    if (flippedBoard && !isPremove) {
         file = boardWidth - 1 - file;
         rank = boardHeight - 1 - rank;
     }
@@ -101,6 +101,12 @@ function selectSquare (file, rank, xInSquare, yInSquare, isDrag) {
         draggedPiece = position[rank][file];
     else
         draggedPiece = undefined;
+    if (myColor != "both" && myColor != position.turn) {
+        setPremove(file, rank, xInSquare, yInSquare, isDrag);
+        return;
+    } else {
+        premoves = [];
+    }
     let move = possibleMoves.find(m => {
         return ((m.bx == undefined && m.x == file && m.y == rank) || 
         (m.bx == file && m.by == rank)) &&

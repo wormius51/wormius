@@ -44,6 +44,12 @@ function updateInfo (result) {
         case "disconnect black":
             resultText.innerHTML = "White wins by disconnection";
             break;
+        case "resign white":
+            resultText.innerHTML = "Black wins by resignation";
+            break;
+        case "resign black":
+            resultText.innerHTML = "White wins by resignation";
+            break;
         case "stalemate":
             resultText.innerHTML = "Draw by stalemate";
             break;

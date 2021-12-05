@@ -1,6 +1,7 @@
 const socket = io('/chess-ball');
 var matchData = undefined;
 const offlineUI = document.getElementById("offlineUI");
+const multiplayerUI = document.getElementById("multiplayerUI");
 const randomMatchButton = document.getElementById("randomMatchButton");
 const rematchButton = document.getElementById("rematchButton");
 const friendMatchButton = document.getElementById("friendMatchButton");
@@ -14,6 +15,8 @@ const nameField = document.getElementById("nameField");
 const matchInfoDiv = document.getElementById("matchInfoDiv");
 const namesText = document.getElementById("namesText");
 
+const resignButton = document.getElementById("resignButton");
+
 window.addEventListener('load', () => {
     loadCookie();
     nameField.value = cookie.name;
@@ -21,6 +24,12 @@ window.addEventListener('load', () => {
 });
 
 nameField.addEventListener('change', updatePlayer);
+
+resignButton.addEventListener('click', () => {
+    if (confirm("Are you sure you want to resign?")) {
+        socket.emit("resign");
+    }
+});
 
 function updatePlayer () {
     cookie.name = nameField.value;
@@ -50,7 +59,7 @@ fromPositionButton.addEventListener('click', () => {
     matchLinkDiv.style.display = "block";
 });
 
-socket.on("player-added", avatar => {
+socket.on("player-added", () => {
     if (linkMatchId)
         socket.emit("join", linkMatchId);
 });
@@ -75,6 +84,7 @@ socket.on('start', data => {
         flipBoard();
     restart();
     offlineUI.style.display = "none";
+    multiplayerUI.style.display = "block";
     matchLinkDiv.style.display = "none";
     matchInfoDiv.style.display = "block";
     if (!myColor) {
@@ -103,6 +113,8 @@ socket.on('moves', data => {
     rollPositionToMove(Infinity);
     drawBoard();
     updateInfo();
+    if (position.turn == myColor)
+        window.dispatchEvent(new Event("my-turn"));
 });
 
 function sendMove (move) {
@@ -114,6 +126,7 @@ function sendMove (move) {
 socket.on('end', result => {
     myColor = "both";
     offlineUI.style.display = "block";
+    multiplayerUI.style.display = "none";
     matchInfoDiv.style.display = "none";
     matchLinkField.value = "";
     updateInfo(result);

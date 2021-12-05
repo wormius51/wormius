@@ -19,6 +19,7 @@ let ballMoveColor = "grey";
 let backGroundOpacity = 0.85;
 
 let moveShowColor = "rgba(0,128,0,0.5)";
+let premoveShowColor = "rgba(0,0,128,0.5)";
 
 let draggedPiece = undefined;
 let kickingPiece = undefined;
@@ -184,6 +185,12 @@ function drawShowMove (move) {
         drawMarkSquare(move.bx, move.by, moveShowColor);
 }
 
+function drawShowPremoves () {
+    for (const action of premoves) {
+        drawMarkSquare(action.file, action.rank, premoveShowColor);
+    }
+}
+
 function drawDraggedPiece () {
     let file = mouseX;
     let rank = mouseY;
@@ -204,6 +211,7 @@ function drawBoard () {
     setBoardCanvasSize();
     drawClydeBackground();
     drawShowMove(mostRecentMove);
+    drawShowPremoves();
     drawPieces();
     if (isEditor)
         return;

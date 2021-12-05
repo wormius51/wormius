@@ -34,8 +34,19 @@ function start () {
         Player.removePlayerById(socket.id);
         nsp.emit("player-count", Player.countPlayers());
         if (player.match && (player.match.white == player || player.match.black == player)) {
-            let resaon = "disconnect " + (player.match.white == player ? "white" : "black");
-            Match.endMatch(player.match, resaon);
+            let reason = "disconnect " + (player.match.white == player ? "white" : "black");
+            Match.endMatch(player.match, reason);
+        }
+    });
+
+    socketer.addListener(namespace, "resign", (data, socket, nsp) => {
+        let player = Player.getPlayerById(socket.id);
+        if (!player)
+            return;
+        nsp.emit("player-count", Player.countPlayers());
+        if (player.match && (player.match.white == player || player.match.black == player)) {
+            let reason = "resign " + (player.match.white == player ? "white" : "black");
+            Match.endMatch(player.match, reason);
         }
     });
 
