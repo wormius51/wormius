@@ -7,14 +7,12 @@ function gameFullScreen() {
 
 
 window.addEventListener('load', makeDropdown);
+window.addEventListener('load', showSupporters);
 
 function makeDropdown () {
     let h4s = $("h4.primaryText");
     if (h4s.length > 0) {
-        let previousDropdown = document.getElementById("content-dropdown");
-        if (previousDropdown)
-            $('header')[0].removeChild(previousDropdown);
-        let dropdown = document.createElement('div');
+        let dropdown = document.getElementById("contentDropdown");
         dropdown.className = "dropdown nav-item bg-light rounded border ml-1";
         dropdown.id = "content-dropdown";
         let button = document.createElement('button');
@@ -40,6 +38,48 @@ function makeDropdown () {
             dropdownMenu.appendChild(a);
         }
         dropdown.appendChild(dropdownMenu);
-        $('header')[0].appendChild(dropdown);
+    }
+}
+
+function showSupporters () {
+    const xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = () => {
+        if (xmlhttp.readyState == XMLHttpRequest.DONE) {
+           if (xmlhttp.status == 200) {
+               updateSupportersInfo(xmlhttp.responseText);
+           }
+        }
+    };
+    xmlhttp.open("GET", "bmc/supporters", true);
+    xmlhttp.send();
+}
+
+function updateSupportersInfo (data) {
+    try {
+        data = JSON.parse(data);
+    } catch {
+        return;
+    }
+    if (data.error) {
+        console.log(data.error);
+        return;
+    }
+    const supportersInfo = $("#supportersInfo span")[0];
+    let supporters = data.data.map(supporter => {
+        let name = supporter.supporter_name;
+        let note = supporter.support_note;
+        if (!name)
+            return;
+        return {name: name, note: note};
+    });
+    supporters = supporters.filter(supporter => supporter);
+    if (supporters.length == 0)
+        return;
+    supportersInfo.innerText = "Supporters: ";
+    for (const supporter of supporters) {
+        supportersInfo.innerText += supporter.name;
+        if (supporter.note)
+            supportersInfo.innerText += `: "${supporter.note}"`;
+        supportersInfo.innerText += ", \t";
     }
 }
