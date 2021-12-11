@@ -11,7 +11,6 @@ router.get('/supporters', async (req, res) => {
         const body = await bmcRes.text();
         res.send(body);
     } else { // dummy data on local
-        console.log("no bmc token");
         res.send(`{
             "error": "no token" 
           }`);

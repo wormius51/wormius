@@ -52,6 +52,8 @@ function updateInfo (result) {
             break;
         case "stalemate":
             resultText.innerHTML = "Draw by stalemate";
+        case "draw agreement":
+            resultText.innerHTML = "Draw by agreement";
             break;
     }
     updateMovesDiv();

@@ -50,7 +50,7 @@ function showSupporters () {
            }
         }
     };
-    xmlhttp.open("GET", "bmc/supporters", true);
+    xmlhttp.open("GET", "/bmc/supporters", true);
     xmlhttp.send();
 }
 

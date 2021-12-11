@@ -16,6 +16,7 @@ const matchInfoDiv = document.getElementById("matchInfoDiv");
 const namesText = document.getElementById("namesText");
 
 const resignButton = document.getElementById("resignButton");
+const offerDrawButton = document.getElementById("offerDrawButton");
 
 window.addEventListener('load', () => {
     loadCookie();
@@ -29,6 +30,10 @@ resignButton.addEventListener('click', () => {
     if (confirm("Are you sure you want to resign?")) {
         socket.emit("resign");
     }
+});
+
+offerDrawButton.addEventListener('click', () => {
+    socket.emit("offer-draw");
 });
 
 function updatePlayer () {
@@ -121,6 +126,7 @@ function sendMove (move) {
     if (!matchData || !myColor)
         return;
     socket.emit('playMove', move);
+    offerDrawButton.innerHTML = "Offer Draw";
 }
 
 socket.on('end', result => {
@@ -129,9 +135,14 @@ socket.on('end', result => {
     multiplayerUI.style.display = "none";
     matchInfoDiv.style.display = "none";
     matchLinkField.value = "";
+    offerDrawButton.innerHTML = "Offer Draw";
     updateInfo(result);
 });
 
 socket.on('position', data => {
     console.log(data);
+});
+
+socket.on('draw-offer', () => {
+    offerDrawButton.innerHTML = "Accept Draw";
 });

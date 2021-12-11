@@ -43,11 +43,17 @@ function start () {
         let player = Player.getPlayerById(socket.id);
         if (!player)
             return;
-        nsp.emit("player-count", Player.countPlayers());
         if (player.match && (player.match.white == player || player.match.black == player)) {
             let reason = "resign " + (player.match.white == player ? "white" : "black");
             Match.endMatch(player.match, reason);
         }
+    });
+
+    socketer.addListener(namespace, "offer-draw", (data, socket, nsp) => {
+        let player = Player.getPlayerById(socket.id);
+        if (!player)
+            return;
+        Match.offerDraw(player);
     });
 
     socketer.addListener(namespace, "makeMatch", (data, socket, nsp) => {
@@ -76,10 +82,8 @@ function start () {
         let player = Player.getPlayerById(socket.id);
         if (!player)
             player = Player(socket);
-        else if (player.room != "lobby") {
-            socket.emit("deny", "You need to not be in a match");
-            return;
-        }
+        else
+            Match.cancleRematch(player);
         Match.joinMatchOrStart(player);
     });
 

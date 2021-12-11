@@ -146,7 +146,7 @@ function joinMatchOrStart (player) {
 }
 
 function playMove (player, move) {
-    let match = getMatchById(player.room);
+    let match = player.match;
     if (!match) {
         player.socket.emit("deny", "No match found");
         return;
@@ -171,6 +171,30 @@ function playMove (player, move) {
     let result = position.positionResult(match.position);
     if (result != "playing")
         endMatch(match, result);
+    match[match.position.turn + "DrawOffer"] = false;
+}
+
+function offerDraw (player) {
+    let match = player.match;
+    if (!match) {
+        player.socket.emit("deny", "No match found");
+        return;
+    }
+    let color = "white";
+    let opponentColor = "black";
+    if (player == match.black) {
+        color = "black";
+        opponentColor = "white";
+    } else if (player != match.white) {
+        player.socket.emit("deny", "You are not playing this match");
+        return;
+    }
+    if (match[opponentColor + "DrawOffer"]) {
+        endMatch(match, "draw agreement");
+        return;
+    }
+    match[color + "DrawOffer"] = true;
+    match[opponentColor].socket.emit("draw-offer");
 }
 
 function sendData (match) {
@@ -197,3 +221,4 @@ module.exports.endMatch = endMatch;
 module.exports.sendData = sendData;
 module.exports.rematch = rematch;
 module.exports.cancleRematch = cancleRematch;
+module.exports.offerDraw = offerDraw;
