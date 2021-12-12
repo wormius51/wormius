@@ -8,7 +8,7 @@
     <div class="container-fluid">
         <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content rounded container-fluid" role="main">
             <h1 class="primaryText">Chess Ball</h1>
-            <h6 id = "playerCount"></h4>
+            <h6 id = "playerCount"></h6>
             <div class="data">
                 <div id = "matchId"><%= matchId %></div>
                 <div id = "startPosition"><%= startPosition %></div>
@@ -18,10 +18,14 @@
                 <div class="row">
                     <div class="col">
                         <canvas id = "boardCanvas"></canvas>
-                        <br>
-                        <h2>Board background by Clyde</h2>
                     </div>
                     <div class="col">
+                        <div id = "multiplayerUI">
+                            <h3 id = "namesText"></h3>
+                            <h2><span id = "whiteClock" class="active-clock"></span> | <span id = "blackClock" class="clock"></span></h2>
+                            <button id = "offerDrawButton">Offer Draw</button>
+                            <button id = "resignButton">Resign</button>
+                        </div>
                         <h2 id = "resaltText"></h2>
                         <div id = "movesDiv">
                             <table id = "movesTable"></table>
@@ -29,9 +33,7 @@
                         <br>
                         <button id = "flipBoardButton">Flip Board</button>
                         <input type="text" id="nameField" placeholder="Name...">
-                        <div id = "matchInfoDiv">
-                            <h3 id = "namesText"></h3>
-                        </div>
+                        
                         <div id = "offlineUI">
                             <button id = "restartButton">Solo</button>
                             <button id = "saveGameButton">Save Game</button>
@@ -61,11 +63,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div id = "multiplayerUI">
-                            <h2><span id = "whiteClock" class="clock"></span> | <span id = "blackClock" class="clock"></span></h2>
-                            <button id = "offerDrawButton">Offer Draw</button>
-                            <button id = "resignButton">Resign</button>
-                        </div>
+                        
                         </div>
                 </div>
             </div>
@@ -77,6 +75,7 @@
                 The ball moves as the piece that kicks it to an empty square.
                 You can leave your king in check (or mate) if you score a goal at the same move.
             </p>
+            <h4>Board background by Clyde</h4>
             <a href="https://www.reddit.com/r/chessball/" target="_blank">
                 <img src="/images/chess-ball/reddit.png" alt="Reddit" height="50px">
             </a>

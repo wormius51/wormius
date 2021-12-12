@@ -247,6 +247,8 @@ function updateClocksInfo () {
     updateClock(clock);
     whiteClock.innerHTML = millisecondsToTimeString(clock.white.time);
     blackClock.innerHTML = millisecondsToTimeString(clock.black.time);
+    whiteClock.className = clock.turn == "white" ? "active-clock" : "clock";
+    blackClock.className = clock.turn == "black" ? "active-clock" : "clock";
     if (clock.white.time <= 0 || clock.black.time <= 0)
         socket.emit("check-clock");
 }

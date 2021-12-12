@@ -13,7 +13,6 @@ const matchLinkDiv = document.getElementById("matchLinkDiv");
 const linkMatchId = document.getElementById("matchId").innerHTML;
 
 const nameField = document.getElementById("nameField");
-const matchInfoDiv = document.getElementById("matchInfoDiv");
 const namesText = document.getElementById("namesText");
 
 const resignButton = document.getElementById("resignButton");
@@ -93,7 +92,6 @@ socket.on('start', data => {
     offlineUI.style.display = "none";
     multiplayerUI.style.display = "block";
     matchLinkDiv.style.display = "none";
-    matchInfoDiv.style.display = "block";
     if (!myColor) {
         moves = matchData.moves;
         rollPositionToMove(Infinity);
@@ -143,7 +141,6 @@ socket.on('end', result => {
     myColor = "both";
     offlineUI.style.display = "block";
     multiplayerUI.style.display = "none";
-    matchInfoDiv.style.display = "none";
     matchLinkField.value = "";
     offerDrawButton.innerHTML = "Offer Draw";
     updateInfo(result);
