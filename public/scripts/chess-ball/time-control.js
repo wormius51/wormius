@@ -83,6 +83,14 @@ function updateClock (clock) {
     clock[clock.turn].time = clock[clock.turn].timeAtStartOfMove - moveTime;
 }
 
+function resetClock (clock) {
+    clock.white.time = clock.white.startTime;
+    clock.black.time = clock.black.startTime;
+    clock.white.timeAtStartOfMove = clock.white.startTime;
+    clock.black.timeAtStartOfMove = clock.black.startTime;
+    clock.turn = "waiting";
+}
+
 function millisecondsToTime (milliseconds) {
     let seconds = Math.floor(milliseconds / 1000);
     milliseconds -= seconds * 1000;

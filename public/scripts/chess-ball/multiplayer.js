@@ -1,5 +1,6 @@
 const socket = io('/chess-ball');
 var matchData = undefined;
+var matchEnd = false;
 const offlineUI = document.getElementById("offlineUI");
 const multiplayerUI = document.getElementById("multiplayerUI");
 const randomMatchButton = document.getElementById("randomMatchButton");
@@ -82,6 +83,7 @@ socket.on('matchId', data => {
 });
 
 socket.on('start', data => {
+    matchEnd = false;
     startPosition = data.startFen ? fenToPosition(data.startFen) : defaultStartingPosition;
     myColor = data.youAre;
     matchData = data;
@@ -145,6 +147,8 @@ socket.on('end', result => {
     matchLinkField.value = "";
     offerDrawButton.innerHTML = "Offer Draw";
     updateInfo(result);
+    matchEnd = true;
+    draggedPiece = undefined;
 });
 
 socket.on('position', data => {

@@ -41,7 +41,12 @@ canvas.addEventListener('touchmove', event => {
 const flipButton = document.getElementById("flipBoardButton");
 flipButton.addEventListener('click', flipBoard);
 const restartButton = document.getElementById("restartButton");
-restartButton.addEventListener('click', restart);
+restartButton.addEventListener('click', () => {
+    matchData = undefined;
+    matchEnd = false;
+    flippedBoard = false;
+    restart();
+});
 const editorButton = document.getElementById("editorButton");
 editorButton.addEventListener('click', () => {
     window.open(`./chess-ball/editor?pos=${positionFen(position)}`);
@@ -75,9 +80,9 @@ function setMouseXY (event) {
 }
 
 function selectCanvas (event, isDrag) {
+    if (matchEnd)
+        return;
     rollPositionToMove(Infinity);
-    /*if (myColor != "both" && myColor != position.turn)
-        return;*/
     let x = calculateX(event.clientX);
     let y = calculateY(event.clientY);
     let file = Math.floor(x / squareEdgeLength);

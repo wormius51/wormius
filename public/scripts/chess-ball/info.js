@@ -17,6 +17,8 @@ movesDiv.addEventListener('scroll', event => {
 let moves = [];
 
 function updateInfo (result) {
+    if (matchEnd)
+        return;
     title.innerHTML = "Chess Ball";
     switch (result ? result : positionResult(position)) {
         case "playing":
@@ -240,6 +242,8 @@ canvas.addEventListener('mousewheel', event => {
 });
 
 function updateClocksInfo () {
+    if (!matchData || matchEnd)
+        return;
     updateClock(clock);
     whiteClock.innerHTML = millisecondsToTimeString(clock.white.time);
     blackClock.innerHTML = millisecondsToTimeString(clock.black.time);

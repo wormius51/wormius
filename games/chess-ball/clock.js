@@ -4,9 +4,9 @@ function Clock (whiteTime, blackTime, whiteIncrement, blackIncrement) {
         whiteTime = 1000 * 60 * 3;
     if (!blackTime)
         blackTime = 1000 * 60 * 3;
-    if (!whiteIncrement)
+    if (whiteIncrement == undefined)
         whiteIncrement = 2000;
-    if (!blackIncrement)
+    if (blackIncrement == undefined)
         blackIncrement = 2000;
     return {
         white: {
