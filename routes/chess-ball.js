@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 router.get("/", (req, res) => {
-    const templateName = req.throughGames ? 'chess-ball/game' : 'chess-ball';
+    const templateName = 'chess-ball/game';
     res.render(templateName, {
         matchId: req.query.mi,
         startPosition: req.query.pos,
@@ -19,7 +19,7 @@ router.get("/", (req, res) => {
 });
 
 router.get("/editor", (req, res) => {
-    const templateName = req.throughGames ? 'chess-ball/editor' : 'chess-ball-editor';
+    const templateName = 'chess-ball/editor';
     res.render(templateName, {
         startPosition: req.query.pos,
         title: "Chess Ball Editor",

@@ -56,6 +56,20 @@ function start () {
         Match.offerDraw(player);
     });
 
+    socketer.addListener(namespace, "check-clock", (data, socket, nsp) => {
+        let player = Player.getPlayerById(socket.id);
+        if (!player)
+            return;
+        Match.checkClock(player);
+    });
+
+    socketer.addListener(namespace, "update-time-control", (data, socket, nsp) => {
+        let player = Player.getPlayerById(socket.id);
+        if (!player)
+            return;
+        Match.updateTimeControl(player, data);
+    });
+
     socketer.addListener(namespace, "makeMatch", (data, socket, nsp) => {
         let player = Player.getPlayerById(socket.id);
         if (!player)

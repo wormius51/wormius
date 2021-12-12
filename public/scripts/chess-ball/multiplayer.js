@@ -55,12 +55,12 @@ rematchButton.addEventListener('click', () => {
 });
 
 friendMatchButton.addEventListener('click', () => {
-    socket.emit("makeMatch");
+    socket.emit("makeMatch", {timeControl: timeControl});
     matchLinkDiv.style.display = "block";
 });
 
 fromPositionButton.addEventListener('click', () => {
-    socket.emit("makeMatch", positionFen(position));
+    socket.emit("makeMatch", {fen: positionFen(position), timeControl: timeControl});
     matchLinkDiv.style.display = "block";
 });
 
@@ -96,6 +96,10 @@ socket.on('start', data => {
         moves = matchData.moves;
         rollPositionToMove(Infinity);
     }
+    if (data.clock)
+        clock = data.clock;
+    else
+        startClock(clock);
     updateInfo();
 });
 
@@ -105,6 +109,10 @@ socket.on("updateMatch", data => {
 });
 
 socket.on('moves', data => {
+    if (data.clock)
+        clock = data.clock;
+    else
+        pushClock(clock);
     if (!matchData || data.moves.length <= matchData.moves.length)
         return;
     mostRecentMove = data.lastMove;
@@ -116,7 +124,7 @@ socket.on('moves', data => {
         moves = matchData.moves;
     }
     rollPositionToMove(Infinity);
-    drawBoard();
+    drawBoard();  
     updateInfo();
     if (position.turn == myColor)
         window.dispatchEvent(new Event("my-turn"));

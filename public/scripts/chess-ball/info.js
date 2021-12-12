@@ -3,6 +3,8 @@ const title = document.querySelector("title");
 const playerCount = document.getElementById("playerCount");
 const movesDiv = document.getElementById("movesDiv");
 const movesTable = document.getElementById("movesTable");
+const whiteClock = document.getElementById("whiteClock");
+const blackClock = document.getElementById("blackClock");
 
 let isFreeScrolling = false;
 let currentMoveIndex = 0;
@@ -50,6 +52,12 @@ function updateInfo (result) {
         case "resign black":
             resultText.innerHTML = "White wins by resignation";
             break;
+        case "timeout white":
+            resultText.innerHTML = "Black wins by timeout";
+            break;
+        case "timeout black":
+            resultText.innerHTML = "White wins by timeout";
+            break;
         case "stalemate":
             resultText.innerHTML = "Draw by stalemate";
         case "draw agreement":
@@ -57,6 +65,7 @@ function updateInfo (result) {
             break;
     }
     updateMovesDiv();
+    updateClocksInfo();
 }
 
 socket.on('player-count', data => {
@@ -229,3 +238,13 @@ canvas.addEventListener('mousewheel', event => {
     event.preventDefault();
     scrollMoves(event.deltaY > 0);
 });
+
+function updateClocksInfo () {
+    updateClock(clock);
+    whiteClock.innerHTML = millisecondsToTimeString(clock.white.time);
+    blackClock.innerHTML = millisecondsToTimeString(clock.black.time);
+    if (clock.white.time <= 0 || clock.black.time <= 0)
+        socket.emit("check-clock");
+}
+
+const updateClockInterval = setInterval(updateClocksInfo, 100);

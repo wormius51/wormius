@@ -1,10 +1,17 @@
 const shortid = require('shortid');
 const position = require('./position');
+const Clock = require('./clock'); 
 
 var matches = [];
 
-function Match (player, private, fen) {
-    let match = {};
+function Match (player, private, data) {
+    let fen = undefined;
+    let timeControl = undefined;
+    if (data) {
+        fen = data.fen;
+        timeControl = data.timeControl;
+    }
+    let match = {timeControl: timeControl};
     if ((player.lastColor == undefined && Math.random() > 0.5) ||
         player.lastColor == "black")
         match.white = player;
@@ -18,6 +25,9 @@ function Match (player, private, fen) {
     match.spectators = [];
     match.state = "looking";
     match.private = private;
+    match.clock = timeControl ? 
+    Clock(timeControl.time, timeControl.time, timeControl.increment, timeControl.increment)
+    : Clock();
     matches.push(match);
     player.room = match.id;
     player.match = match;
@@ -32,7 +42,7 @@ function rematch (player) {
     let opponentColor = playerColor == "white" ? "black" : "white";
     player.pastMatch[playerColor + " rematch"] = true;
     if (player.pastMatch[opponentColor + " rematch"]) {
-        let newMatch = Match(player, true, player.pastMatch.startFen);
+        let newMatch = Match(player, true, {fen: player.pastMatch.startFen, timeControl: player.pastMatch.timeControl});
         joinMatch(newMatch, player.pastMatch[opponentColor]);
     }
 }
@@ -91,26 +101,16 @@ function spectate (match, player) {
     match.spectators.forEach(spectator => {
         spectator.socket.emit("spectators", avatars);
     });
-    let data = {
-        matchId: match.id,
-        white: match.white.avatar,
-        black: match.black.avatar,
-        moves: match.moves
-    };
+    let data = dataForSending(match);
     player.socket.emit("start", data);
 }
 
 function startMatch (match) {
+    Clock.startClock(match.clock, match.position.turn);
     match.white.lastColor = "white";
     match.black.lastColor = "black";
     match.state = "playing";
-    let data = {
-        matchId: match.id,
-        startFen: match.startFen,
-        white: match.white.avatar,
-        black: match.black.avatar,
-        moves: []
-    };
+    let data = dataForSending(match);
     data.youAre = "white";
     match.white.socket.emit("start", data);
     data.youAre = "black";
@@ -162,7 +162,8 @@ function playMove (player, move) {
     }
     position.positionPlayMove(match.position, move);
     match.moves.push(move);
-    let data = {lastMove: move, moves: match.moves};
+    Clock.pushClock(match.clock);
+    let data = {lastMove: move, moves: match.moves, clock: match.clock};
     match.white.socket.emit("moves", data);
     match.black.socket.emit("moves", data);
     match.spectators.forEach(s => {
@@ -198,12 +199,7 @@ function offerDraw (player) {
 }
 
 function sendData (match) {
-    let data = {
-        matchId: match.id,
-        white: match.white.avatar,
-        black: match.black.avatar,
-        moves: match.moves
-    };
+    let data = dataForSending(match);
     data.youAre = "white";
     match.white.socket.emit("updateMatch", data);
     data.youAre = "black";
@@ -211,6 +207,41 @@ function sendData (match) {
     match.spectators.forEach(s => {
         s.socket.emit("updateMatch", data);
     });
+}
+
+function dataForSending (match) {
+    return {
+        matchId: match.id,
+        startFen: match.startFen,
+        white: match.white.avatar,
+        black: match.black.avatar,
+        moves: match.moves,
+        clock: match.clock
+    };
+}
+
+function checkClock (player) {
+    let match = player.match;
+    if (!match) {
+        player.socket.emit("deny", "No match found");
+        return;
+    }
+    if (match.state == "finished") {
+        player.socket.emit("deny", "This match is allready over");
+        return;
+    }
+    Clock.updateClock(match.clock);
+    if (match.clock.white.time <= 0)
+        endMatch(match, "timeout white");
+    else if (match.clock.black.time <= 0)
+        endMatch(match, "timeout black");
+}
+
+function updateTimeControl (player, timeControl) {
+    if (!timeControl || !player.match || player.match.state != "looking")
+        return;
+    player.match.timeControl = timeControl;
+    player.match.clock = Clock(timeControl.time, timeControl.time, timeControl.increment, timeControl.increment);
 }
 
 module.exports = Match;
@@ -222,3 +253,5 @@ module.exports.sendData = sendData;
 module.exports.rematch = rematch;
 module.exports.cancleRematch = cancleRematch;
 module.exports.offerDraw = offerDraw;
+module.exports.checkClock = checkClock;
+module.exports.updateTimeControl = updateTimeControl;

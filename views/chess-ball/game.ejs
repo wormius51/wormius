@@ -45,12 +45,24 @@
                             <button id = "fromPositionButton">Play From Position</button>
                             <br>
                             <div id = "matchLinkDiv">
-                                Send this link to your friend<br>
-                                <input type="text" id="matchLink" readonly>
-                                <button id = "copyMatchLinkButton" class="copyButton">Copy Link</button>
+                                <p class="lead">
+                                    Send this link to your friend
+                                    <input type="text" id="matchLink" readonly>
+                                    <button id = "copyMatchLinkButton" class="copyButton">Copy Link</button>
+                                </p>
+                                <p class="lead">
+                                    Time Control
+                                    <br>
+                                    <span id = "timeControlSpan"></span>
+                                    <br>
+                                    <input type="range" id="timeSlider" min="1" max="120">
+                                    <br>
+                                    <input type="range" id="incrementSlider" min="0" max="30">
+                                </p>
                             </div>
                         </div>
                         <div id = "multiplayerUI">
+                            <h2><span id = "whiteClock" class="clock"></span> | <span id = "blackClock" class="clock"></span></h2>
                             <button id = "offerDrawButton">Offer Draw</button>
                             <button id = "resignButton">Resign</button>
                         </div>
@@ -81,6 +93,7 @@
             <script src="/scripts/chess-ball/puzzle.js"></script>
             <script src="/scripts/chess-ball/record.js"></script>
             <script src="/scripts/chess-ball/premove.js"></script>
+            <script src="/scripts/chess-ball/time-control.js"></script>
             <script src="/scripts/chess-ball/main.js"></script>
         </main>
     </div>
