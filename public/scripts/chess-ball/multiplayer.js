@@ -101,6 +101,8 @@ socket.on('start', data => {
     else
         startClock(clock);
     updateInfo();
+    if (position.turn == myColor)
+        window.dispatchEvent(new Event("my-turn"));
 });
 
 socket.on("updateMatch", data => {
