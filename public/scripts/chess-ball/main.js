@@ -112,15 +112,7 @@ function selectSquare (file, rank, xInSquare, yInSquare, isDrag, isPremove) {
     } else {
         premoves = [];
     }
-    let move = possibleMoves.find(m => {
-        return ((m.bx == undefined && m.x == file && m.y == rank) || 
-        (m.bx == file && m.by == rank)) &&
-        (m.xInSquare == undefined || (
-        m.xInSquare <= xInSquare &&
-        m.xInSquare > xInSquare - 0.5 &&
-        m.yInSquare <= yInSquare &&
-        m.yInSquare > yInSquare - 0.5));
-    });
+    let move = findMatchingMove(file, rank, xInSquare, yInSquare);
     if (move) {
         if (!move.ballMoves && !move.promotions) {
             applyMove(move);
@@ -156,6 +148,24 @@ function selectSquare (file, rank, xInSquare, yInSquare, isDrag, isPremove) {
     }
     drawBoard();
     updateInfo();
+}
+
+function findMatchingMove (file, rank, xInSquare, yInSquare) {
+    return possibleMoves.find(m => {
+        if (m.castling && position[rank][file]) {
+            if (m.castling == "O-O" && file == m.x + 1)
+                return true;
+            if (m.castling == "O-O-O" && file == m.x - 2)
+                return true;
+        }
+        return ((m.bx == undefined && m.x == file && m.y == rank) || 
+        (m.bx == file && m.by == rank)) &&
+        (m.xInSquare == undefined || (
+        m.xInSquare <= xInSquare &&
+        m.xInSquare > xInSquare - 0.5 &&
+        m.yInSquare <= yInSquare &&
+        m.yInSquare > yInSquare - 0.5));
+    });
 }
 
 function applyMove (move) {
