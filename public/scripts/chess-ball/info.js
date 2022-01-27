@@ -65,6 +65,9 @@ function updateInfo (result) {
         case "draw agreement":
             resultText.innerHTML = "Draw by agreement";
             break;
+        case "repetition":
+            resultText.innerHTML = "Draw by repetition";
+            break;
     }
     updateMovesDiv();
     updateClocksInfo();

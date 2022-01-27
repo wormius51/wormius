@@ -20,6 +20,7 @@ function Match (player, private, data) {
     match.moves = [];
     match.id = shortid.generate();
     match.position = fen ? position.fenToPosition(fen) : position.getStartingPosition();
+    recordPosition(match);
     if (fen)
         match.startFen = fen;
     match.spectators = [];
@@ -33,6 +34,21 @@ function Match (player, private, data) {
     player.match = match;
     player.socket.emit("matchId", match.id);
     return match;
+}
+
+/**
+ * Adds a position count on the current position.
+ * @returns True if there is a 3 fold repetition
+ */
+function recordPosition (match) {
+    if (!match.pastPosition)
+        match.pastPosition = [];
+    const fen = position.positionFen(match.position);
+    if (match.pastPosition[fen])
+        match.pastPosition[fen]++;
+    else
+        match.pastPosition[fen] = 1;
+    return match.pastPosition[fen] >= 3;
 }
 
 function rematch (player) {
@@ -170,6 +186,9 @@ function playMove (player, move) {
         s.socket.emit("moves", data);
     });
     let result = position.positionResult(match.position);
+    let repetition = recordPosition(match);
+    if (repetition)
+        result = "repetition";
     if (result != "playing")
         endMatch(match, result);
     match[match.position.turn + "DrawOffer"] = false;
