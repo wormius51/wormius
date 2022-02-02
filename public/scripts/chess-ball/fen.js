@@ -123,6 +123,8 @@ function fenToPosition (fen) {
                 if (!position.ball)
                     position[rank][file] = piece;
                 position.ball = piece; 
+                if (rank != 3 || file != 4)
+                    piece.firstMove = false;
             } else
                 position[rank][file] = piece;
             file++;
@@ -158,5 +160,35 @@ function fenToPosition (fen) {
         let rank = +strings[2][1];
         position.enpassant = {x: file, y: rank};
     }
+    cancleIllegalCastles(position);
     return position;
 }
+
+function cancleIllegalCastles (position) {
+    let piece = position[0][4];
+    if (!piece || (piece.type != "king" && piece.team == "black")) {
+        position.castling.black.short = false;
+        position.castling.black.long = false;
+    }
+    piece = position[7][4];
+    if (!piece || (piece.type != "king" && piece.team == "white")) {
+        position.castling.white.short = false;
+        position.castling.white.long = false;
+    }
+    piece = position[0][0];
+    if (!piece || (piece.type != "rook" && piece.team == "black")) {
+        position.castling.black.long = false;
+    }
+    piece = position[0][7];
+    if (!piece || (piece.type != "rook" && piece.team == "black")) {
+        position.castling.black.short = false;
+    }
+    piece = position[7][0];
+    if (!piece || (piece.type != "rook" && piece.team == "white")) {
+        position.castling.black.long = false;
+    }
+    piece = position[7][7];
+    if (!piece || (piece.type != "rook" && piece.team == "white")) {
+        position.castling.black.short = false;
+    }
+} 
