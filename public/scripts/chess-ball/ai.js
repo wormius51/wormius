@@ -3,9 +3,12 @@ importScripts(
     "position.js"
 );
 
+let interrupt = false;
+
 onmessage = event => {
     switch (event.data.command) {
         case "move":
+            interrupt = false;
             postMove(event.data.position, event.data.devideTask);
             break;
         case "depth":
@@ -13,6 +16,9 @@ onmessage = event => {
             break;
         case "log":
             console.log("I am here");
+            break;
+        case "interrupt":
+            interrupt = true;
             break;
     }
 };
@@ -22,7 +28,7 @@ async function postMove (position, devideTask) {
     if (devideTask)
         move = await splitMoveTask(position);
     else 
-        move = aiMove(position);
+        move = aiMove(position).next().value;
     postMessage({
         responseType: "move",
         move: move
@@ -80,7 +86,7 @@ const aiParams = {
     ballRankWeight: 1,
     materialWeight: 1,
     movesCountWeight: 0.01,
-    depth: 2
+    depth: 3
 };
 
 function evaluatePosition (position) {
@@ -143,28 +149,36 @@ function ballRank (position) {
     }
 }
 
-function aiMove (position, depth, alpha, beta) {
+function* aiMove (position, depth, alpha, beta) {
     if (depth == undefined)
         depth = aiParams.depth;
     if (alpha == undefined)
         alpha = -Infinity;
     if (beta == undefined)
         beta = Infinity;
-    let moves = getMovesOfPosition(position);//.sort(heuristic(position));//.slice(0, 4);
+    let moves = getMovesOfPosition(position);
+    if (depth > 0)
+        moves = moves.sort(heuristic(position));
     let bestMove = moves[0];
     let colorSign = position.turn == "white" ? 1 : -1;
     let bestEval = -Infinity * colorSign;
+    bestMove.eval = bestEval;
+    let movesChecked = 0;
     for (let i = 0; i < moves.length; i++) {
+        if (interrupt)
+            break;
+        movesChecked++;
         let move = moves[i];
         let afterEval = 0;
         let afterPosition = positionAfterMove(position, move);
         if (depth > 0 && positionResult(afterPosition) == "playing")
-            afterEval = aiMove(afterPosition, depth - 1, alpha, beta).eval;
+            afterEval = aiMove(afterPosition, depth - 1, alpha, beta).next().value.eval;
         else
             afterEval = evaluatePosition(afterPosition);
         if (afterEval * colorSign > bestEval * colorSign) {
             bestMove = move;
             bestEval = afterEval;
+            bestMove.eval = bestEval;
             if (position.turn == "white") {
                 alpha = Math.max(bestEval, alpha);
                 if (bestEval > beta) {
@@ -178,8 +192,10 @@ function aiMove (position, depth, alpha, beta) {
              }
         }
     }
+    console.log(`At depth ${aiParams.depth - depth} 
+        checked ${movesChecked} moves out of ${moves.length}`);
     bestMove.eval = bestEval;
-    return bestMove;
+    yield bestMove;
 }
 
 
