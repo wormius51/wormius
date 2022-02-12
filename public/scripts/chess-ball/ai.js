@@ -1,13 +1,17 @@
+
 importScripts(
     "piece.js",
-    "position.js"
+    "position.js",
+    "gpuPosition.js"
 );
 
 let interrupt = false;
+let startTimeStamp = 0;
 
 onmessage = event => {
     switch (event.data.command) {
         case "move":
+            testPositionConversion(event.data.position);
             interrupt = false;
             postMove(event.data.position, event.data.devideTask);
             break;
@@ -25,6 +29,7 @@ onmessage = event => {
 
 async function postMove (position, devideTask) {
     let move = undefined;
+    startTimeStamp = Date.now();
     if (devideTask)
         move = await splitMoveTask(position);
     else 
@@ -86,7 +91,8 @@ const aiParams = {
     ballRankWeight: 1,
     materialWeight: 1,
     movesCountWeight: 0.01,
-    depth: 3
+    depth: 3,
+    maxTime: Infinity
 };
 
 function evaluatePosition (position) {
@@ -165,7 +171,7 @@ function* aiMove (position, depth, alpha, beta) {
     bestMove.eval = bestEval;
     let movesChecked = 0;
     for (let i = 0; i < moves.length; i++) {
-        if (interrupt)
+        if (interrupt || Date.now() - startTimeStamp > aiParams.maxTime)
             break;
         movesChecked++;
         let move = moves[i];
@@ -192,8 +198,9 @@ function* aiMove (position, depth, alpha, beta) {
              }
         }
     }
+    /*
     console.log(`At depth ${aiParams.depth - depth} 
-        checked ${movesChecked} moves out of ${moves.length}`);
+        checked ${movesChecked} moves out of ${moves.length}`);*/
     bestMove.eval = bestEval;
     yield bestMove;
 }
