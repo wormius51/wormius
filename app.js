@@ -9,8 +9,10 @@ const session = require('cookie-session');
 const app = express();
 
 var whitelist = ['https://wormius.herokuapp.com','https://game313569.konggames.com', 'https://game313569.konggames.com','https://v6p9d9t4.ssl.hwcdn.net']
-if (!process.env.PORT)
+if (!process.env.PORT) {
   whitelist.push('http://localhost:8000');
+  whitelist.push('http://localhost:3000');
+}
 var corsOptions = {
     origin: function (origin, callback) {
       if (!origin || whitelist.indexOf(origin) !== -1) {

@@ -25,5 +25,6 @@ function playPremoves () {
         action.used = true;
     }
     premoves = premoves.filter(action => !action.used);
+    possibleMoves = [];
     drawBoard();
 }

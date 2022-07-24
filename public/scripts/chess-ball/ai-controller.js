@@ -28,7 +28,6 @@ function nonBlockAiMove () {
 }
 
 aiWorker.onmessage = event => {
-    
     if (event.data && event.data.responseType == "move") {
         console.log(`AI eval: ${event.data.move.eval}
         AI move time: ${(Date.now() - aiStartTime) / 1000}`);
