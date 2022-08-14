@@ -11,11 +11,6 @@ body {
     background-color: darkslategrey;
 }
 
-.navbar-nav-scroll {
-    width: 100vw;
-    overflow-x: scroll;
-}
-
 .primaryText {
     color: rgb(96, 38, 151);
 }
