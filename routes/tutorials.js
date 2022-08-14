@@ -1,6 +1,4 @@
 const router = require('express').Router();
-const fs = require('fs');
-const path = require('path');
 
 function Tutorial(name, imageSrc, description) {
     let fileName = name.toLowerCase();;
@@ -51,15 +49,5 @@ router.get('/:tutname', (req, res) => {
         res.status(404).send({ error: "Not found." });
     }
 });
-
-function ifExists(path, callback) {
-    fs.access(path, fs.F_OK, (err) => {
-        let exists = true;
-        if (err) {
-            exists = false
-        }
-        callback(exists);
-    });
-}
 
 module.exports = router;

@@ -11,6 +11,11 @@ body {
     background-color: darkslategrey;
 }
 
+.navbar-nav-scroll {
+    width: 100vw;
+    overflow-x: scroll;
+}
+
 .primaryText {
     color: rgb(96, 38, 151);
 }
@@ -25,6 +30,14 @@ body {
 
 .tutorial {
     background-color: rgb(47, 48, 79);
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 400px;
+    min-width: 300px;
+}
+
+.tool {
+    background-color: rgb(103, 54, 124);
     margin-right: auto;
     margin-left: auto;
     max-width: 400px;
