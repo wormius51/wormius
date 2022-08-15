@@ -31,6 +31,14 @@ body {
     min-width: 300px;
 }
 
+.tool {
+    background-color: rgb(103, 54, 124);
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 400px;
+    min-width: 300px;
+}
+
 main {
     background-color: rgba(250, 235, 215, 0.753);
 }

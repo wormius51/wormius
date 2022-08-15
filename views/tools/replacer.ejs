@@ -1,0 +1,54 @@
+<% include ../includes/header.ejs %>
+
+<head>
+    <script src="/scripts/replacer/main.js" type="module"></script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content rounded container-fluid row-fluid" role="main">
+            <h1 class="primaryText">Replacer</h1>
+
+            <p>
+                This tool allows you to replace strings in a text,
+                shuffle it around ect..
+            </p>
+
+            <div class="row">
+                <div class="col">
+                    <h4>Regular Expression</h4>
+                    <input type="text" id="regexInput" placeholder="Regular expression...">
+                </div>
+                <div class="col">
+                    <h4>Template <a href="#instructions">(instructions)</a></h4>
+                    <input type="text" id="templateInput" placeholder="Template...">
+                </div>
+            </div>
+
+            <br>
+            <button id="convertButton">Convert</button>
+
+            <div class="row">
+                <div class="col">
+                    <h4>Input</h4>
+                    <textarea id="inputTextArea" cols="30" rows="10" 
+                    placeholder="Enter the text to be converted..."></textarea>
+                </div>
+                
+                <div class="col">
+                    <h4>Output</h4>
+                    <textarea id="outputTextArea" cols="30" rows="10" readonly></textarea>
+                </div>
+            </div>
+
+            <h4 class="primaryText" id="instructions">Instructions</h4>
+            <p>
+                The replacer
+            </p>
+        </main>
+    </div>
+
+    <% include ../includes/footer.ejs %>
+</body>
+
+</html>
