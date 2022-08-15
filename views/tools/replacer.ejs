@@ -43,7 +43,18 @@
 
             <h4 class="primaryText" id="instructions">Instructions</h4>
             <p>
-                The replacer
+                The replacer tool allows replacing of strings within a text.
+                Use a regular expression to search inside the text.
+                If you need to learn about regular expression, I recommend 
+                <a href="https://regex101.com/">regex101.com</a>.
+                The template can be just a normal string 
+                or it can have expresstions of the shape "$x".
+                The x is the number of the regex match group.
+                For example: 
+                Regex: "([^\s]+) ([^\s]+)"
+                Template: "$2 $1"
+                Input: "Hello World"
+                Output: "World Hello"
             </p>
         </main>
     </div>
