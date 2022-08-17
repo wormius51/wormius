@@ -25,6 +25,7 @@ function injectStrings (input, values) {
         output = output.replaceAll(`$u${i}`, values[i].toLocaleUpperCase());
         output = output.replaceAll(`$l${i}`, values[i].toLocaleLowerCase());
     }
+    output = output.replaceAll(/\$[ul]?\d+/g, "");
     output = output.replace("󰂘", "$");
     return output;
 }
@@ -40,11 +41,22 @@ export function replaceTemplate (input, regexString, template) {
     const matches = matchesOfExpression(input, regexString);
     if (!matches)
         return output;
-    for (const match of new Set(matches)) {
+    let characterIndex = 0;
+    for (const match of matches) {
         const regex = new RegExp(regexString);
         const subMathches = regex.exec(match);
         const subOutput = injectStrings(template, subMathches);
-        output = output.replaceAll(match, subOutput);
+        
+        output = replaceFromIndex(output, match, subOutput, characterIndex);
+        characterIndex = output.substring(characterIndex).indexOf(subOutput) + subOutput.length;
+        console.log(characterIndex);
     }
     return output;
+}
+
+function replaceFromIndex (input, search, replace, index) {
+    const subInput = input.substring(index);
+    const preSubInput = input.substring(0, index);
+    const subOutput = subInput.replace(search, replace);
+    return preSubInput + subOutput;
 }
