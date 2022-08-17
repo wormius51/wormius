@@ -49,7 +49,6 @@ export function replaceTemplate (input, regexString, template) {
         
         output = replaceFromIndex(output, match, subOutput, characterIndex);
         characterIndex = output.substring(characterIndex).indexOf(subOutput) + subOutput.length;
-        console.log(characterIndex);
     }
     return output;
 }
