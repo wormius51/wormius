@@ -1,0 +1,64 @@
+
+#letterButtonsDiv {
+    display: none;
+}
+
+#closeButton {
+    display: none;
+}
+
+#buttonsDiv {
+    width: fit-content;
+}
+
+
+.win {
+    animation-name: playNowButtonDance;
+    animation-iteration-count: infinite;
+    animation-duration: 1.8s;
+    position: relative;
+    top: 200px;
+    left: 100px;
+}
+
+@keyframes playNowButtonDance {
+    0% {
+        font-size: 25px;
+        color: green;
+    }
+
+    5% {
+        font-size: 30px;
+        transform: rotate(10deg);
+    }
+
+    25% {
+        font-size: 25px;
+        color: blue;
+    }
+
+    30% {
+        font-size: 30px;
+        transform: rotate(-10deg);
+    }
+
+    50% {
+        font-size: 25px;
+        color: orange;
+    }
+
+    55% {
+        font-size: 30px;
+        transform: rotate(10deg);
+    }
+
+    75% {
+        font-size: 25px;
+        color: red;
+    }
+
+    80% {
+        font-size: 30px;
+        transform: rotate(-10deg);
+    }
+}
