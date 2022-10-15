@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const faker = require('faker');
 const Player = require('../match-making/player');
+const uuid = require('uuid/v4');
 
 router.use('/nickName', (req, res, next) => {
     if (req.body.nickName) {
@@ -40,7 +41,7 @@ router.use('/createPlayer', (req, res, next) => {
     if (player) {
         Player.updatePlayer(player, req);
     } else {
-        player = Player(req.session.id, nickName, colors, eyesStyles);
+        player = Player(uuid(), nickName, colors, eyesStyles);
     }
     res.send(player);
 });
