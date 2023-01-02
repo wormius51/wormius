@@ -14,7 +14,7 @@ router.get("/", (req, res, next) => {
                     "https://wormius51.itch.io/pipe-pop", "/images/gameLinks/pipe-pop.png",
                     "Rotate pipes to connect and pop them to win score."),
                 GameLink("Creatures Of Energy",
-                    "https://wormius51.itch.io/creatures-of-energy",
+                    "https://store.steampowered.com/app/2066690/Creatures_of_Energy/",
                     "/images/gameLinks/creatures-of-energy.png",
                     "A strategy multiplayer game where you grow creatures to destroy the enemy."),
                 GameLink("Tribute Chess",
