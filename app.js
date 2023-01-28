@@ -5,6 +5,7 @@ const PORT = process.env.PORT || '8000';
 const cors = require('cors');
 //const session = require('express-session');
 const session = require('cookie-session');
+const WebSocketServer = require('ws').Server;
 
 const app = express();
 
@@ -77,6 +78,7 @@ require('./games/king-of-the-tile').start();
 require('./games/wheel').start();
 require('./games/chess-ball').start();
 
+
 require('./scripts/socketer').listen(server);
 
 server.listen(PORT);
@@ -86,3 +88,64 @@ server.on('listening', () => {
 });
 
 require('./scripts/db-client').setup();
+
+const wss = new WebSocketServer({server: server});
+
+class SocketEventData {
+  /**
+   * 
+   * @param {String} evenName 
+   * @param {Any} message 
+   */
+  constructor (evenName, message = "") {
+      this.EventName = evenName;
+      if (typeof message === "string")
+          this.Message = message;
+      else
+          this.Message = JSON.stringify(message);
+  }
+}
+
+
+wss.on('connection', socket => {
+  console.log("connected socket");
+  let greeting = new SocketEventData("connection", "Hello");
+  socket.send(JSON.stringify(greeting));
+  socket.on('message', data => {
+    console.log(data);
+      try {
+          let dataString = dataToString(data);
+          console.log(dataString);
+          let socketEventData = JSON.parse(dataString);
+          matchMaker.socketMessageHandler(socketEventData, socket);
+      } catch (err) {
+          console.error(err);
+      }
+  });
+  socket.on('close', data => {
+      console.log("disconnected socket with code: " + data);
+      let fairwell = stringToBytes("goodbye");
+      fairwell.unshift(0);
+      socket.send(fairwell);
+  });
+
+  socket.on('error', data => {
+      console.log(data);
+  });
+});
+
+
+function stringToBytes (string) {
+  let bytes = [];
+  for (let i = 0; i < string.length; i++)
+      bytes.push(string.charCodeAt(i));
+  return bytes;
+}
+
+function dataToString (data) {
+  let s = "";
+  data.forEach(byte => {
+      s += String.fromCharCode(byte);
+  });
+  return s;
+}
