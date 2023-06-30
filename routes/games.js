@@ -19,7 +19,7 @@ router.get("/", (req, res, next) => {
                     "A strategy multiplayer game where you grow creatures to destroy the enemy."),
                 GameLink("Tribute Chess",
                     "/games/tribute-chess", "/images/gameLinks/tribute-chess.png",
-                    "I made chess pieces out of poeple."),
+                    "I made chess pieces out of people."),
                 GameLink("Really Bad Flying Machine",
                     "/games/really-bad-flying-machine", "/images/gameLinks/really-bad-flying-machine.png",
                     "A puzzle game where you play as a flying machine. You can shoot your propellers off but lose the ability to move."),
