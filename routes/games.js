@@ -8,7 +8,7 @@ router.get("/", (req, res, next) => {
             gameLinks: [
                 GameLink("Square Puzzle",
                     "https://wormius51.itch.io/square-puzzle", "/images/gameLinks/square-puzzle.png",
-                    "A puzzle game where you click tiles to try and turn the all on."),
+                    "A puzzle game where you click tiles to try and turn them all on."),
                 GameLink("Chess Ball", 
                     "/games/chess-ball", "/images/gameLinks/chess-ball.png", 
                     `A chess variant where you kick the ball with your pieces.
