@@ -34,12 +34,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : false}));
 
 
-app.use(function(req, res, next) {
-  res.header("Cross-Origin-Embedder-Policy", "require-corp");
-  res.header("Cross-Origin-Opener-Policy", "same-origin");
-  next();
-});
-
 function makeSecret(length) {
     var result           = '';
     var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
