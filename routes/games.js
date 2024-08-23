@@ -3,11 +3,11 @@ const router = require('express').Router();
 router.get("/", (req, res, next) => {
     res.render('games',
         {
-            description: "Play games made by me, the great wormius!",
+            description: "Play games made by me, the great Wormius!",
             title: "Games",
             gameLinks: [
                 GameLink("Toggle Tile",
-                    "https://wormius51.itch.io/square-puzzle", "/images/gameLinks/toggle-tile.png",
+                    "https://store.steampowered.com/app/3165730/Toggle_Tile_Demo/", "/images/gameLinks/toggle-tile.png",
                     "A puzzle game where you click tiles to try and turn them all on."),
                 GameLink("Chess Ball", 
                     "/games/chess-ball", "/images/gameLinks/chess-ball.png", 
