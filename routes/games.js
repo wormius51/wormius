@@ -43,7 +43,7 @@ router.get("/", (req, res, next) => {
                     "/canvas-land", "/images/gameLinks/canvas-land.png",
                     "A multiplayer canvas where you can draw with your friends."),*/
                 GameLink("Tactical Tactics",
-                    "/games/tactical-tactics",
+                    "https://chromewebstore.google.com/detail/tactical-tactics-free/keiookbkgfkglpbooppdhoainanmpcmj",
                     "/images/gameLinks/tactical-tactics.png",
                     "A chrome extension that helps you train your chess tactics skills."),
                 GameLink("Morsing Around",
