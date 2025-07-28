@@ -15,26 +15,39 @@ window.addEventListener('touchmove', event => {
         event.preventDefault();
 }, {passive: false});
 
-canvas.addEventListener('click', selectCanvas);
-canvas.addEventListener('mousedown', event => {
-    selectCanvas(event, true);
+canvas.addEventListener('click', event => {
+    if (!chessIsMobile())
+        selectCanvas(event);
 });
-canvas.addEventListener('mousemove', setMouseXY);
+canvas.addEventListener('mousedown', event => {
+    if (!chessIsMobile())
+        selectCanvas(event, true);
+});
+canvas.addEventListener('mousemove', event => {
+    if (!chessIsMobile())
+        setMouseXY(event);
+});
 canvas.addEventListener('touchend', event => {
-    event.clientX = event.changedTouches[0].pageX;
-    event.clientY = event.changedTouches[0].pageY;
-    selectCanvas(event);
+    if (chessIsMobile()) {
+        event.clientX = event.changedTouches[0].pageX;
+        event.clientY = event.changedTouches[0].pageY;
+        selectCanvas(event);
+    }
 });
 canvas.addEventListener('touchstart', event => {
-    event.clientX = event.changedTouches[0].pageX;
-    event.clientY = event.changedTouches[0].pageY;
-    setMouseXY(event);
-    selectCanvas(event, true);
+    if (chessIsMobile()) {
+        event.clientX = event.changedTouches[0].pageX;
+        event.clientY = event.changedTouches[0].pageY;
+        setMouseXY(event);
+        selectCanvas(event, true);
+    }
 });
 canvas.addEventListener('touchmove', event => {
-    event.clientX = event.changedTouches[0].pageX;
-    event.clientY = event.changedTouches[0].pageY;
-    setMouseXY(event);
+    if (chessIsMobile()) {
+        event.clientX = event.changedTouches[0].pageX;
+        event.clientY = event.changedTouches[0].pageY;
+        setMouseXY(event);
+    }
 });
 
 
