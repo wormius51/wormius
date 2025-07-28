@@ -6,6 +6,11 @@ router.get("/", (req, res, next) => {
             description: "Play games made by me, the great Wormius!",
             title: "Games",
             gameLinks: [
+                GameLink("Gear Number Go Up",
+                    "https://wormius51.itch.io/gear-number-go-up",
+                    "/images/gameLinks/gear-number-go-up.png",
+                    "An incremental game where you place gears to make a mechanism that produces big numbers."
+                ),
                 GameLink("Toggle Tile",
                     "https://store.steampowered.com/app/3165730/Toggle_Tile_Demo/", "/images/gameLinks/toggle-tile.png",
                     "A puzzle game where you click tiles to try and turn them all on."),
