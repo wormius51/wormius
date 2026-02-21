@@ -57,7 +57,7 @@ const routes = [
   "food-chain-game", "button-button-button","canvas-land", 
   "king-of-the-tile", "tribute-chess", "wheel", "chess-ball",
   "worm", "blog", "privacy-policy", "terms", "bmc", "tools",
-  "creatures-of-energy"
+  "creatures-of-energy", "links"
 ];
 
 routes.forEach((element) => {

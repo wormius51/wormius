@@ -43,6 +43,14 @@ a {
     min-width: 300px;
 }
 
+.websiteLink {
+    background-color: rgb(143, 116, 61);
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 400px;
+    min-width: 300px;
+}
+
 main {
     background-color: rgba(250, 235, 215, 0.753);
 }
