@@ -47,10 +47,10 @@ router.get("/", (req, res, next) => {
                 /*GameLink("Canvas Land", // Posted to newgrounds and people drew nudes. So have to not link it here.
                     "/canvas-land", "/images/gameLinks/canvas-land.png",
                     "A multiplayer canvas where you can draw with your friends."),*/
-                GameLink("Tactical Tactics",
+                /*GameLink("Tactical Tactics",
                     "https://chromewebstore.google.com/detail/tactical-tactics-free/keiookbkgfkglpbooppdhoainanmpcmj",
                     "/images/gameLinks/tactical-tactics.png",
-                    "A chrome extension that helps you train your chess tactics skills."),
+                    "A chrome extension that helps you train your chess tactics skills.")*/,
                 GameLink("Morsing Around",
                     "https://wormius51.itch.io/morsing-around",
                     "/images/gameLinks/morsing-around.png",
