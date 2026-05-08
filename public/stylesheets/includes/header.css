@@ -150,6 +150,11 @@ input[type=submit] {
     border-radius: 7px;
 }
 
+button:disabled,
+input[type=submit]:disabled {
+    background-color: rgb(79, 79, 91);
+}
+
 .info {
     width: 100%;
 }

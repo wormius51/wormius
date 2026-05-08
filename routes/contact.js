@@ -4,11 +4,22 @@ const emailValidator = require('node-email-verifier');
 const router = require('express').Router();
 
 router.post('/send-email', async (req, res) => {
-    const { name, email, subject, message } = req.body;
 
-    if (!name || !email || !subject || !message) {
+    const { name, email, subject, message, 'g-recaptcha-response': recaptchaToken } = req.body;
+
+    if (!name || !email || !subject || !message || !recaptchaToken) {
         return res.status(400).json({ status: 'error', message: 'Missing required fields!' })
     }
+
+    // Verify the reCAPTCHA token
+    const isRecaptchaValid = await verifyRecaptcha(recaptchaToken);
+    if (!isRecaptchaValid) {
+        return res.status(400).json({
+            status: 'error',
+            message: 'reCAPTCHA verification failed. Please try again.'
+        });
+    }
+
     const isEmailValid = await emailValidator(email);
     if (!isEmailValid) {
         return res.status(400).json({
@@ -30,6 +41,19 @@ router.post('/send-email', async (req, res) => {
     res.redirect("/email-received");
 });
 
+// Function to verify reCAPTCHA
+async function verifyRecaptcha(token) {
+    const recaptchaSecret = process.env.RECAPTCHA_SECRET_KEY;
+    const recaptchaUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${recaptchaSecret}&response=${token}`;
+
+
+    const response = await fetch(recaptchaUrl, { method: 'POST' });
+    const result = await response.json();
+
+
+    return result.success;
+}
+
 async function sendEmailToMe(name, email, subject, message) {
     const TOKEN = process.env.MAILTRAP_API_TOKEN;
 
@@ -48,7 +72,7 @@ async function sendEmailToMe(name, email, subject, message) {
     ];
 
     const text =
-    `
+        `
 Customer name: ${name}
 Customer email: ${email}
 Subject: ${subject}

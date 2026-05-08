@@ -5,7 +5,7 @@ router.get("/", (req, res, next) => {
 });
 
 router.get("/about", (req, res, next) => {
-    res.render('about', {title: "About"});
+    res.render('about', {title: "About", SITE_KEY: process.env.RECAPTCHA_SITE_KEY});
 });
 
 router.get("/email-received", (req, res, next) => {
