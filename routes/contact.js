@@ -49,11 +49,11 @@ async function sendEmailToMe(name, email, subject, message) {
 
     const text =
     `
-    Customer name: ${name}
-    Customer email: ${email}
-    Subject: ${subject}
+Customer name: ${name}
+Customer email: ${email}
+Subject: ${subject}
 
-    ${message}
+${message}
     `;
 
     return client.send({
