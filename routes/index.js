@@ -8,4 +8,10 @@ router.get("/about", (req, res, next) => {
     res.render('about', {title: "About"});
 });
 
+router.get("/email-received", (req, res, next) => {
+    res.render('email-received', {title: "Email Received"});
+});
+
+router.use("/contact", require('./contact'));
+
 module.exports = router;
