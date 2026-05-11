@@ -1,29 +1,78 @@
 <script src="https://www.google.com/recaptcha/api.js" async defer></script> <!-- Load google recaptcha API -->
 
-<script>
-    function enableSubmitContact() {
-        document.getElementById("submit-send-contact").disabled = false;
-    }
-</script>
 
-<form method="post" action="/contact/send-email" class="contact-form col">
+
+<form method="post" action="/contact/send-email" class="contact-form">
     <label for="name">Name</label>
     <br>
-    <input type="text" name="name" placeholder="Name">
+    <input type="text" name="name" id="contact-name" placeholder="Name">
+    <br>
     <br>
     <label for="email">Email</label>
     <br>
-    <input type="email" name="email" placeholder="Email">
+    <input type="email" name="email" id="contact-email" placeholder="Email">
+    <br>
     <br>
     <label for="subject">Subject</label>
     <br>
-    <input type="text" name="subject" placeholder="Subject">
+    <input type="text" name="subject" id="contact-subject" placeholder="Subject">
+    <br>
     <br>
     <label for="message">Message</label>
     <br>
-    <textarea name="message" placeholder="Message"></textarea>
+    <textarea name="message" id="contact-message" placeholder="Message"></textarea>
     <br>
-    <div class="g-recaptcha" data-sitekey="<%= SITE_KEY %>" data-callback="enableSubmitContact"></div>
+    <br>
+    <div class="g-recaptcha" data-sitekey="<%= SITE_KEY %>" data-callback="setRecaptchaFilled"></div>
     <br> <!-- Google recaptcha element -->
     <input type="submit" id="submit-send-contact" value="Submit" disabled>
 </form>
+
+<script>
+    let recaptchaFilled = false;
+
+    const fieldIDs = [
+        "contact-name",
+        "contact-email",
+        "contact-subject",
+        "contact-message"
+    ];
+
+    for (const fieldID of fieldIDs) {
+        const field = document.getElementById(fieldID);
+        field.addEventListener('change', updateSubmitContact);
+        field.addEventListener('keydown', updateSubmitContact);
+    }
+
+    function setRecaptchaFilled () {
+        recaptchaFilled = true;
+        updateSubmitContact();
+    }
+
+    function checkEveryField () {
+        if (!recaptchaFilled) {
+            return false;
+        }
+
+        for (const fieldID of fieldIDs) {
+            const field = document.getElementById(fieldID);
+            if (field.value == "") {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    function updateSubmitContact () {
+        document.getElementById("submit-send-contact").disabled = !checkEveryField();
+    }
+
+    function enableSubmitContact () {
+        document.getElementById("submit-send-contact").disabled = false;
+    }
+
+    function disableSubmitContact () {
+        document.getElementById("submit-send-contact").disabled = true;
+    }
+</script>
